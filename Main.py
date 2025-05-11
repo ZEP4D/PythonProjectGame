@@ -1,3 +1,4 @@
+import sys
 from importlib.util import source_hash
 
 import pygame
@@ -11,21 +12,22 @@ screen = pygame.display.set_mode((1280,720))
 clock = pygame.time.Clock()
 running = True
 font1 = pygame.font.Font('Font/IBMPlexMono-Regular.ttf',32)
+Rectlist = []
 
 #--------------------------
 #Zegar
 minutes = 0
 hours = 7
-time_speed = 10
+time_speed = 1
 time_passed = 0
 changeTime = 0
 
 def Zegar(dt):
     global minutes,hours,time_passed
 
-    time_passed = time_passed + dt
+    time_passed = time_passed + dt * time_speed
     if time_passed >= 1:
-        minutes= minutes + time_speed
+        minutes= minutes + 1
         time_passed = 0
         
         if minutes >=60:
@@ -48,45 +50,63 @@ def Zmiennczas(t):
     time_speed= t
 
 
-StopButton = Button(screen,130,60,30,20, text='||', onClick= lambda: Zmiennczas(0))
-Speed1Button = Button(screen,160,60,30,20, text='>', onClick=lambda:Zmiennczas(10))
-Speed2Button = Button(screen,190,60,30,20, text='>>',onClick=lambda:Zmiennczas(30))
-Speed3Button = Button(screen,220,60,30,20, text='>>',onClick=lambda:Zmiennczas(50))
+StopButton = Button(screen,130,60,30,20, text='||', onClick= lambda:Zmiennczas(0))
+Speed1Button = Button(screen,160,60,30,20, text='>', onClick=lambda:Zmiennczas(1))
+Speed2Button = Button(screen,190,60,30,20, text='>>',onClick=lambda:Zmiennczas(10))
+Speed3Button = Button(screen,220,60,30,20, text='>>',onClick=lambda:Zmiennczas(20))
 #---------------
+#Mainpanel
+#--------------
+#Down panel
 
+GotoExit=False
+def SetGoToExit():
+    global GotoExit
+    GotoExit=True
+
+
+ExitButton = Button(screen,350,670,50,50, text='Exit', onClick=lambda: SetGoToExit())
+SettingButton = Button(screen,0,670,50,50, text='Setting', onClick=lambda: print("hello"))
+
+enem = pygame.draw.rect(screen, "yellow", (800, 250, 30, 30))
 
 while running:
-    screen.fill("black")
+    screen.fill("white")
     dt = clock.tick(60) / 1000
     Zegar(dt)
+
+
+
+    for i in Rectlist:
+        pygame.draw.rect(screen,"red",i)
+
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if pygame.mouse.get_pressed()[0]:
-                print("Yes")
+            x,y = pygame.mouse.get_pos()
+            new_ret=pygame.Rect(x,y,20,20)
+            Rectlist.append(new_ret)
+
 
     #lewa Strona Modul operacji
     pygame.draw.rect(screen,"purple",(0,0,400,720))
-    
+    pygame.draw.rect(screen,"grey",(0,360,400,360))
+    pygame.draw.rect(screen,"white",(0,650,400,100))
+
+
     #Prawa Strona Modul mapy
-    pygame.draw.rect(screen, "black", (401, 0, 880, 720))
+
+
 
     Wyswielanie()
-
-    x = 410
-    for row in range(8):
-        y = 10
-        for column in range(6):
-            pygame.draw.rect(screen, "yellow", (x, y, 100, 100))
-            y = y + 110
-        x = x + 110
-
-
     pygame.draw.line(screen, "black", (400, 0), (400, 720), width=3)
 
     pygame_widgets.update(pygame.event.get())
     pygame.display.update()
 
+    if (GotoExit):
+        pygame.quit()
 
 pygame.quit()
