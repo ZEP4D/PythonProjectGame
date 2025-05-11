@@ -1,4 +1,5 @@
 import sys
+from enum import nonmember
 from importlib.util import source_hash
 
 import pygame
@@ -12,7 +13,43 @@ screen = pygame.display.set_mode((1280,720))
 clock = pygame.time.Clock()
 running = True
 font1 = pygame.font.Font('Font/IBMPlexMono-Regular.ttf',32)
-Rectlist = []
+Hublist = []
+LineList = []
+
+MaxNumbers_hubs = 7
+Inthemoment = 0
+punk_start = None
+
+def NumbersHubs(x,y):
+    global MaxNumbers_hubs,Inthemoment
+
+    if Inthemoment < MaxNumbers_hubs:
+        new_ret = pygame.Rect(x, y, 20, 20)
+        Hublist.append(new_ret)
+        Inthemoment = Inthemoment +1
+
+
+
+def Line(position):
+    global punk_start
+
+
+    if punk_start is None:
+        punk_start = position
+    else:
+        punk_konca = position
+        new_line = (punk_start,punk_konca)
+
+        exits  = any(
+            (line[0] == new_line[1] and line[1] == new_line[1]) or
+            (line[0] == new_line[1] and line[1] == new_line[0])
+            for line in LineList
+        )
+
+        if not exits:
+            LineList.append(new_line)
+
+        punk_start = None
 
 #--------------------------
 #Zegar
@@ -75,9 +112,10 @@ while running:
     dt = clock.tick(60) / 1000
     Zegar(dt)
 
+    for s,e in LineList:
+        pygame.draw.line(screen,"black",s,e,width=5)
 
-
-    for i in Rectlist:
+    for i in Hublist:
         pygame.draw.rect(screen,"red",i)
 
 
@@ -85,9 +123,15 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            x,y = pygame.mouse.get_pos()
-            new_ret=pygame.Rect(x,y,20,20)
-            Rectlist.append(new_ret)
+            if pygame.mouse.get_pressed(3)[0]:
+                x, y = pygame.mouse.get_pos()
+                NumbersHubs(x, y)
+            elif pygame.mouse.get_pressed(3)[2]:
+                for i in Hublist:
+                    if i.collidepoint(pygame.mouse.get_pos()):
+                        Line(i.center)
+
+
 
 
     #lewa Strona Modul operacji
