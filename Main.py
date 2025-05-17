@@ -3,14 +3,16 @@ import random
 import pygame
 import pygame_widgets
 from pygame_widgets.button import Button
-from pygame_widgets.toggle import Toggle
 
 #core
 pygame.init()
-screen = pygame.display.set_mode((1280,720))
+SizeScreenHeight = 720
+SizeScreenWidth = 1280
+screen = pygame.display.set_mode((SizeScreenWidth,SizeScreenHeight))
 clock = pygame.time.Clock()
 running = True
-font1 = pygame.font.Font('Font/IBMPlexMono-Regular.ttf',32)
+font1 = pygame.font.Font('Font/digital-7.ttf',42)
+font2 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',32)
 Hublist = {}
 LineList = {}
 Fuellist = {}
@@ -23,7 +25,11 @@ Inthemoment = 0
 punk_start = None
 Punkt_Start_klucz = ""
 Punkt_End_klucz = ""
-
+Infobool=False
+Consbool=False
+Sendbool=False
+Odrderbool=False
+Magazinebool=False
 def NumbersHubs(x,y):
     global MaxNumbers_hubs,Inthemoment,Dodawaaniehubbool
     hubid  = "HBID"+str(Inthemoment)
@@ -79,7 +85,7 @@ def Infopanel(id):
 def ShowInfohubs(id):
 
 
-    HubID = font1.render(str(id), True, "black")
+    HubID = font2.render(str(id), True, "White")
     IDShowRect = HubID.get_rect()
     IDShowRect.x = 250
     IDShowRect.y = 150
@@ -87,24 +93,28 @@ def ShowInfohubs(id):
 
 
 
-    HubAmmo = font1.render(str(AmmoList[id]), True, "black")
+    HubAmmo = font2.render(str(AmmoList[id]), True, "White")
     AmmoShowRect = HubAmmo.get_rect()
     AmmoShowRect.x = 250
     AmmoShowRect.y = 200
     screen.blit(HubAmmo, AmmoShowRect)
 
-    HubFuel = font1.render(str(Fuellist[id]), True, "black")
+    HubFuel = font2.render(str(Fuellist[id]), True, "White")
     FuelShowRect = HubFuel.get_rect()
     FuelShowRect.x = 250
     FuelShowRect.y = 250
     screen.blit(HubFuel, FuelShowRect)
 
-    HubSupple = font1.render(str(SuppleList[id]), True, "black")
+    HubSupple = font2.render(str(SuppleList[id]), True, "White")
     SuppleShowRect = HubSupple.get_rect()
     SuppleShowRect.x = 250
     SuppleShowRect.y = 300
     screen.blit(HubSupple, SuppleShowRect)
-
+#----Textury---------------
+Textura0 = pygame.image.load("Texture/Interface/Grafika01.png").convert_alpha()
+Textura0 = pygame.transform.scale(Textura0,(400,720))
+Surface0 = pygame.Surface((400,720))
+Surface0.blit(Textura0, (0,0))
 #--------------------------
 #Zegar
 minutes = 0
@@ -129,30 +139,85 @@ def Zegar(dt):
 
 def Wyswielanie():
     czas=f"{hours:02}:{minutes:02}"
-    showTime = font1.render(czas,True,"red")
+    showTime = font1.render(czas,True,"white")
     showTimeRect= showTime.get_rect()
-    showTimeRect.x = 150
-    showTimeRect.y = 20
+    showTimeRect.x = 160
+    showTimeRect.y = 75
     screen.blit(showTime,showTimeRect)
 
 def Zmiennczas(t):
     global time_speed
     time_speed= t
+Buttonimage = pygame.image.load("Texture/Interface/Pause.png")
+Buttonimage = pygame.transform.scale(Buttonimage,(40,40))
+StopButton = Button(screen,60,70,40,40, image=Buttonimage, onClick= lambda:Zmiennczas(0))
 
-StopButton = Button(screen,130,60,30,20, text='||', onClick= lambda:Zmiennczas(0))
-Speed1Button = Button(screen,160,60,30,20, text='>', onClick=lambda:Zmiennczas(1))
-Speed2Button = Button(screen,190,60,30,20, text='>>',onClick=lambda:Zmiennczas(10))
-Speed3Button = Button(screen,220,60,30,20, text='>>',onClick=lambda:Zmiennczas(20))
+Speed1image = pygame.image.load("Texture/Interface/1x.png")
+Speed1image = pygame.transform.scale(Speed1image,(40,40))
+Speed1Button = Button(screen,100,70,40,40, image=Speed1image, onClick=lambda:Zmiennczas(1))
+Speed2image = pygame.image.load("Texture/Interface/2x.png")
+Speed2image = pygame.transform.scale(Speed2image,(40,40))
+Speed2Button = Button(screen,260,70,40,40, image=Speed2image,onClick=lambda:Zmiennczas(10))
+Speed3image = pygame.image.load("Texture/Interface/3x.png")
+Speed3image = pygame.transform.scale(Speed3image,(40,40))
+Speed3Button = Button(screen,300,70,40,40, image=Speed3image,onClick=lambda:Zmiennczas(20))
 #---------------
 #Mainpanel
-AddHub = Button(screen,10,400,70,20, text='DodajHub', onClick=lambda:DodawanieHub())
+AddHub = Button(screen,300,400,70,20, text='DodajHub', onClick=lambda:DodawanieHub())
+AddHub.hide()
+
+def panels(buttonnuber):
+    global Infobool,Consbool,Sendbool,Odrderbool,Magazinebool
+
+    match buttonnuber:
+        case 0:
+            AddHub.hide()
+            Infobool = True
+            Consbool = False
+            Sendbool = False
+            Odrderbool = False
+            Magazinebool = False
+        case 1:
+            AddHub.show()
+            Infobool = False
+            Consbool = True
+            Sendbool = False
+            Odrderbool = False
+            Magazinebool = False
+        case 2:
+            AddHub.hide()
+            Infobool = False
+            Consbool = False
+            Sendbool = True
+            Odrderbool = False
+            Magazinebool = False
+        case 3:
+            AddHub.hide()
+            Infobool = False
+            Consbool = False
+            Sendbool = False
+            Odrderbool = True
+            Magazinebool = False
+        case 4:
+            AddHub.hide()
+            Infobool = False
+            Consbool = False
+            Sendbool = False
+            Odrderbool = False
+            Magazinebool = True
+
+
+infobutton = Button(screen,20,300,80,40, text="info",colour="green",onClick= lambda: panels(0))
+ConsButton = Button(screen,20,365,80,40, text="Cons",colour="green",onClick= lambda: panels(1))
+SendButton = Button(screen,20,430,80,40, text="Send",colour="green",onClick= lambda: panels(2))
+OrderButton = Button(screen,20,495,80,40, text="Order",colour="green",onClick= lambda: panels(3))
+Magazine = Button(screen,20,560,80,40, text="Magazine",colour="green",onClick= lambda: panels(4))
+
 #--------------
 #Down panel
 
-
-
-ExitButton = Button(screen,350,670,50,50, text='Exit', onClick=lambda: SetGoToExit())
-SettingButton = Button(screen,0,670,50,50, text='Setting', onClick=lambda: print("hello"))
+ExitButton = Button(screen,350,670,50,30, text='Exit', onClick=lambda: SetGoToExit())
+SettingButton = Button(screen,0,670,50,30, text='Setting', onClick=lambda: print("hello"))
 
 leftpanel = pygame.Rect(401,0,900,720)
 enem = pygame.draw.rect(screen, "yellow", (800, 250, 30, 30))
@@ -176,8 +241,9 @@ while running:
                         Hubexist = True
 
                 for i in Hublist:
-                    if Hublist[i].collidepoint(pygame.mouse.get_pos()):
-                        Whatid = i
+                    if infobutton:
+                        if Hublist[i].collidepoint(pygame.mouse.get_pos()):
+                            Whatid = i
 
 
             elif pygame.mouse.get_pressed(3)[2]:
@@ -187,21 +253,20 @@ while running:
                         Line(Hublist[i].center,i)
 
     #lewa Strona Modul operacji
-    pygame.draw.rect(screen,"purple",(0,0,400,720))
-    pygame.draw.rect(screen,"grey",(0,160,400,500))
-    pygame.draw.rect(screen,"white",(0,650,400,100))
-
+    screen.blit(Textura0,(0,0))
     #Prawa Strona Modul mapy
     pygame.draw.rect(screen,"grey",leftpanel)
 
-    HubShow = font1.render(str(Inthemoment), True, "black")
+    HubShow = font2.render(str(Inthemoment), True, "black")
     MaxShowRect = HubShow.get_rect()
     MaxShowRect.x = 350
     MaxShowRect.y = 40
     screen.blit(HubShow, MaxShowRect)
+    
 
-    if Hubexist:
-        ShowInfohubs(Whatid)
+    if Infobool:
+        if Hubexist:
+            ShowInfohubs(Whatid)
 
     for s in LineList:
         Pose = LineList[s]
