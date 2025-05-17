@@ -4,6 +4,9 @@ import pygame
 pygame.init()
 SizeScreenHeight = 720
 SizeScreenWidth = 1280
+leftpanelwidth = 900
+leftpanelHeight = 720
+leftpanel = pygame.Rect(401,0,leftpanelwidth,leftpanelHeight)
 screen = pygame.display.set_mode((SizeScreenWidth,SizeScreenHeight))
 clock = pygame.time.Clock()
 running = True
@@ -21,3 +24,6 @@ font2 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',32)
 def SetGoToExit():
     global GotoExit
     GotoExit=True
+
+
+

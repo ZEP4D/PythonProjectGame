@@ -3,17 +3,17 @@ import pygame_widgets
 import UIGRY
 import Core
 import Hub
+import Objectinthemap
 
 
-leftpanel = pygame.Rect(401,0,900,720)
-enem = pygame.draw.rect(Core.screen, "yellow", (800, 250, 30, 30))
 Whatid = ''
 Hubexist = False
+object1 = Objectinthemap.MOC()
+Front = Objectinthemap.FrontLine()
 while Core.running:
     Core.screen.fill("white")
     dt = Core.clock.tick(60) / 1000
     UIGRY.Zegar(dt)
-
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -23,7 +23,7 @@ while Core.running:
                 x, y = pygame.mouse.get_pos()
                 pose = pygame.mouse.get_pos()
                 if Hub.Dodawaaniehubbool:
-                    if leftpanel.collidepoint(pose):
+                    if Core.leftpanel.collidepoint(pose):
                         Hub.NumbersHubs(x ,y)
                         Hubexist = True
                 for i in Core.Hublist:
@@ -38,15 +38,9 @@ while Core.running:
     #lewa Strona Modul operacji
     Core.screen.blit(UIGRY.Textura0,(0,0))
     #Prawa Strona Modul mapy
-    pygame.draw.rect(Core.screen,"grey",leftpanel)
+    #pygame.draw.rect(Core.screen,"grey",Core.leftpanel)
 
-    HubShow = Core.font2.render(str(Hub.Inthemoment), True, "black")
-    MaxShowRect = HubShow.get_rect()
-    MaxShowRect.x = 350
-    MaxShowRect.y = 40
-    Core.screen.blit(HubShow, MaxShowRect)
-    
-
+    object1.update()
     if UIGRY.Infobool:
         if Hubexist:
             UIGRY.ShowInfohubs(Whatid)
@@ -58,10 +52,9 @@ while Core.running:
     for i in Core.Hublist:
         pygame.draw.rect(Core.screen,"red",Core.Hublist[i])
 
-
-
+    object1.draw()
+    Front.draw()
     UIGRY.Wyswielanie()
-    pygame.draw.line(Core.screen, "black", (400, 0), (400, 720), width=3)
 
     pygame_widgets.update(pygame.event.get())
     pygame.display.update()
