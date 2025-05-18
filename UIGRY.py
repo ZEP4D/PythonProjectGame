@@ -19,6 +19,7 @@ Sendbool=False
 Odrderbool=False
 Magazinebool=False
 
+
 def Zegar(dt):
     global minutes, hours, time_passed
 
@@ -164,6 +165,11 @@ def ShowOrderinfo():
     OderButton.show()
     addAmmoTB.show()
 
+def Order():
+    if addAmmoTB.getText():
+        Core.CreateOrder(0,int(addAmmoTB.getText()))
+        if Core.Submitbool:
+            addAmmoTB.setText(" ")
 #-----------------------------------------------------------------------------------------------------------------------
 Buttonimage = pygame.image.load("Texture/Interface/Pause.png")
 Buttonimage = pygame.transform.scale(Buttonimage, (40, 40))
@@ -187,7 +193,7 @@ Surface0.blit(Textura0, (0,0))
 AddHub = Button(Core.screen,300,400,70,20, text='DodajHub', onClick=lambda:Hub.DodawanieHub())
 AddHub.hide()
 
-OderButton = Button(Core.screen,150,450,100,50,text="Order")
+OderButton = Button(Core.screen,150,450,100,50,text="Order", onClick=lambda: Core.SubmitOrder())
 OderButton.hide()
 infobutton = Button(Core.screen,20,300,80,40, text="info",colour="green",onClick= lambda: panels(0))
 ConsButton = Button(Core.screen,20,365,80,40, text="Cons",colour="green",onClick= lambda: panels(1))
@@ -199,6 +205,9 @@ ExitButton = Button(Core.screen,350,670,50,30, text='Exit', onClick=lambda: Core
 SettingButton = Button(Core.screen,0,670,50,30, text='Setting', onClick=lambda: print("hello"))
 
 #--------------------------------------------------
-
-addAmmoTB = TextBox(Core.screen,150,400,100,50,fontSize=20)
+addAmmoTB = TextBox(Core.screen,150,400,100,50,fontSize=20, onSubmit=Order)
 addAmmoTB.hide()
+
+
+#--------------------------------------------------
+

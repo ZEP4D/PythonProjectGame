@@ -9,6 +9,7 @@ class MOC:
         self.ID = "Jednostka"
         self.hub = None
         self.Hubbool = False
+        self.ConnectwithHubbool = False
 
 
 
@@ -38,8 +39,10 @@ class MOC:
                 self.Correcthub = hub
                 if min_distance < 150 :
                     self.Hubbool = True
+                    self.ConnectwithHubbool = True
                 else:
                     self.Hubbool = False
+                    self.ConnectwithHubbool = False
 
 
 

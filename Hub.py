@@ -8,10 +8,12 @@ Inthemoment = 0
 punk_start = None
 Punkt_Start_klucz = ""
 Punkt_End_klucz = ""
+HubCenralID = "HUB_C"
+TrasaHub = " "
 
 def NumbersHubs(x,y):
     global MaxNumbers_hubs,Inthemoment,Dodawaaniehubbool
-    hubid  = "HBID"+str(Inthemoment)
+    hubid  = "HBID_"+str(Inthemoment)
 
     if Inthemoment < MaxNumbers_hubs:
         new_ret = pygame.Rect(x, y, 30, 30)
@@ -26,7 +28,7 @@ def DodawanieHub():
     Dodawaaniehubbool = True
 
 def Line(position,Hubkey):
-    global punk_start, Punkt_Start_klucz, Punkt_End_klucz
+    global punk_start, Punkt_Start_klucz, Punkt_End_klucz, HubCenralID, TrasaHub
 
     if punk_start is None:
         punk_start = position
@@ -42,7 +44,12 @@ def Line(position,Hubkey):
             for line in Core.LineList
         )
         if not exits:
-            TrasaHub = Punkt_Start_klucz + " -> " + Punkt_End_klucz
+            numerE = Punkt_End_klucz.split("_")[1]
+            numerS = Punkt_Start_klucz.split("_")[1]
+            if Punkt_End_klucz == HubCenralID:
+                TrasaHub = Punkt_End_klucz + " -> " + Punkt_Start_klucz
+            else:
+                TrasaHub = Punkt_Start_klucz + " -> " + Punkt_End_klucz
             Core.LineList[TrasaHub] = new_line
 
         punk_start = None
@@ -58,10 +65,13 @@ def Infopanel(id):
     Core.SuppleList[id] = Supple
 
 def HubCentral():
-    hubid = "HUBC"
     x = random.randint(410,1200)
     y = random.randint(550,710)
     new_ret = pygame.Rect(x,y, 30, 30)
 
-    Core.Hublist[hubid] = new_ret
-    Infopanel(hubid)
+    Core.Hublist[HubCenralID] = new_ret
+    Infopanel(HubCenralID)
+
+def Cihicwc():
+    #Check if hub is connect with Central hub
+    print("5")

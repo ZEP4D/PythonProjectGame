@@ -50,6 +50,7 @@ while Core.running:
         UIGRY.ShowInfohubs(Whatid)
     if UIGRY.Odrderbool:
         UIGRY.ShowOrderinfo()
+        UIGRY.Order()
     if UIGRY.Magazinebool:
         UIGRY.ShowMagazineinfo()
     for s in Core.LineList:
