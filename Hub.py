@@ -14,7 +14,7 @@ def NumbersHubs(x,y):
     hubid  = "HBID"+str(Inthemoment)
 
     if Inthemoment < MaxNumbers_hubs:
-        new_ret = pygame.Rect(x, y, 20, 20)
+        new_ret = pygame.Rect(x, y, 30, 30)
 
         Core.Hublist[hubid] = new_ret
         Infopanel(hubid)
@@ -42,7 +42,7 @@ def Line(position,Hubkey):
             for line in Core.LineList
         )
         if not exits:
-            TrasaHub = Punkt_Start_klucz + "->" + Punkt_End_klucz
+            TrasaHub = Punkt_Start_klucz + " -> " + Punkt_End_klucz
             Core.LineList[TrasaHub] = new_line
 
         punk_start = None
@@ -56,3 +56,12 @@ def Infopanel(id):
     Core.Fuellist[id] = Fuel
     Core.AmmoList[id] = Ammo
     Core.SuppleList[id] = Supple
+
+def HubCentral():
+    hubid = "HUBC"
+    x = random.randint(410,1200)
+    y = random.randint(550,710)
+    new_ret = pygame.Rect(x,y, 30, 30)
+
+    Core.Hublist[hubid] = new_ret
+    Infopanel(hubid)

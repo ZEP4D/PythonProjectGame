@@ -1,4 +1,6 @@
 import pygame
+from pygame_widgets.textbox import TextBox
+
 import Core
 import Hub
 from pygame_widgets.button import Button
@@ -44,33 +46,48 @@ def Zmiennczas(t):
     time_speed = t
 
 def ShowInfohubs(id):
+    x = 150
+    y = 300
 
-
-    HubID = Core.font2.render(str(id), True, "White")
-    IDShowRect = HubID.get_rect()
-    IDShowRect.x = 250
-    IDShowRect.y = 150
-    Core.screen.blit(HubID, IDShowRect)
+    LineShow = Core.font2.render(str(id), True, "White")
+    LineShowRect = LineShow.get_rect()
+    LineShowRect.x = x
+    LineShowRect.y = y
+    Core.screen.blit(LineShow, LineShowRect)
 
 
 
     HubAmmo = Core.font2.render(str(Core.AmmoList[id]), True, "White")
     AmmoShowRect = HubAmmo.get_rect()
-    AmmoShowRect.x = 250
-    AmmoShowRect.y = 200
+    AmmoShowRect.x = x
+    AmmoShowRect.y = y+50
     Core.screen.blit(HubAmmo, AmmoShowRect)
 
     HubFuel = Core.font2.render(str(Core.Fuellist[id]), True, "White")
     FuelShowRect = HubFuel.get_rect()
-    FuelShowRect.x = 250
-    FuelShowRect.y = 250
+    FuelShowRect.x = x
+    FuelShowRect.y = y+100
     Core.screen.blit(HubFuel, FuelShowRect)
 
     HubSupple = Core.font2.render(str(Core.SuppleList[id]), True, "White")
     SuppleShowRect = HubSupple.get_rect()
-    SuppleShowRect.x = 250
-    SuppleShowRect.y = 300
+    SuppleShowRect.x = x
+    SuppleShowRect.y = y+150
     Core.screen.blit(HubSupple, SuppleShowRect)
+
+    if  Core.LineList:
+        Lineid = ""
+
+        Keys = Core.LineList.keys()
+        for i in Keys:
+            if i.find(id) != -1:
+                Lineid = i
+
+        LineShow = Core.font2.render(str(Lineid), True, "White")
+        LineShowRect = LineShow.get_rect()
+        LineShowRect.x = x
+        LineShowRect.y = y+200
+        Core.screen.blit(LineShow, LineShowRect)
 
 def panels(buttonnuber):
     global Infobool,Consbool,Sendbool,Odrderbool,Magazinebool
@@ -78,6 +95,8 @@ def panels(buttonnuber):
     match buttonnuber:
         case 0:
             AddHub.hide()
+            OderButton.hide()
+            addAmmoTB.hide()
             Infobool = True
             Consbool = False
             Sendbool = False
@@ -85,6 +104,8 @@ def panels(buttonnuber):
             Magazinebool = False
         case 1:
             AddHub.show()
+            OderButton.hide()
+            addAmmoTB.hide()
             Infobool = False
             Consbool = True
             Sendbool = False
@@ -92,6 +113,8 @@ def panels(buttonnuber):
             Magazinebool = False
         case 2:
             AddHub.hide()
+            OderButton.hide()
+            addAmmoTB.hide()
             Infobool = False
             Consbool = False
             Sendbool = True
@@ -99,6 +122,7 @@ def panels(buttonnuber):
             Magazinebool = False
         case 3:
             AddHub.hide()
+            addAmmoTB.hide()
             Infobool = False
             Consbool = False
             Sendbool = False
@@ -106,13 +130,39 @@ def panels(buttonnuber):
             Magazinebool = False
         case 4:
             AddHub.hide()
+            OderButton.hide()
+            addAmmoTB.hide()
             Infobool = False
             Consbool = False
             Sendbool = False
             Odrderbool = False
             Magazinebool = True
 
+def ShowMagazineinfo():
+    x = 150
+    y = 300
 
+    Ammo = Core.font2.render(str(Core.Ammo), True, "White")
+    AmmoShowRect = Ammo.get_rect()
+    AmmoShowRect.x = x
+    AmmoShowRect.y = y + 50
+    Core.screen.blit(Ammo, AmmoShowRect)
+
+    Fuel = Core.font2.render(str(Core.Fuel), True, "White")
+    FuelShowRect = Fuel.get_rect()
+    FuelShowRect.x = x
+    FuelShowRect.y = y + 100
+    Core.screen.blit(Fuel, FuelShowRect)
+
+    Supple = Core.font2.render(str(Core.Supple), True, "White")
+    SuppleShowRect = Supple.get_rect()
+    SuppleShowRect.x = x
+    SuppleShowRect.y = y + 150
+    Core.screen.blit(Supple, SuppleShowRect)
+
+def ShowOrderinfo():
+    OderButton.show()
+    addAmmoTB.show()
 
 #-----------------------------------------------------------------------------------------------------------------------
 Buttonimage = pygame.image.load("Texture/Interface/Pause.png")
@@ -137,6 +187,8 @@ Surface0.blit(Textura0, (0,0))
 AddHub = Button(Core.screen,300,400,70,20, text='DodajHub', onClick=lambda:Hub.DodawanieHub())
 AddHub.hide()
 
+OderButton = Button(Core.screen,150,450,100,50,text="Order")
+OderButton.hide()
 infobutton = Button(Core.screen,20,300,80,40, text="info",colour="green",onClick= lambda: panels(0))
 ConsButton = Button(Core.screen,20,365,80,40, text="Cons",colour="green",onClick= lambda: panels(1))
 SendButton = Button(Core.screen,20,430,80,40, text="Send",colour="green",onClick= lambda: panels(2))
@@ -145,3 +197,8 @@ Magazine = Button(Core.screen,20,560,80,40, text="Magazine",colour="green",onCli
 
 ExitButton = Button(Core.screen,350,670,50,30, text='Exit', onClick=lambda: Core.SetGoToExit())
 SettingButton = Button(Core.screen,0,670,50,30, text='Setting', onClick=lambda: print("hello"))
+
+#--------------------------------------------------
+
+addAmmoTB = TextBox(Core.screen,150,400,100,50,fontSize=20)
+addAmmoTB.hide()

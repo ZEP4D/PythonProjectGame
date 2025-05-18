@@ -6,19 +6,44 @@ class MOC:
         self.speedx = 2
         self.speedy = 2
         self.pose = pygame.Vector2(self.rect.center)
+        self.ID = "Jednostka"
+        self.hub = None
+        self.Hubbool = False
 
-    def update(self):
-        dt = Core.clock.tick(60) / 1000
+
+
+    def update(self,dt):
         Targetpose = FrontLine().getpositon()
 
 
         kierunek = Targetpose - self.pose
         dystans = kierunek.length()
 
+
+
         if dystans > 20:
             kierunek.normalize_ip()
             self.pose += kierunek * 100 * dt
             self.rect.topleft = (round(self.pose.x), round(self.pose.y))
+
+        min_distance = float('inf')
+
+        for i in Core.Hublist:
+            hubin = Core.Hublist[i].center
+            hub = pygame.Vector2(hubin[0],hubin[1])
+            Nearestpose = self.pose.distance_to(hub)
+
+            if Nearestpose < min_distance:
+                min_distance = Nearestpose
+                self.Correcthub = hub
+                if min_distance < 150 :
+                    self.Hubbool = True
+                else:
+                    self.Hubbool = False
+
+
+
+
 
         if self.rect.left <= 400 or self.rect.right >= Core.SizeScreenWidth:
             self.speedx =  -self.speedx
@@ -26,7 +51,11 @@ class MOC:
             self.speedy = -self.speedy
 
     def draw(self):
+        if self.Hubbool:
+            pygame.draw.line(Core.screen, "black", self.rect.center, self.Correcthub)
+
         pygame.draw.rect(Core.screen,"yellow",self.rect)
+
 
 
 class FrontLine:
