@@ -1,5 +1,8 @@
 import pygame
 import Core
+import Hub
+
+
 class MOC:
     def __init__(self):
         self.rect = pygame.Rect(699,700,20,20)
@@ -36,9 +39,11 @@ class MOC:
             if Nearestpose < min_distance:
                 min_distance = Nearestpose
                 self.Correcthub = hub
-                if min_distance < 150 :
+                if min_distance < 200 :
                     self.BOOL_HUB = True
                     self.BOOL_HUBCONNECT = True
+
+                    info = Hub.DEF_ASTAR(i)
                 else:
                     self.BOOL_HUB = False
                     self.BOOL_HUBCONNECT = False
@@ -57,9 +62,6 @@ class MOC:
             pygame.draw.line(Core.screen, "black", self.rect.center, self.Correcthub)
 
         pygame.draw.rect(Core.screen,"yellow",self.rect)
-
-
-
 class FrontLine:
     def __init__(self):
         self.Start = (410, 70)

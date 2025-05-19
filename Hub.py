@@ -72,11 +72,53 @@ def DEF_HUBCENTRAL():
     Core.DICT_HUB[VAL_CENTRALHUBID] = new_ret
     DEF_INFOPANEL(VAL_CENTRALHUBID)
 
-def Cihicwc():
-    #Check if hub is connect with Central hub
+def DEF_ASTAR(Target):
+    import heapq, math
 
-    for i in Core.DICT_LINE:
-        idS = i.split("->")[0]
-        idE = i.split("->")[1]
+    def neigbors_bulid():
+        neighbor = {}
+        for conn in Core.DICT_LINE:
+            a, b = conn.split("->")
+            neighbor.setdefault(a,[]).append(b)
+            neighbor.setdefault(b, []).append(a)
+        return neighbor
+
+    def HEU(a,b):
+        return math.hypot(b[0]-a[0],b[1]-a[1])
+
+    neig = neigbors_bulid()
+    open_set = []
+    heapq.heappush(open_set,(0,VAL_CENTRALHUBID))
+    came_from = {}
+    g_score = {node: float('inf') for node in Core.DICT_HUB}
+    g_score[VAL_CENTRALHUBID] = 0
+
+    f_score  = {node: float('inf') for node in Core.DICT_HUB}
+    f_score[VAL_CENTRALHUBID] = HEU(Core.DICT_HUB[VAL_CENTRALHUBID],Core.DICT_HUB[Target])
+
+    while open_set:
+        _, current = heapq.heappop(open_set)
+
+        if current == Target:
+            path = [current]
+            while current in came_from:
+                current = came_from[current]
+                path.append(current)
+            return path[::-1]
+
+        for neighbor in neig.get(current, []):
+            tentative_g = g_score[current] + HEU(Core.DICT_HUB[current], Core.DICT_HUB[neighbor])
+            if tentative_g < g_score[neighbor]:
+                came_from[neighbor] = current
+                g_score[neighbor] = tentative_g
+                f_score[neighbor] = tentative_g + HEU(Core.DICT_HUB[neighbor], Core.DICT_HUB[Target])
+                heapq.heappush(open_set, (f_score[neighbor], neighbor))
+
+    return []
+
+
+
+
+
 
 

@@ -9,8 +9,6 @@ object1 = Objectinthemap.MOC()
 Front = Objectinthemap.FrontLine()
 Hub.DEF_HUBCENTRAL()
 VAL_IDWHAT= "HUB_C"
-
-
 while Core.BOOL_RUNNING:
     Core.screen.fill("white")
     dt = Core.clock.tick(60) / 1000
@@ -40,10 +38,8 @@ while Core.BOOL_RUNNING:
                     if Core.DICT_HUB[i].collidepoint(pose):
                         Hub.DEF_LINE(Core.DICT_HUB[i].center, i)
 
-    #lewa Strona Modul operacji
+
     Core.screen.blit(UIGRY.IMAGE_LEFTPANEL, (0, 0))
-    #Prawa Strona Modul mapy
-    #pygame.draw.rect(Core.screen,"grey",Core.leftpanel)
 
     object1.DEF_UPDATE(dt)
     object1.DEF_DRAW()
@@ -65,7 +61,6 @@ while Core.BOOL_RUNNING:
     for i in Core.DICT_HUB:
         pygame.draw.rect(Core.screen,"red", Core.DICT_HUB[i])
 
-    Hub.Cihicwc()
     Front.draw()
     UIGRY.DEF_DISPLAY()
 
