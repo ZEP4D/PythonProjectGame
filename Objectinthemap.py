@@ -3,58 +3,57 @@ import Core
 class MOC:
     def __init__(self):
         self.rect = pygame.Rect(699,700,20,20)
-        self.speedx = 2
-        self.speedy = 2
-        self.pose = pygame.Vector2(self.rect.center)
-        self.ID = "Jednostka"
-        self.hub = None
-        self.Hubbool = False
-        self.ConnectwithHubbool = False
+        self.VAL_SPEED_X = 2
+        self.VAL_SPEED_Y = 2
+        self.VAL_POSE = pygame.Vector2(self.rect.center)
+        self.VAL_ID = "Jednostka"
+        self.BOOL_HUB = False
+        self.BOOL_HUBCONNECT = False
 
 
 
-    def update(self,dt):
+    def DEF_UPDATE(self,dt):
         Targetpose = FrontLine().getpositon()
 
 
-        kierunek = Targetpose - self.pose
+        kierunek = Targetpose - self.VAL_POSE
         dystans = kierunek.length()
 
 
 
         if dystans > 20:
             kierunek.normalize_ip()
-            self.pose += kierunek * 100 * dt
-            self.rect.topleft = (round(self.pose.x), round(self.pose.y))
+            self.VAL_POSE += kierunek * 100 * dt
+            self.rect.topleft = (round(self.VAL_POSE.x), round(self.VAL_POSE.y))
 
         min_distance = float('inf')
 
-        for i in Core.Hublist:
-            hubin = Core.Hublist[i].center
+        for i in Core.DICT_HUB:
+            hubin = Core.DICT_HUB[i].center
             hub = pygame.Vector2(hubin[0],hubin[1])
-            Nearestpose = self.pose.distance_to(hub)
+            Nearestpose = self.VAL_POSE.distance_to(hub)
 
             if Nearestpose < min_distance:
                 min_distance = Nearestpose
                 self.Correcthub = hub
                 if min_distance < 150 :
-                    self.Hubbool = True
-                    self.ConnectwithHubbool = True
+                    self.BOOL_HUB = True
+                    self.BOOL_HUBCONNECT = True
                 else:
-                    self.Hubbool = False
-                    self.ConnectwithHubbool = False
+                    self.BOOL_HUB = False
+                    self.BOOL_HUBCONNECT = False
 
 
 
 
 
         if self.rect.left <= 400 or self.rect.right >= Core.SizeScreenWidth:
-            self.speedx =  -self.speedx
+            self.VAL_SPEED_X =  -self.VAL_SPEED_X
         if self.rect.top <=0 or self.rect.bottom >= Core.SizeScreenHeight:
-            self.speedy = -self.speedy
+            self.VAL_SPEED_Y = -self.VAL_SPEED_Y
 
-    def draw(self):
-        if self.Hubbool:
+    def DEF_DRAW(self):
+        if self.BOOL_HUB:
             pygame.draw.line(Core.screen, "black", self.rect.center, self.Correcthub)
 
         pygame.draw.rect(Core.screen,"yellow",self.rect)
