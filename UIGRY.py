@@ -8,10 +8,10 @@ from pygame_widgets.button import Button
 
 VAL_MINUTES = 0
 VAL_HOURS = 7
-VAL_SPPEDTIME = 1
 VAL_PASSTIME = 0
 VAL_CHANGETIME = 0
 BOOL_INFO=False
+BOOL_INFO_OBJECT = False
 BOOL_CONS=False
 BOOL_SEND=False
 BOOL_ORDER=False
@@ -21,7 +21,7 @@ BOOL_MAGAZINE=False
 def DEF_CLOCK(dt):
     global VAL_MINUTES, VAL_HOURS, VAL_PASSTIME
 
-    VAL_PASSTIME = VAL_PASSTIME + dt * VAL_SPPEDTIME
+    VAL_PASSTIME = VAL_PASSTIME + dt * Core.VAL_SPPEDTIME
     if VAL_PASSTIME >= 1:
         VAL_MINUTES = VAL_MINUTES + 1
         VAL_PASSTIME = 0
@@ -41,8 +41,7 @@ def DEF_DISPLAY():
     Core.screen.blit(showTime, showTimeRect)
 
 def DEF_CHANGETIME(t):
-    global VAL_SPPEDTIME
-    VAL_SPPEDTIME = t
+    Core.VAL_SPPEDTIME = t
 
 def DEF_PANEL(buttonnuber):
     global BOOL_INFO,BOOL_CONS,BOOL_SEND,BOOL_ORDER,BOOL_MAGAZINE
@@ -187,8 +186,8 @@ IMAGE_SPEED3 = pygame.transform.scale(IMAGE_SPEED3, (40, 40))
 
 BUTTON_STOP = Button(Core.screen, 60, 70, 40, 40, image=IMAGE_STOP, onClick=lambda: DEF_CHANGETIME(0))
 BUTTON_SPEED1 = Button(Core.screen, 100, 70, 40, 40, image=IMAGE_SPEED1, onClick=lambda: DEF_CHANGETIME(1))
-BUTTON_SPEED2 = Button(Core.screen, 260, 70, 40, 40, image=IMAGE_SPEED2, onClick=lambda: DEF_CHANGETIME(10))
-BUTTON_SPEED3 = Button(Core.screen, 300, 70, 40, 40, image=IMAGE_SPEED3, onClick=lambda: DEF_CHANGETIME(20))
+BUTTON_SPEED2 = Button(Core.screen, 260, 70, 40, 40, image=IMAGE_SPEED2, onClick=lambda: DEF_CHANGETIME(4.5))
+BUTTON_SPEED3 = Button(Core.screen, 300, 70, 40, 40, image=IMAGE_SPEED3, onClick=lambda: DEF_CHANGETIME(7.5))
 BUTTON_ADDHUB = Button(Core.screen, 300, 400, 70, 20, text='DodajHub', onClick=lambda: Hub.DEF_ADDHUB())
 BUTTON_ORDERCREATE = Button(Core.screen, 150, 450, 100, 50, text="Order", onClick=lambda: Core.DEF_ORDERSUBMIT())
 BUTTON_INFO = Button(Core.screen, 20, 300, 80, 40, text="info", colour="green", onClick= lambda: DEF_PANEL(0))

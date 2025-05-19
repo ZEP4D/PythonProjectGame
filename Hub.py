@@ -3,19 +3,17 @@ import pygame
 import random
 
 BOOL_ADDHUB = False
-VAL_MAXHUBS = 7
-VAL_HUBSNOW = 0
 VAL_STARTDOT = None
+VAL_HUBSNOW = 0
 VAL_STARTDOTKEY = ""
 VAL_ENDDOTKEY = ""
-VAL_CENTRALHUBID = "HUB_C"
-VAL_ROADHUB = " "
+VAL_ROADHUB = ""
 
 def DEF_HUBNUMBER(x,y):
-    global VAL_MAXHUBS,VAL_HUBSNOW,BOOL_ADDHUB
-    hubid  = "HBID_"+str(VAL_HUBSNOW)
+    global VAL_HUBSNOW,BOOL_ADDHUB
+    hubid  = "HUB_"+str(VAL_HUBSNOW)
 
-    if VAL_HUBSNOW < VAL_MAXHUBS:
+    if VAL_HUBSNOW < Core.VAL_MAXHUBS:
         new_ret = pygame.Rect(x, y, 30, 30)
 
         Core.DICT_HUB[hubid] = new_ret
@@ -27,15 +25,15 @@ def DEF_ADDHUB():
     global BOOL_ADDHUB
     BOOL_ADDHUB = True
 
-def DEF_LINE(position,Hubkey):
-    global VAL_STARTDOT, VAL_STARTDOTKEY, VAL_ENDDOTKEY, VAL_CENTRALHUBID, VAL_ROADHUB
+def DEF_LINE(position,hubkey):
+    global VAL_STARTDOT, VAL_STARTDOTKEY, VAL_ENDDOTKEY, VAL_ROADHUB
 
     if VAL_STARTDOT is None:
         VAL_STARTDOT = position
-        VAL_STARTDOTKEY = Hubkey
+        VAL_STARTDOTKEY = hubkey
     else:
         punk_konca = position
-        VAL_ENDDOTKEY = Hubkey
+        VAL_ENDDOTKEY = hubkey
         new_line = (VAL_STARTDOT, punk_konca)
 
         exits  = any(
@@ -44,12 +42,11 @@ def DEF_LINE(position,Hubkey):
             for line in Core.DICT_LINE
         )
         if not exits:
-            numerE = VAL_ENDDOTKEY.split("_")[1]
-            numerS = VAL_STARTDOTKEY.split("_")[1]
-            if VAL_ENDDOTKEY == VAL_CENTRALHUBID:
+            if VAL_ENDDOTKEY == Core.VAL_CENTRALHUBID:
                 VAL_ROADHUB = VAL_ENDDOTKEY + "->" + VAL_STARTDOTKEY
             else:
                 VAL_ROADHUB = VAL_STARTDOTKEY + "->" + VAL_ENDDOTKEY
+
             Core.DICT_LINE[VAL_ROADHUB] = new_line
 
         VAL_STARTDOT = None
@@ -68,11 +65,10 @@ def DEF_HUBCENTRAL():
     x = random.randint(410,1200)
     y = random.randint(550,710)
     new_ret = pygame.Rect(x,y, 30, 30)
+    Core.DICT_HUB[Core.VAL_CENTRALHUBID] = new_ret
+    DEF_INFOPANEL(Core.VAL_CENTRALHUBID)
 
-    Core.DICT_HUB[VAL_CENTRALHUBID] = new_ret
-    DEF_INFOPANEL(VAL_CENTRALHUBID)
-
-def DEF_ASTAR(Target):
+def DEF_ASTAR(target):
     import heapq, math
 
     def neigbors_bulid():
@@ -88,18 +84,18 @@ def DEF_ASTAR(Target):
 
     neig = neigbors_bulid()
     open_set = []
-    heapq.heappush(open_set,(0,VAL_CENTRALHUBID))
+    heapq.heappush(open_set,(0,Core.VAL_CENTRALHUBID))
     came_from = {}
     g_score = {node: float('inf') for node in Core.DICT_HUB}
-    g_score[VAL_CENTRALHUBID] = 0
+    g_score[Core.VAL_CENTRALHUBID] = 0
 
     f_score  = {node: float('inf') for node in Core.DICT_HUB}
-    f_score[VAL_CENTRALHUBID] = HEU(Core.DICT_HUB[VAL_CENTRALHUBID],Core.DICT_HUB[Target])
+    f_score[Core.VAL_CENTRALHUBID] = HEU(Core.DICT_HUB[Core.VAL_CENTRALHUBID], Core.DICT_HUB[target])
 
     while open_set:
         _, current = heapq.heappop(open_set)
 
-        if current == Target:
+        if current == target:
             path = [current]
             while current in came_from:
                 current = came_from[current]
@@ -111,7 +107,7 @@ def DEF_ASTAR(Target):
             if tentative_g < g_score[neighbor]:
                 came_from[neighbor] = current
                 g_score[neighbor] = tentative_g
-                f_score[neighbor] = tentative_g + HEU(Core.DICT_HUB[neighbor], Core.DICT_HUB[Target])
+                f_score[neighbor] = tentative_g + HEU(Core.DICT_HUB[neighbor], Core.DICT_HUB[target])
                 heapq.heappush(open_set, (f_score[neighbor], neighbor))
 
     return []

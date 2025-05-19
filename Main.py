@@ -8,7 +8,7 @@ import Objectinthemap
 object1 = Objectinthemap.MOC()
 Front = Objectinthemap.FrontLine()
 Hub.DEF_HUBCENTRAL()
-VAL_IDWHAT= "HUB_C"
+VAL_WHATID = Core.VAL_CENTRALHUBID
 while Core.BOOL_RUNNING:
     Core.screen.fill("white")
     dt = Core.clock.tick(60) / 1000
@@ -29,9 +29,10 @@ while Core.BOOL_RUNNING:
                 for i in Core.DICT_HUB:
                     if UIGRY.BUTTON_INFO:
                         if Core.DICT_HUB[i].collidepoint(pose):
-                            VAL_IDWHAT = i
+                            VAL_WHATID = i
+                            UIGRY.BOOL_INFO_OBJECT = False
                 if object1.rect.collidepoint(pose):
-                    print("hellow")
+                    UIGRY.BOOL_INFO_OBJECT = True
 
             elif event.button == 3:
                 for i in Core.DICT_HUB:
@@ -45,7 +46,10 @@ while Core.BOOL_RUNNING:
     object1.DEF_DRAW()
 
     if UIGRY.BOOL_INFO:
-        UIGRY.SHOW_INFO(VAL_IDWHAT)
+        if UIGRY.BOOL_INFO_OBJECT:
+            object1.DEF_Show()
+        else:
+            UIGRY.SHOW_INFO(VAL_WHATID)
 
     if UIGRY.BOOL_ORDER:
         UIGRY.SHOW_ORDER()

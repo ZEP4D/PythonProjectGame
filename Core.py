@@ -8,21 +8,26 @@ leftpanelHeight = 720
 leftpanel = pygame.Rect(401,0,leftpanelwidth,leftpanelHeight)
 screen = pygame.display.set_mode((SizeScreenWidth,SizeScreenHeight))
 clock = pygame.time.Clock()
+
 BOOL_RUNNING = True
 BOOL_EXIT=False
 BOOL_SUBMIT = False
+
 DICT_HUB = {}
 DICT_LINE = {}
 DICT_FUEL = {}
 DICT_AMMO = {}
 DICT_SUPPLE = {}
+
 font1 = pygame.font.Font('Font/digital-7.ttf',42)
 font2 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',32)
 
 VAL_AMMO = 200
 VAL_FUEL = 300
 VAL_SUPPLE = 400
-
+VAL_MAXHUBS = 7
+VAL_CENTRALHUBID = "HUB_C"
+VAL_SPPEDTIME = 1
 
 
 def DEF_ORDERSUBMIT():

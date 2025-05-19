@@ -26,13 +26,13 @@ class MOC:
 
         if dystans > 20:
             kierunek.normalize_ip()
-            self.VAL_POSE += kierunek * 100 * dt
+            self.VAL_POSE += kierunek * (20 * Core.VAL_SPPEDTIME ) * dt
             self.rect.topleft = (round(self.VAL_POSE.x), round(self.VAL_POSE.y))
 
         min_distance = float('inf')
 
-        for i in Core.DICT_HUB:
-            hubin = Core.DICT_HUB[i].center
+        for HUBID in Core.DICT_HUB:
+            hubin = Core.DICT_HUB[HUBID].center
             hub = pygame.Vector2(hubin[0],hubin[1])
             Nearestpose = self.VAL_POSE.distance_to(hub)
 
@@ -43,25 +43,30 @@ class MOC:
                     self.BOOL_HUB = True
                     self.BOOL_HUBCONNECT = True
 
-                    info = Hub.DEF_ASTAR(i)
+                    Trasa = Hub.DEF_ASTAR(HUBID)
+                    for ID in Trasa:
+                        if ID == Core.VAL_CENTRALHUBID:
+                            print()
                 else:
                     self.BOOL_HUB = False
                     self.BOOL_HUBCONNECT = False
-
-
-
 
 
         if self.rect.left <= 400 or self.rect.right >= Core.SizeScreenWidth:
             self.VAL_SPEED_X =  -self.VAL_SPEED_X
         if self.rect.top <=0 or self.rect.bottom >= Core.SizeScreenHeight:
             self.VAL_SPEED_Y = -self.VAL_SPEED_Y
-
     def DEF_DRAW(self):
         if self.BOOL_HUB:
             pygame.draw.line(Core.screen, "black", self.rect.center, self.Correcthub)
 
         pygame.draw.rect(Core.screen,"yellow",self.rect)
+    def DEF_Show(self):
+        ID = Core.font2.render(str(self.VAL_ID), True, "White")
+        IDShowRect = ID.get_rect()
+        IDShowRect.x = 150
+        IDShowRect.y = 300 + 50
+        Core.screen.blit(ID, IDShowRect)
 class FrontLine:
     def __init__(self):
         self.Start = (410, 70)
