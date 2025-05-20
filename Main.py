@@ -21,7 +21,6 @@ while Core.BOOL_RUNNING:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             x, y = pygame.mouse.get_pos()
             pose = pygame.mouse.get_pos()
-
             if event.button == 1:
                 if Hub.BOOL_ADDHUB:
                     if Core.leftpanel.collidepoint(pose):
@@ -33,11 +32,11 @@ while Core.BOOL_RUNNING:
                             UIGRY.BOOL_INFO_OBJECT = False
                 if object1.rect.collidepoint(pose):
                     UIGRY.BOOL_INFO_OBJECT = True
-
             elif event.button == 3:
                 for i in Core.DICT_HUB:
                     if Core.DICT_HUB[i].collidepoint(pose):
                         Hub.DEF_LINE(Core.DICT_HUB[i].center, i)
+
 
 
     Core.screen.blit(UIGRY.IMAGE_LEFTPANEL, (0, 0))
@@ -45,6 +44,8 @@ while Core.BOOL_RUNNING:
     object1.DEF_UPDATE(dt)
     object1.DEF_DRAW()
 
+    UIGRY.SHOW_CURRENCY()
+    UIGRY.SHOW_WARNING()
     if UIGRY.BOOL_INFO:
         if UIGRY.BOOL_INFO_OBJECT:
             object1.DEF_Show()
@@ -53,10 +54,15 @@ while Core.BOOL_RUNNING:
 
     if UIGRY.BOOL_ORDER:
         UIGRY.SHOW_ORDER()
-        UIGRY.DEF_ORDER()
 
     if UIGRY.BOOL_MAGAZINE:
         UIGRY.SHOW_MAGAZINE()
+
+    if UIGRY.BOOL_SEND:
+        UIGRY.SHOW_SEND()
+
+    if UIGRY.BOOL_CONS:
+        UIGRY.SHOW_CONS()
 
     for s in Core.DICT_LINE:
         Pose = Core.DICT_LINE[s]

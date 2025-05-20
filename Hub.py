@@ -13,14 +13,18 @@ def DEF_HUBNUMBER(x,y):
     global VAL_HUBSNOW,BOOL_ADDHUB
     hubid  = "HUB_"+str(VAL_HUBSNOW)
 
-    if VAL_HUBSNOW < Core.VAL_MAXHUBS:
-        new_ret = pygame.Rect(x, y, 30, 30)
+    if Core.VAL_CURRENCY >= Core.VAL_COST_HUB:
+        if VAL_HUBSNOW < Core.VAL_MAXHUBS:
+            new_ret = pygame.Rect(x, y, 30, 30)
 
-        Core.DICT_HUB[hubid] = new_ret
-        DEF_INFOPANEL(hubid)
-        VAL_HUBSNOW = VAL_HUBSNOW + 1
-        BOOL_ADDHUB = False
+            Core.DICT_HUB[hubid] = new_ret
+            DEF_INFOPANEL(hubid)
+            VAL_HUBSNOW = VAL_HUBSNOW + 1
+            BOOL_ADDHUB = False
 
+        Core.VAL_CURRENCY = Core.VAL_CURRENCY - Core.VAL_COST_HUB
+    else:
+        return
 def DEF_ADDHUB():
     global BOOL_ADDHUB
     BOOL_ADDHUB = True

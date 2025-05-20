@@ -10,6 +10,9 @@ class MOC:
         self.VAL_SPEED_Y = 2
         self.VAL_POSE = pygame.Vector2(self.rect.center)
         self.VAL_ID = "Jednostka"
+        self.VAL_AMMO = 20
+        self.VAL_FUEL = 300
+        self.VAL_SUPPLE = 150
         self.BOOL_HUB = False
         self.BOOL_HUBCONNECT = False
 
@@ -44,9 +47,9 @@ class MOC:
                     self.BOOL_HUBCONNECT = True
 
                     Trasa = Hub.DEF_ASTAR(HUBID)
-                    for ID in Trasa:
-                        if ID == Core.VAL_CENTRALHUBID:
-                            print()
+                    #for ID in Trasa:
+                        #if ID == Core.VAL_CENTRALHUBID:
+
                 else:
                     self.BOOL_HUB = False
                     self.BOOL_HUBCONNECT = False
@@ -65,8 +68,28 @@ class MOC:
         ID = Core.font2.render(str(self.VAL_ID), True, "White")
         IDShowRect = ID.get_rect()
         IDShowRect.x = 150
-        IDShowRect.y = 300 + 50
+        IDShowRect.y = 350
         Core.screen.blit(ID, IDShowRect)
+
+        Ammo = Core.font2.render(str(self.VAL_AMMO), True, "White")
+        AmmoShowRect = Ammo.get_rect()
+        AmmoShowRect.x = 150
+        AmmoShowRect.y = 400
+        Core.screen.blit(Ammo, AmmoShowRect)
+
+        Fuel = Core.font2.render(str(self.VAL_FUEL), True, "White")
+        FuelShowRect = Fuel.get_rect()
+        FuelShowRect.x = 150
+        FuelShowRect.y = 450
+        Core.screen.blit(Fuel, FuelShowRect)
+
+        Supple = Core.font2.render(str(self.VAL_SUPPLE), True, "White")
+        SuppleShowRect = Supple.get_rect()
+        SuppleShowRect.x = 150
+        SuppleShowRect.y = 300 + 50
+        Core.screen.blit(Supple, SuppleShowRect)
+
+
 class FrontLine:
     def __init__(self):
         self.Start = (410, 70)

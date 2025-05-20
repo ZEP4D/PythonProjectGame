@@ -20,7 +20,8 @@ DICT_AMMO = {}
 DICT_SUPPLE = {}
 
 font1 = pygame.font.Font('Font/digital-7.ttf',42)
-font2 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',32)
+font2 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',30)
+font3 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',12)
 
 VAL_AMMO = 200
 VAL_FUEL = 300
@@ -28,25 +29,8 @@ VAL_SUPPLE = 400
 VAL_MAXHUBS = 7
 VAL_CENTRALHUBID = "HUB_C"
 VAL_SPPEDTIME = 1
-
-
-def DEF_ORDERSUBMIT():
-    global  BOOL_SUBMIT
-    BOOL_SUBMIT = True
-
-def DEF_ODERCREATE(Number,Value):
-    global VAL_AMMO,VAL_FUEL,VAL_SUPPLE,BOOL_SUBMIT
-    match Number:
-        case 0:
-            if BOOL_SUBMIT:
-                VAL_AMMO += Value
-                BOOL_SUBMIT = False
-        case 1:
-            if BOOL_SUBMIT:
-                VAL_FUEL += Value
-        case 2:
-            if BOOL_SUBMIT:
-                VAL_SUPPLE += Value
+VAL_CURRENCY = 200
+VAL_COST_HUB = 50
 
 def DEF_EXIT():
     global BOOL_EXIT
