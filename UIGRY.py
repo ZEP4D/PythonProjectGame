@@ -1,9 +1,11 @@
-import pygame
-from pygame_widgets.dropdown import Dropdown
+import re
 
+import pygame
+from pygame_widgets.textbox import TextBox
+from pygame_widgets.button import Button
 import Core
 import Hub
-from pygame_widgets.button import Button
+
 
 
 VAL_MINUTES = 0
@@ -49,7 +51,13 @@ def DEF_CHANGETIME(t):
 def DEF_HIDE():
     BUTTON_ADDHUB.hide()
     BUTTON_ORDERCREATE.hide()
-    DROPDOWN_HUBSELECT.hide()
+    BUTTON_SENDTRANSPORT.hide()
+    TEXTBOX_SUPPLIESEND.hide()
+    TEXTBOX_AMMOSEND.hide()
+    TEXTBOX_FUELSEND.hide()
+    TEXTBOX_AMMORDER.hide()
+    TEXTBOX_SUPPLORDER.hide()
+    TEXTBOX_FUELORDER.hide()
 
 def DEF_PANEL(buttonnuber):
     global BOOL_INFO,BOOL_CONS,BOOL_SEND,BOOL_ORDER,BOOL_MAGAZINE
@@ -118,8 +126,39 @@ def SHOW_INFO(id):
     SuppleShowRect.y = VAL_Y+90
     Core.screen.blit(HubSupple, SuppleShowRect)
 
-def SHOW_SEND():
-        DROPDOWN_HUBSELECT.show()
+def SHOW_SEND(id):
+        BUTTON_SENDTRANSPORT.show()
+        TEXTBOX_SUPPLIESEND.show()
+        TEXTBOX_AMMOSEND.show()
+        TEXTBOX_FUELSEND.show()
+
+        id_show = id
+        if id == Core.VAL_CENTRALHUBID:
+            id_show = "None"
+
+        LineShow = Core.font2.render("ID:" + str(id_show), True, "White")
+        LineShowRect = LineShow.get_rect()
+        LineShowRect.x = VAL_X
+        LineShowRect.y = VAL_Y
+        Core.screen.blit(LineShow, LineShowRect)
+
+        Ammo = Core.font2.render("Ammo: ", True, "White")
+        AmmoShowRect = Ammo.get_rect()
+        AmmoShowRect.x = VAL_X
+        AmmoShowRect.y = VAL_Y + 30
+        Core.screen.blit(Ammo, AmmoShowRect)
+
+        Fuel = Core.font2.render("Fuel: ", True, "White")
+        FuelShowRect = Fuel.get_rect()
+        FuelShowRect.x = VAL_X
+        FuelShowRect.y = VAL_Y + 60
+        Core.screen.blit(Fuel, FuelShowRect)
+
+        Supple = Core.font2.render("Supple: ", True, "White")
+        SuppleShowRect = Supple.get_rect()
+        SuppleShowRect.x = VAL_X
+        SuppleShowRect.y = VAL_Y + 90
+        Core.screen.blit(Supple, SuppleShowRect)
 
 def SHOW_CONS():
     BUTTON_ADDHUB.show()
@@ -153,6 +192,9 @@ def SHOW_MAGAZINE():
 
 def SHOW_ORDER():
     BUTTON_ORDERCREATE.show()
+    TEXTBOX_FUELORDER.show()
+    TEXTBOX_AMMORDER.show()
+    TEXTBOX_SUPPLORDER.show()
 
     Ammo = Core.font2.render("Ammo: ", True, "White")
     AmmoShowRect = Ammo.get_rect()
@@ -188,6 +230,49 @@ def SHOW_WARNING():
     pygame.draw.rect(Core.screen, "Red", RECT_MISSILEWARNING)
     pygame.draw.rect(Core.screen, "orange", RECT_ATTACKWARNING)
 
+def DEF_ORDER():
+
+    if TEXTBOX_AMMORDER.getText() != 0 and TEXTBOX_AMMORDER.getText() != "":
+        if re.match(r'^\d+$',TEXTBOX_AMMORDER.getText()):
+            if Core.VAL_CURRENCY >= (int(TEXTBOX_AMMORDER.getText()) * Core.VAL_COST_AMMO):
+                Core.VAL_CURRENCY = Core.VAL_CURRENCY - (int(TEXTBOX_AMMORDER.getText()) * Core.VAL_COST_AMMO)
+                Core.VAL_AMMO = Core.VAL_AMMO + int(TEXTBOX_AMMORDER.getText())
+
+
+    if TEXTBOX_FUELORDER.getText() != 0 and TEXTBOX_FUELORDER.getText() != "":
+        if re.match(r'^\d+$', TEXTBOX_FUELORDER.getText()):
+            if Core.VAL_CURRENCY >= (int(TEXTBOX_FUELORDER.getText()) * Core.VAL_COST_FUEL):
+                Core.VAL_CURRENCY = Core.VAL_CURRENCY - (int(TEXTBOX_FUELORDER.getText()) * Core.VAL_COST_FUEL)
+                Core.VAL_FUEL = Core.VAL_FUEL + int(TEXTBOX_FUELORDER.getText())
+
+    if TEXTBOX_SUPPLORDER.getText() != 0 and TEXTBOX_SUPPLORDER.getText() != "":
+        if re.match(r'^\d+$', TEXTBOX_SUPPLORDER.getText()):
+            if Core.VAL_CURRENCY >= (int(TEXTBOX_SUPPLORDER.getText()) * Core.VAL_COST_SUPPLE):
+                Core.VAL_CURRENCY = Core.VAL_CURRENCY - (int(TEXTBOX_SUPPLORDER.getText()) * Core.VAL_COST_SUPPLE)
+                Core.VAL_SUPPLE = Core.VAL_SUPPLE + int(TEXTBOX_SUPPLORDER.getText())
+
+    TEXTBOX_AMMORDER.setText("")
+    TEXTBOX_FUELORDER.setText("")
+    TEXTBOX_SUPPLORDER.setText("")
+
+def DEF_SEND():
+
+    if TEXTBOX_AMMOSEND.getText() != 0 and TEXTBOX_AMMOSEND.getText() != "":
+        if re.match(r'^\d+$', TEXTBOX_AMMOSEND.getText()):
+            print("a")
+
+    if TEXTBOX_FUELSEND.getText() != 0 and TEXTBOX_FUELSEND.getText() != "":
+        if re.match(r'^\d+$', TEXTBOX_FUELSEND.getText()):
+            print("s")
+
+    if TEXTBOX_SUPPLIESEND.getText() != 0 and TEXTBOX_SUPPLIESEND.getText() != "":
+        if re.match(r'^\d+$', TEXTBOX_SUPPLIESEND.getText()):
+            print("s")
+
+    TEXTBOX_AMMOSEND.setText("")
+    TEXTBOX_FUELSEND.setText("")
+    TEXTBOX_SUPPLIESEND.setText("")
+
 IMAGE_LEFTPANEL = pygame.image.load("Texture/Interface/Grafika01.png").convert_alpha()
 IMAGE_LEFTPANEL = pygame.transform.scale(IMAGE_LEFTPANEL, (400, 720))
 SURFACE_LEFTPANEL = pygame.Surface((400, 720))
@@ -209,7 +294,8 @@ BUTTON_SPEED1 = Button(Core.screen, 100, 70, 40, 40, image=IMAGE_SPEED1, onClick
 BUTTON_SPEED2 = Button(Core.screen, 260, 70, 40, 40, image=IMAGE_SPEED2, onClick=lambda: DEF_CHANGETIME(4.5))
 BUTTON_SPEED3 = Button(Core.screen, 300, 70, 40, 40, image=IMAGE_SPEED3, onClick=lambda: DEF_CHANGETIME(7.5))
 BUTTON_ADDHUB = Button(Core.screen, 280, 300, 80, 30, text='DodajHub', onClick=lambda: Hub.DEF_ADDHUB())
-BUTTON_ORDERCREATE = Button(Core.screen, 150, 390, 70, 20, text="Order")
+BUTTON_ORDERCREATE = Button(Core.screen, 150, 390, 70, 20, text="Order", onClick=lambda: DEF_ORDER())
+BUTTON_SENDTRANSPORT = Button(Core.screen,150,420,50,40, text="Send", onClick=lambda: DEF_SEND())
 BUTTON_INFO = Button(Core.screen, 20, 300, 80, 40, text="info", colour="green", onClick= lambda: DEF_PANEL(0))
 BUTTON_CONS = Button(Core.screen, 20, 365, 80, 40, text="Cons", colour="green", onClick= lambda: DEF_PANEL(1))
 BUTTON_SEND = Button(Core.screen, 20, 430, 80, 40, text="Send", colour="green", onClick= lambda: DEF_PANEL(2))
@@ -220,11 +306,23 @@ BUTTON_SETTING = Button(Core.screen, 0, 670, 50, 30, text='Setting', onClick=lam
 
 BUTTON_ORDERCREATE.hide()
 BUTTON_ADDHUB.hide()
-#--------------------------------------------------
+BUTTON_SENDTRANSPORT.hide()
+#-------------------
+TEXTBOX_AMMOSEND = TextBox(Core.screen,220,330,70,35, fontsize=10,borderThickness=1,colour="green")
+TEXTBOX_FUELSEND = TextBox(Core.screen,220,360,70,35, fontsize=10,borderThickness=1,colour="green")
+TEXTBOX_SUPPLIESEND = TextBox(Core.screen,230,395,70,35, fontsize=10,borderThickness=1,colour="green")
 
-DROPDOWN_HUBSELECT = Dropdown(Core.screen, 150, 300, 100,20,name="HUB",choices=LIST_DROPDOWN_OPTION,direction="down")
-DROPDOWN_HUBSELECT.hide()
+TEXTBOX_AMMORDER = TextBox(Core.screen,220,300,70,35, fontsize=10,borderThickness=1,colour="green")
+TEXTBOX_FUELORDER = TextBox(Core.screen,220,330,70,35, fontsize=10,borderThickness=1,colour="green")
+TEXTBOX_SUPPLORDER = TextBox(Core.screen,230,360,70,35, fontsize=10,borderThickness=1,colour="green")
 
+
+TEXTBOX_AMMORDER.hide()
+TEXTBOX_SUPPLORDER.hide()
+TEXTBOX_FUELORDER.hide()
+TEXTBOX_SUPPLIESEND.hide()
+TEXTBOX_AMMOSEND.hide()
+TEXTBOX_FUELSEND.hide()
 #-------------------
 RECT_STROMWARNING = pygame.Rect(25,150,100,50)
 RECT_MISSILEWARNING = pygame.Rect(150,150,100,50)

@@ -9,6 +9,7 @@ object1 = Objectinthemap.MOC()
 Front = Objectinthemap.FrontLine()
 Hub.DEF_HUBCENTRAL()
 VAL_WHATID = Core.VAL_CENTRALHUBID
+
 while Core.BOOL_RUNNING:
     Core.screen.fill("white")
     dt = Core.clock.tick(60) / 1000
@@ -59,7 +60,7 @@ while Core.BOOL_RUNNING:
         UIGRY.SHOW_MAGAZINE()
 
     if UIGRY.BOOL_SEND:
-        UIGRY.SHOW_SEND()
+        UIGRY.SHOW_SEND(VAL_WHATID)
 
     if UIGRY.BOOL_CONS:
         UIGRY.SHOW_CONS()

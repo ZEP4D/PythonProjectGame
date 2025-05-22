@@ -19,6 +19,7 @@ DICT_FUEL = {}
 DICT_AMMO = {}
 DICT_SUPPLE = {}
 
+
 font1 = pygame.font.Font('Font/digital-7.ttf',42)
 font2 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',30)
 font3 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',12)
@@ -29,8 +30,11 @@ VAL_SUPPLE = 400
 VAL_MAXHUBS = 7
 VAL_CENTRALHUBID = "HUB_C"
 VAL_SPPEDTIME = 1
-VAL_CURRENCY = 200
-VAL_COST_HUB = 50
+VAL_CURRENCY = 900
+VAL_COST_HUB = 200
+VAL_COST_AMMO = 10
+VAL_COST_FUEL = 0.5
+VAL_COST_SUPPLE = 5
 
 def DEF_EXIT():
     global BOOL_EXIT
