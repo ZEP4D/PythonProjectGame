@@ -13,6 +13,7 @@ class MOC:
         self.VAL_AMMO = 20
         self.VAL_FUEL = 300
         self.VAL_SUPPLE = 150
+        self.VAL_HEALTH = 200
         self.BOOL_HUB = False
         self.BOOL_HUBCONNECT = False
 
@@ -101,11 +102,11 @@ class FrontLine:
 
 
     def draw(self):
-        pygame.draw.line(Core.screen,"Red", self.Start, self.End, 10)
-        pygame.draw.rect(Core.screen,"Red",self.pose1)
-        pygame.draw.rect(Core.screen, "Red", self.pose2)
-        pygame.draw.rect(Core.screen, "Red", self.pose3)
-        pygame.draw.rect(Core.screen, "Red", self.pose4)
+        pygame.draw.line(Core.screen,"Red", self.Start, self.pose1.center, 10)
+        pygame.draw.line(Core.screen,"Red",self.pose1.center,self.pose2.center,10)
+        pygame.draw.line(Core.screen, "Red", self.pose2.center, self.pose3.center, 10)
+        pygame.draw.line(Core.screen, "Red", self.pose3.center, self.pose4.center, 10)
+        pygame.draw.line(Core.screen, "Red", self.pose4.center, self.End, 10)
 
     def getpositon(self):
         return pygame.Vector2(self.pose1.center)

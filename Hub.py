@@ -25,6 +25,7 @@ def DEF_HUBNUMBER(x,y):
         Core.VAL_CURRENCY = Core.VAL_CURRENCY - Core.VAL_COST_HUB
     else:
         return
+
 def DEF_ADDHUB():
     global BOOL_ADDHUB
     BOOL_ADDHUB = True

@@ -1,5 +1,4 @@
 import re
-
 import pygame
 from pygame_widgets.textbox import TextBox
 from pygame_widgets.button import Button
@@ -14,13 +13,13 @@ VAL_PASSTIME = 0
 VAL_CHANGETIME = 0
 VAL_X = 150
 VAL_Y = 300
+VAL_IDSEND = ""
 BOOL_INFO=False
 BOOL_INFO_OBJECT = False
 BOOL_CONS=False
 BOOL_SEND=False
 BOOL_ORDER=False
 BOOL_MAGAZINE=False
-LIST_DROPDOWN_OPTION = ["h1"]
 
 
 def DEF_CLOCK(dt):
@@ -127,16 +126,17 @@ def SHOW_INFO(id):
     Core.screen.blit(HubSupple, SuppleShowRect)
 
 def SHOW_SEND(id):
+        global VAL_IDSEND
         BUTTON_SENDTRANSPORT.show()
         TEXTBOX_SUPPLIESEND.show()
         TEXTBOX_AMMOSEND.show()
         TEXTBOX_FUELSEND.show()
 
-        id_show = id
+        VAL_IDSEND  = id
         if id == Core.VAL_CENTRALHUBID:
-            id_show = "None"
+            VAL_IDSEND  = "None"
 
-        LineShow = Core.font2.render("ID:" + str(id_show), True, "White")
+        LineShow = Core.font2.render("ID:" + str(VAL_IDSEND), True, "White")
         LineShowRect = LineShow.get_rect()
         LineShowRect.x = VAL_X
         LineShowRect.y = VAL_Y
@@ -256,18 +256,34 @@ def DEF_ORDER():
     TEXTBOX_SUPPLORDER.setText("")
 
 def DEF_SEND():
+    global VAL_IDSEND
+
+    Trasa = Hub.DEF_ASTAR(VAL_IDSEND)
 
     if TEXTBOX_AMMOSEND.getText() != 0 and TEXTBOX_AMMOSEND.getText() != "":
         if re.match(r'^\d+$', TEXTBOX_AMMOSEND.getText()):
-            print("a")
+            if VAL_IDSEND != "None":
+                for ID in Trasa:
+                    if ID == Core.VAL_CENTRALHUBID:
+                        Core.DICT_AMMO[VAL_IDSEND] += int(TEXTBOX_AMMOSEND.getText())
+                        Core.VAL_AMMO -= int(TEXTBOX_AMMOSEND.getText())
 
     if TEXTBOX_FUELSEND.getText() != 0 and TEXTBOX_FUELSEND.getText() != "":
         if re.match(r'^\d+$', TEXTBOX_FUELSEND.getText()):
-            print("s")
+            if VAL_IDSEND != "None":
+                for ID in Trasa:
+                    if ID == Core.VAL_CENTRALHUBID:
+                        Core.DICT_FUEL[VAL_IDSEND] += int(TEXTBOX_FUELSEND.getText())
+                        Core.VAL_FUEL -= int(TEXTBOX_FUELSEND.getText())
+
 
     if TEXTBOX_SUPPLIESEND.getText() != 0 and TEXTBOX_SUPPLIESEND.getText() != "":
         if re.match(r'^\d+$', TEXTBOX_SUPPLIESEND.getText()):
-            print("s")
+            if VAL_IDSEND != "None":
+                for ID in Trasa:
+                    if ID == Core.VAL_CENTRALHUBID:
+                        Core.DICT_SUPPLE[VAL_IDSEND] += int(TEXTBOX_SUPPLIESEND.getText())
+                        Core.VAL_SUPPLE -= int(TEXTBOX_SUPPLIESEND.getText())
 
     TEXTBOX_AMMOSEND.setText("")
     TEXTBOX_FUELSEND.setText("")
@@ -302,7 +318,7 @@ BUTTON_SEND = Button(Core.screen, 20, 430, 80, 40, text="Send", colour="green", 
 BUTTON_ORDER = Button(Core.screen, 20, 495, 80, 40, text="Order", colour="green", onClick= lambda: DEF_PANEL(3))
 BUTTON_MAGAZINE = Button(Core.screen, 20, 560, 80, 40, text="Magazine", colour="green", onClick= lambda: DEF_PANEL(4))
 BUTTON_EXIT = Button(Core.screen, 350, 670, 50, 30, text='Exit', onClick=lambda: Core.DEF_EXIT())
-BUTTON_SETTING = Button(Core.screen, 0, 670, 50, 30, text='Setting', onClick=lambda: print("hello"))
+#BUTTON_SETTING = Button(Core.screen, 0, 670, 50, 30, text='Setting', onClick=lambda: print("hello"))
 
 BUTTON_ORDERCREATE.hide()
 BUTTON_ADDHUB.hide()
