@@ -4,11 +4,14 @@ import UIGRY
 import Core
 import Hub
 import Objectinthemap
+import SimulationCore
 
-object1 = Objectinthemap.MOC()
+
+SimulationCore.DEF_PREWHILE()
 Front = Objectinthemap.FrontLine()
 Hub.DEF_HUBCENTRAL()
 VAL_WHATID = Core.VAL_CENTRALHUBID
+VAL_WHATIDOBJECT = ""
 
 while Core.BOOL_RUNNING:
     Core.screen.fill("white")
@@ -31,8 +34,11 @@ while Core.BOOL_RUNNING:
                         if Core.DICT_HUB[i].collidepoint(pose):
                             VAL_WHATID = i
                             UIGRY.BOOL_INFO_OBJECT = False
-                if object1.rect.collidepoint(pose):
-                    UIGRY.BOOL_INFO_OBJECT = True
+
+                for i in SimulationCore.LIST_INFANTRY:
+                    if SimulationCore.LIST_INFANTRY[i].rect.collidepoint(pose):
+                        VAL_WHATIDOBJECT = SimulationCore.LIST_INFANTRY[i].GET_ID()
+                        UIGRY.BOOL_INFO_OBJECT = True
             elif event.button == 3:
                 for i in Core.DICT_HUB:
                     if Core.DICT_HUB[i].collidepoint(pose):
@@ -42,14 +48,13 @@ while Core.BOOL_RUNNING:
 
     Core.screen.blit(UIGRY.IMAGE_LEFTPANEL, (0, 0))
 
-    object1.DEF_UPDATE(dt)
-    object1.DEF_DRAW()
 
+    SimulationCore.DEF_INWHILE(dt)
     UIGRY.SHOW_CURRENCY()
     UIGRY.SHOW_WARNING()
     if UIGRY.BOOL_INFO:
         if UIGRY.BOOL_INFO_OBJECT:
-            object1.DEF_Show()
+            SimulationCore.LIST_INFANTRY[VAL_WHATIDOBJECT].DEF_Show()
         else:
             UIGRY.SHOW_INFO(VAL_WHATID)
 
