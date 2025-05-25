@@ -11,12 +11,19 @@ class MOC:
         self.VAL_POSE = pygame.Vector2(self.rect.center)
         self.VAL_ID = id
         self.VAL_AMMO = 20
-        self.VAL_FUEL = 300
+        self.VAL_FUEL = 2
         self.VAL_SUPPLE = 150
         self.VAL_HEALTH = 200
+        self.VAL_APC = 10
+        self.VAL_Cars = 3
+        self.VAL_Truck = 2
+        self.VAL_MENPOWER = 100
         self.BOOL_HUB = False
         self.BOOL_HUBCONNECT = False
         self.COLOR_ID = "yellow"
+        self.VAL_DYSTANS = 0
+        self.BOOL_INMOVE = False
+        self.VAL_TRASAPRZEBYTA = 0
     def DEF_UPDATE(self,dt):
 
         if self.VAL_HEALTH < 30:
@@ -27,12 +34,15 @@ class MOC:
 
 
         kierunek = Targetpose - self.VAL_POSE
-        dystans = kierunek.length()
+        self.VAL_DYSTANS = kierunek.length()
 
-        if dystans > 20:
+        if self.VAL_DYSTANS > 20:
             kierunek.normalize_ip()
             self.VAL_POSE += kierunek * (20 * Core.VAL_SPPEDTIME ) * dt
             self.rect.topleft = (round(self.VAL_POSE.x), round(self.VAL_POSE.y))
+            self.BOOL_INMOVE = True
+        else:
+            self.BOOL_INMOVE = False
 
         min_distance = float('inf')
 
@@ -60,6 +70,21 @@ class MOC:
             self.VAL_SPEED_X =  -self.VAL_SPEED_X
         if self.rect.top <=0 or self.rect.bottom >= Core.SizeScreenHeight:
             self.VAL_SPEED_Y = -self.VAL_SPEED_Y
+    def DEF_UPDATE_RES(self,dt):
+
+
+        if self.BOOL_INMOVE:
+            self.VAL_TRASAPRZEBYTA += 1
+
+            if self.VAL_TRASAPRZEBYTA == 100:
+                self.VAL_FUEL -= 0.716
+                self.VAL_TRASAPRZEBYTA = 0
+
+            print(self.VAL_TRASAPRZEBYTA, self.VAL_FUEL, self.VAL_ID)
+
+
+
+
     def DEF_DRAW(self):
         if self.BOOL_HUB:
             pygame.draw.line(Core.screen, "black", self.rect.center, self.Correcthub)
@@ -111,7 +136,7 @@ class Infantry(MOC):
     def __init__(self,x,y,id):
         super().__init__(x,y,id)
         self.VAL_HEALTH = 100
-        self.VAL_FUEL = 200
+        self.VAL_FUEL = 2
         self.VAL_AMMO = 100
         self.VAL_SUPPLE = 30
         self.COLOR_ID = "Black"
