@@ -24,6 +24,7 @@ class MOC:
         self.VAL_DYSTANS = 0
         self.BOOL_INMOVE = False
         self.VAL_TRASAPRZEBYTA = 0
+        self.VAL_Timepass = 0
     def DEF_UPDATE(self,dt):
 
         if self.VAL_HEALTH < 30:
@@ -38,7 +39,9 @@ class MOC:
 
         if self.VAL_DYSTANS > 20:
             kierunek.normalize_ip()
-            self.VAL_POSE += kierunek * (20 * Core.VAL_SPPEDTIME ) * dt
+            ruch = kierunek * (5 * Core.VAL_SPPEDTIME ) * dt
+            self.VAL_POSE += ruch
+            self.VAL_TRASAPRZEBYTA += ruch.length()
             self.rect.topleft = (round(self.VAL_POSE.x), round(self.VAL_POSE.y))
             self.BOOL_INMOVE = True
         else:
@@ -72,49 +75,59 @@ class MOC:
             self.VAL_SPEED_Y = -self.VAL_SPEED_Y
     def DEF_UPDATE_RES(self,dt):
 
+        Fuel_Usage = Core.DEF_FUELUSE(self.VAL_APC,self.VAL_Cars,self.VAL_Truck)
 
         if self.BOOL_INMOVE:
-            self.VAL_TRASAPRZEBYTA += 1
+            if self.VAL_TRASAPRZEBYTA >= 200:
+                Convert = Core.DEF_Convert(self.VAL_FUEL,1)
+                Convert -= Fuel_Usage
+                self.VAL_FUEL = Core.DEF_Convert(Convert, 2)
+                self.VAL_TRASAPRZEBYTA -= 200
+        else:
+                Fuel_Usage_STOP = Fuel_Usage / 5
 
-            if self.VAL_TRASAPRZEBYTA == 100:
-                self.VAL_FUEL -= 0.716
-                self.VAL_TRASAPRZEBYTA = 0
-
-            print(self.VAL_TRASAPRZEBYTA, self.VAL_FUEL, self.VAL_ID)
-
-
-
-
+                if self.VAL_Timepass >= 1000:
+                    Convert = Core.DEF_Convert(self.VAL_FUEL, 1)
+                    Convert -= Fuel_Usage_STOP
+                    self.VAL_FUEL = Core.DEF_Convert(Convert, 2)
+                    self.VAL_Timepass = 0
+                self.VAL_Timepass += 1
     def DEF_DRAW(self):
         if self.BOOL_HUB:
             pygame.draw.line(Core.screen, "black", self.rect.center, self.Correcthub)
         pygame.draw.rect(Core.screen,self.COLOR_ID,self.rect)
     def DEF_Show(self):
-        ID = Core.font2.render(str(self.VAL_ID), True, "White")
+        ID = Core.font2.render("ID: "+str(self.VAL_ID), True, "White")
         IDShowRect = ID.get_rect()
         IDShowRect.x = 150
         IDShowRect.y = 300
         Core.screen.blit(ID, IDShowRect)
 
-        Health = Core.font2.render(str(self.VAL_HEALTH), True, "White")
+        Health = Core.font2.render("Health: "+str(self.VAL_HEALTH), True, "White")
         HealthoShowRect = Health.get_rect()
         HealthoShowRect.x = 150
         HealthoShowRect.y = 330
         Core.screen.blit(Health, HealthoShowRect)
 
-        Ammo = Core.font2.render(str(self.VAL_AMMO), True, "White")
+        Ammo = Core.font2.render("Ammo: "+str(self.VAL_AMMO), True, "White")
         AmmoShowRect = Ammo.get_rect()
         AmmoShowRect.x = 150
         AmmoShowRect.y = 360
         Core.screen.blit(Ammo, AmmoShowRect)
 
-        Fuel = Core.font2.render(str(self.VAL_FUEL), True, "White")
+        Fuel_show =self.VAL_FUEL
+        if type(Fuel_show) == int:
+            format_fuel = Fuel_show
+        else:
+            format_fuel = '{:.4f}'.format(Fuel_show)
+
+        Fuel = Core.font2.render("Fuel: "+str(format_fuel), True, "White")
         FuelShowRect = Fuel.get_rect()
         FuelShowRect.x = 150
         FuelShowRect.y = 390
         Core.screen.blit(Fuel, FuelShowRect)
 
-        Supple = Core.font2.render(str(self.VAL_SUPPLE), True, "White")
+        Supple = Core.font2.render("Supple: "+str(self.VAL_SUPPLE), True, "White")
         SuppleShowRect = Supple.get_rect()
         SuppleShowRect.x = 150
         SuppleShowRect.y = 420
