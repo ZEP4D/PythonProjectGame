@@ -10,22 +10,24 @@ class MOC:
         self.VAL_SPEED_Y = 2
         self.VAL_POSE = pygame.Vector2(self.rect.center)
         self.VAL_ID = id
-        self.VAL_AMMO = 20
+        self.VAL_AMMO = 3
         self.VAL_FUEL = 2
-        self.VAL_SUPPLE = 150
+        self.VAL_SUPPLE = 4
         self.VAL_HEALTH = 200
         self.VAL_APC = 10
         self.VAL_Cars = 3
         self.VAL_Truck = 2
+        self.VAL_Truck_Fuel = 1
         self.VAL_MENPOWER = 100
-        self.BOOL_HUB = False
-        self.BOOL_HUBCONNECT = False
         self.COLOR_ID = "yellow"
         self.VAL_DYSTANS = 0
-        self.BOOL_INMOVE = False
         self.VAL_TRASAPRZEBYTA = 0
         self.VAL_Timepass = 0
-    def DEF_UPDATE(self,dt):
+        self.BOOL_HUB = False
+        self.BOOL_HUBCONNECT = False
+        self.BOOL_INMOVE = False
+        self.BOOL_INBATTLE = False
+    def DEF_UPDATE(self, dt):
 
         if self.VAL_HEALTH < 30:
             Posefromdict = Core.DICT_HUB[Core.VAL_CENTRALHUBID]
@@ -75,23 +77,24 @@ class MOC:
             self.VAL_SPEED_Y = -self.VAL_SPEED_Y
     def DEF_UPDATE_RES(self,dt):
 
-        Fuel_Usage = Core.DEF_FUELUSE(self.VAL_APC,self.VAL_Cars,self.VAL_Truck)
+        Fuel_Usage = Core.DEF_FUELUSE(self.VAL_APC,self.VAL_Cars,self.VAL_Truck,self.VAL_Truck_Fuel)
 
         if self.BOOL_INMOVE:
             if self.VAL_TRASAPRZEBYTA >= 200:
-                Convert = Core.DEF_Convert(self.VAL_FUEL,1)
+                Convert = Core.DEF_Convert(self.VAL_FUEL,1,"FUEL")
                 Convert -= Fuel_Usage
-                self.VAL_FUEL = Core.DEF_Convert(Convert, 2)
+                self.VAL_FUEL = Core.DEF_Convert(Convert, 2,"FUEL")
                 self.VAL_TRASAPRZEBYTA -= 200
         else:
                 Fuel_Usage_STOP = Fuel_Usage / 5
 
                 if self.VAL_Timepass >= 1000:
-                    Convert = Core.DEF_Convert(self.VAL_FUEL, 1)
+                    Convert = Core.DEF_Convert(self.VAL_FUEL, 1, "FUEL")
                     Convert -= Fuel_Usage_STOP
-                    self.VAL_FUEL = Core.DEF_Convert(Convert, 2)
+                    self.VAL_FUEL = Core.DEF_Convert(Convert, 2,"FUEL")
                     self.VAL_Timepass = 0
                 self.VAL_Timepass += 1
+        
     def DEF_DRAW(self):
         if self.BOOL_HUB:
             pygame.draw.line(Core.screen, "black", self.rect.center, self.Correcthub)

@@ -38,24 +38,43 @@ VAL_COST_SUPPLE = 5
 VAL_FUEL_APC_USAGE = 40
 VAL_FUEL_CARS_USAGE = 12
 VAL_FUEL_TRUCK_USAGE = 30
+VAL_CONVERT_FUEL = 5000
+VAL_CONVERT_AMMO = 2000
+VAL_CONVERT_SUPPLE = 1000
+VAL_TRUCK_CAPACITY = 6000
+VAL_FUELTRUCK_CAPACITY = 10000
 
 
 
-def DEF_FUELUSE(APC,CARS,TRUCK):
+def DEF_FUELUSE(APC,CARS,TRUCK, TRUCK_FUEL):
     Fuel_number = 0
     Fuel_number += APC * VAL_FUEL_APC_USAGE
     Fuel_number += CARS * VAL_FUEL_CARS_USAGE
     Fuel_number += TRUCK * VAL_FUEL_TRUCK_USAGE
+    Fuel_number += TRUCK_FUEL * VAL_FUEL_TRUCK_USAGE
 
     return  Fuel_number
 
-def DEF_Convert(Fuel,number):
-    one_fuel = 5000
-    match(number):
+def DEF_Convert(Number,INFO1,INFO2):
+    match(INFO1):
         case 1:
-             return Fuel * one_fuel
+            match(INFO2):
+                case "FUEL":
+                    return Number * VAL_CONVERT_FUEL
+                case "AMMO":
+                    return Number * VAL_CONVERT_AMMO
+                case "SUPPLE":
+                    return Number * VAL_CONVERT_SUPPLE
+
         case 2:
-            return Fuel / one_fuel
+            match (INFO2):
+                case "FUEL":
+                    return Number / VAL_CONVERT_FUEL
+                case "AMMO":
+                    return Number / VAL_CONVERT_AMMO
+                case "SUPPLE":
+                    return Number / VAL_CONVERT_SUPPLE
+
 def DEF_EXIT():
     global BOOL_EXIT
     BOOL_EXIT=True
