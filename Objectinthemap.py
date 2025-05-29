@@ -1,17 +1,17 @@
 import pygame
 import Core
 import Hub
-
+import random
 
 class MOC:
-    def __init__(self,x,y,id):
+    def __init__(self,x,y,id,Front):
         self.rect = pygame.Rect(x,y,20,20)
         self.VAL_SPEED_X = 2
         self.VAL_SPEED_Y = 2
         self.VAL_POSE = pygame.Vector2(self.rect.center)
         self.VAL_ID = id
         self.VAL_AMMO = 3
-        self.VAL_FUEL = 2
+        self.VAL_FUEL = 1
         self.VAL_SUPPLE = 4
         self.VAL_HEALTH = 200
         self.VAL_APC = 10
@@ -27,19 +27,29 @@ class MOC:
         self.BOOL_HUBCONNECT = False
         self.BOOL_INMOVE = False
         self.BOOL_INBATTLE = False
+        self.VAL_TARGETPOSE = pygame.Vector2(0,0)
+        self.Front = Front
+        self.VAL_POSENUMBER = self.Front.getnumberforposition()
+
     def DEF_UPDATE(self, dt):
 
         if self.VAL_HEALTH < 30:
             Posefromdict = Core.DICT_HUB[Core.VAL_CENTRALHUBID]
-            Targetpose = pygame.Vector2(Posefromdict.center)
+            self.VAL_TARGETPOSE = pygame.Vector2(Posefromdict.center)
+            self.Front.freeposition(self.VAL_POSENUMBER)
+            self.VAL_POSENUMBER = 5
+
         else:
-            Targetpose = FrontLine().getpositon()
+            if self.VAL_POSENUMBER == 5:
+                self.VAL_POSENUMBER = self.Front.getnumberforposition()
+
+            self.VAL_TARGETPOSE = self.Front.getpositon(self.VAL_POSENUMBER, self.VAL_ID)
 
 
-        kierunek = Targetpose - self.VAL_POSE
+        kierunek = self.VAL_TARGETPOSE - self.VAL_POSE
         self.VAL_DYSTANS = kierunek.length()
 
-        if self.VAL_DYSTANS > 20:
+        if self.VAL_DYSTANS > 30:
             kierunek.normalize_ip()
             ruch = kierunek * (5 * Core.VAL_SPPEDTIME ) * dt
             self.VAL_POSE += ruch
@@ -63,8 +73,23 @@ class MOC:
                     self.BOOL_HUB = True
                     self.BOOL_HUBCONNECT = True
                     Trasa = Hub.DEF_ASTAR(HUBID)
-                    #for ID in Trasa:
-                        #if ID == Core.VAL_CENTRALHUBID:
+                    for ID in Trasa:
+                        if ID == Core.VAL_CENTRALHUBID:
+                            if Core.VAL_HOURS % 5 == 0 and Core.VAL_MINUTES == 0:
+                                id_hub = Trasa[len(Trasa)-1]
+                                if self.VAL_FUEL < 0.8:
+                                    if self.VAL_Truck_Fuel > 0:
+                                        if Core.DICT_FUEL[id_hub] > 0:
+                                            Core.DICT_FUEL[id_hub] -= 2
+                                            self.VAL_FUEL += 2
+                                if self.VAL_AMMO < 2:
+                                    if Core.DICT_AMMO[id_hub] > 0:
+                                        Core.DICT_AMMO[id_hub] -= 2
+                                        self.VAL_AMMO += 2
+                                if self.VAL_SUPPLE < 5:
+                                    if Core.DICT_SUPPLE[id_hub] > 0:
+                                        Core.DICT_SUPPLE[id_hub] -= 4
+                                        self.VAL_SUPPLE += 4
 
                 else:
                     self.BOOL_HUB = False
@@ -94,7 +119,11 @@ class MOC:
                     self.VAL_FUEL = Core.DEF_Convert(Convert, 2,"FUEL")
                     self.VAL_Timepass = 0
                 self.VAL_Timepass += 1
-        
+
+        if Core.VAL_HOURS == 12 and Core.VAL_MINUTES == 0:
+            Convert = Core.DEF_Convert(self.VAL_SUPPLE,1, "SUPPLE")
+            Convert -= 300
+            self.VAL_SUPPLE = Core.DEF_Convert(Convert,2,"SUPPLE")
     def DEF_DRAW(self):
         if self.BOOL_HUB:
             pygame.draw.line(Core.screen, "black", self.rect.center, self.Correcthub)
@@ -149,10 +178,10 @@ class MOC:
             self.VAL_AMMO -= Ammo
 
 class Infantry(MOC):
-    def __init__(self,x,y,id):
-        super().__init__(x,y,id)
+    def __init__(self,x,y,id,num):
+        super().__init__(x,y,id,num)
         self.VAL_HEALTH = 100
-        self.VAL_FUEL = 2
+        self.VAL_FUEL = 1
         self.VAL_AMMO = 100
         self.VAL_SUPPLE = 30
         self.COLOR_ID = "Black"
@@ -174,11 +203,60 @@ class FrontLine:
         self.pose2 = pygame.Rect(746, 90, 5, 5)
         self.pose3 = pygame.Rect(914, 90, 5, 5)
         self.pose4 = pygame.Rect(1182, 90, 5, 5)
+        self.BOOL_pose1 = True
+        self.BOOL_pose2 = True
+        self.BOOL_pose3 = True
+        self.BOOL_pose4 = True
+        self.VAL_IDpose1 = "none"
+        self.VAL_IDpose2 = "none"
+        self.VAL_IDpose3 = "none"
+        self.VAL_IDpose4 = "none"
     def draw(self):
         pygame.draw.line(Core.screen,"Red", self.Start, self.pose1.center, 10)
         pygame.draw.line(Core.screen,"Red",self.pose1.center,self.pose2.center,10)
         pygame.draw.line(Core.screen, "Red", self.pose2.center, self.pose3.center, 10)
         pygame.draw.line(Core.screen, "Red", self.pose3.center, self.pose4.center, 10)
         pygame.draw.line(Core.screen, "Red", self.pose4.center, self.End, 10)
-    def getpositon(self):
-        return pygame.Vector2(self.pose1.center)
+    def getpositon(self,number, id):
+        match(number):
+            case 1:
+                self.VAL_IDpose1 = id
+                return pygame.Vector2(self.pose1.center)
+            case 2:
+                self.VAL_IDpose2 = id
+                return pygame.Vector2(self.pose2.center)
+            case 3:
+                self.VAL_IDpose3 = id
+                return pygame.Vector2(self.pose3.center)
+            case 4:
+                self.VAL_IDpose4 = id
+                return pygame.Vector2(self.pose4.center)
+            case 5:
+                Posefromdict = Core.DICT_HUB[Core.VAL_CENTRALHUBID]
+                return pygame.Vector2(Posefromdict.center)
+    def getnumberforposition(self):
+        if self.BOOL_pose1:
+            self.BOOL_pose1 = False
+            return 1
+        elif self.BOOL_pose2:
+            self.BOOL_pose2 = False
+            return 2
+        elif self.BOOL_pose3:
+            self.BOOL_pose3 = False
+            return 3
+        elif self.BOOL_pose4:
+            self.BOOL_pose4 = False
+            return 4
+        else:
+            return 5
+    def freeposition(self,number):
+        match (number):
+            case 1:
+                self.BOOL_pose1 = True
+            case 2:
+                self.BOOL_pose2 = True
+            case 3:
+                self.BOOL_pose3 = True
+            case 4:
+                self.BOOL_pose4 = True
+

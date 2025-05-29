@@ -7,8 +7,6 @@ import Hub
 
 
 
-VAL_MINUTES = 0
-VAL_HOURS = 6
 VAL_PASSTIME = 0
 VAL_CHANGETIME = 0
 VAL_X = 150
@@ -23,21 +21,21 @@ BOOL_MAGAZINE=False
 
 
 def DEF_CLOCK(dt):
-    global VAL_MINUTES, VAL_HOURS, VAL_PASSTIME
+    global VAL_PASSTIME
 
     VAL_PASSTIME = VAL_PASSTIME + dt * Core.VAL_SPPEDTIME
     if VAL_PASSTIME >= 1:
-        VAL_MINUTES = VAL_MINUTES + 1
+        Core.VAL_MINUTES = Core.VAL_MINUTES + 1
         VAL_PASSTIME = 0
 
-        if VAL_MINUTES >= 60:
-            VAL_HOURS += VAL_MINUTES // 60
-            VAL_MINUTES %= 60
-        if VAL_HOURS >= 24:
-            VAL_HOURS %= 24
+        if Core.VAL_MINUTES >= 60:
+            Core.VAL_HOURS += Core.VAL_MINUTES // 60
+            Core.VAL_MINUTES %= 60
+        if Core.VAL_HOURS >= 24:
+            Core.VAL_HOURS %= 24
 
 def DEF_DISPLAY():
-    czas = f"{VAL_HOURS:02}:{VAL_MINUTES:02}"
+    czas = f"{Core.VAL_HOURS:02}:{Core.VAL_MINUTES:02}"
     showTime = Core.font1.render(czas, True, "white")
     showTimeRect = showTime.get_rect()
     showTimeRect.x = 160
