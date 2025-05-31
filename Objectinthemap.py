@@ -3,6 +3,9 @@ import Core
 import Hub
 import random
 
+from Core import BOOL_EXIT
+
+
 class MOC:
     def __init__(self,x,y,id,Front):
         self.rect = pygame.Rect(x,y,20,20)
@@ -13,12 +16,12 @@ class MOC:
         self.VAL_AMMO = 3
         self.VAL_FUEL = 1
         self.VAL_SUPPLE = 4
-        self.VAL_HEALTH = 200
+        self.VAL_HEALTH = 100
         self.VAL_APC = 10
         self.VAL_Cars = 3
         self.VAL_Truck = 2
         self.VAL_Truck_Fuel = 1
-        self.VAL_MENPOWER = 100
+        self.VAL_MENPOWER = self.VAL_HEALTH
         self.COLOR_ID = "yellow"
         self.VAL_DYSTANS = 0
         self.VAL_TRASAPRZEBYTA = 0
@@ -30,8 +33,9 @@ class MOC:
         self.VAL_TARGETPOSE = pygame.Vector2(0,0)
         self.Front = Front
         self.VAL_POSENUMBER = self.Front.getnumberforposition()
+        self.VAL_LASTHOUER = None
 
-    def DEF_UPDATE(self, dt):
+    def DEF_UPDATE(self, dt,listen):
 
         if self.VAL_HEALTH < 30:
             Posefromdict = Core.DICT_HUB[Core.VAL_CENTRALHUBID]
@@ -95,6 +99,16 @@ class MOC:
                     self.BOOL_HUB = False
                     self.BOOL_HUBCONNECT = False
 
+            min_distance = float('inf')
+            for enemy in listen.values():
+                enemy_distance = pygame.Vector2(enemy.VAL_POSE.x, enemy.VAL_POSE.y)
+                Nearestpose = self.VAL_POSE.distance_to(enemy_distance)
+                if Nearestpose < min_distance:
+                    min_distance = Nearestpose
+                    if min_distance < 80:
+                        self.BOOL_INBATTLE = True
+                    else:
+                        self.BOOL_INBATTLE = False
 
         if self.rect.left <= 400 or self.rect.right >= Core.SizeScreenWidth:
             self.VAL_SPEED_X =  -self.VAL_SPEED_X
@@ -166,16 +180,27 @@ class MOC:
         Core.screen.blit(Supple, SuppleShowRect)
     def GET_ID(self):
         return self.VAL_ID
-    def CHANGE_HEALTH(self,HP,number):
-        if number == 0:
-            self.VAL_HEALTH += HP
-        if number == 1:
-            self.VAL_HEALTH -= HP
-    def CHANGE_AMMO(self,Ammo,number):
-        if number == 0:
-            self.VAL_AMMO += Ammo
-        if number == 1:
-            self.VAL_AMMO -= Ammo
+    def DEF_BATTLE(self,ticket,Enemy):
+        if self.BOOL_INBATTLE:
+
+            if Core.VAL_HOURS % 2 == 0 and Core.VAL_MINUTES == 0:
+                if self.VAL_LASTHOUER != Core.VAL_HOURS:
+                    howhavemove = random.randint(1,2)
+                    match(howhavemove):
+                        case 1:
+                            if ticket - Core.Star_Tiecket >= 3000:
+                                punkty = Core.DEF_POINTSCALCULATOR(self.VAL_APC,self.VAL_Cars,self.VAL_MENPOWER)
+
+                                if punkty > 200:
+                                    print("hit enemy")
+                                else :
+                                    howmenyapc = random.randint(0,self.VAL_APC)
+                                    howmenycars = random.randint(0,self.VAL_Cars)
+                                    howmenymanpower = random.randint(0,self.VAL_HEALTH)
+                        case 2:
+                            if ticket - Core.Star_Tiecket >= 3000:
+                                print("Enemy")
+                    self.VAL_LASTHOUER = Core.VAL_HOURS
 
 class Infantry(MOC):
     def __init__(self,x,y,id,num):
@@ -190,19 +215,14 @@ class Mechanized(MOC):
     def __init__(self,x,y,id):
         super.__init__(x,y,id)
 
-class InfantryE(MOC):
-    def __init__(self,x,y,id):
-        super().__init__(x,y,id)
-        self.COLOR_ID = "brown"
-
 class FrontLine:
     def __init__(self):
         self.Start = (410, 90)
         self.End = (1250, 90)
-        self.pose1 = pygame.Rect(500,90,5,5)
-        self.pose2 = pygame.Rect(746, 90, 5, 5)
-        self.pose3 = pygame.Rect(914, 90, 5, 5)
-        self.pose4 = pygame.Rect(1182, 90, 5, 5)
+        self.pose1 = pygame.Rect(500,90,10,10)
+        self.pose2 = pygame.Rect(746, 90,10, 10)
+        self.pose3 = pygame.Rect(914, 90, 10,10)
+        self.pose4 = pygame.Rect(1182, 90, 10, 10)
         self.BOOL_pose1 = True
         self.BOOL_pose2 = True
         self.BOOL_pose3 = True
@@ -212,11 +232,17 @@ class FrontLine:
         self.VAL_IDpose3 = "none"
         self.VAL_IDpose4 = "none"
     def draw(self):
-        pygame.draw.line(Core.screen,"Red", self.Start, self.pose1.center, 10)
-        pygame.draw.line(Core.screen,"Red",self.pose1.center,self.pose2.center,10)
-        pygame.draw.line(Core.screen, "Red", self.pose2.center, self.pose3.center, 10)
-        pygame.draw.line(Core.screen, "Red", self.pose3.center, self.pose4.center, 10)
-        pygame.draw.line(Core.screen, "Red", self.pose4.center, self.End, 10)
+
+        pygame.draw.line(Core.screen,"Grey", self.Start, self.pose1.center, 3)
+        pygame.draw.line(Core.screen,"Grey",self.pose1.center,self.pose2.center,3)
+        pygame.draw.line(Core.screen, "Grey", self.pose2.center, self.pose3.center, 3)
+        pygame.draw.line(Core.screen, "Grey", self.pose3.center, self.pose4.center, 3)
+        pygame.draw.line(Core.screen, "Grey", self.pose4.center, self.End, 3)
+
+        pygame.draw.rect(Core.screen, "RED", self.pose1)
+        pygame.draw.rect(Core.screen, "RED", self.pose2)
+        pygame.draw.rect(Core.screen, "RED", self.pose3)
+        pygame.draw.rect(Core.screen, "RED", self.pose4)
     def getpositon(self,number, id):
         match(number):
             case 1:
@@ -260,3 +286,39 @@ class FrontLine:
             case 4:
                 self.BOOL_pose4 = True
 
+class ENEMY:
+    def __init__(self,x,y,front):
+        self.VAL_HEALTH = 100
+        self.VAL_ID = "e1"
+        self.rect = pygame.Rect(x, y, 20, 20)
+        self.Front = front
+        self.VAL_POSENUMBER = self.Front.getnumberforposition()
+        self.VAL_TARGETPOSE = pygame.Vector2(0, 0)
+        self.VAL_DYSTANS = 0
+        self.VAL_POSE = pygame.Vector2(self.rect.center)
+
+    def DEF_UPDATE(self,dt):
+
+        if self.VAL_HEALTH < 30:
+            self.VAL_TARGETPOSE = pygame.Vector2(400,-1)
+            self.Front.freeposition(self.VAL_POSENUMBER)
+            self.VAL_POSENUMBER = 5
+
+        else:
+            if self.VAL_POSENUMBER == 5:
+                self.VAL_POSENUMBER = self.Front.getnumberforposition()
+
+            self.VAL_TARGETPOSE = self.Front.getpositon(self.VAL_POSENUMBER, self.VAL_ID)
+
+
+        kierunek = self.VAL_TARGETPOSE - self.VAL_POSE
+        self.VAL_DYSTANS = kierunek.length()
+
+        if self.VAL_DYSTANS > 50:
+            kierunek.normalize_ip()
+            ruch = kierunek * (5 * Core.VAL_SPPEDTIME ) * dt
+            self.VAL_POSE += ruch
+            self.rect.topleft = (round(self.VAL_POSE.x), round(self.VAL_POSE.y))
+
+    def DEF_DRAW(self):
+        pygame.draw.rect(Core.screen,"BROWN",self.rect)

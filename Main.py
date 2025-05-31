@@ -48,8 +48,10 @@ while Core.BOOL_RUNNING:
 
     Core.screen.blit(UIGRY.IMAGE_LEFTPANEL, (0, 0))
 
-
-    SimulationCore.DEF_INWHILE(dt)
+    if not VAL_WHATID in Core.DICT_HUB:
+        VAL_WHATID = Core.VAL_CENTRALHUBID
+    get_tieck = pygame.time.get_ticks()
+    SimulationCore.DEF_INWHILE(dt,get_tieck)
     UIGRY.SHOW_CURRENCY()
     UIGRY.SHOW_WARNING()
     if UIGRY.BOOL_INFO:
@@ -70,12 +72,18 @@ while Core.BOOL_RUNNING:
     if UIGRY.BOOL_CONS:
         UIGRY.SHOW_CONS()
 
+    Core.SHOW_TICKET()
+    Core.DEF_ENDGAME(get_tieck)
+
     for s in Core.DICT_LINE:
         Pose = Core.DICT_LINE[s]
         pygame.draw.line(Core.screen,"black",Pose[0],Pose[1],width=5)
 
     for i in Core.DICT_HUB:
-        pygame.draw.rect(Core.screen,"red", Core.DICT_HUB[i])
+        if i == Core.VAL_CENTRALHUBID:
+            pygame.draw.rect(Core.screen, "Green", Core.DICT_HUB[i])
+        else:
+            pygame.draw.rect(Core.screen,"red", Core.DICT_HUB[i])
 
     Front.draw()
     UIGRY.DEF_DISPLAY()

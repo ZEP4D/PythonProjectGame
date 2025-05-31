@@ -8,6 +8,7 @@ leftpanelHeight = 720
 leftpanel = pygame.Rect(401,0,leftpanelwidth,leftpanelHeight)
 screen = pygame.display.set_mode((SizeScreenWidth,SizeScreenHeight))
 clock = pygame.time.Clock()
+Star_Tiecket = pygame.time.get_ticks()
 
 BOOL_RUNNING = True
 BOOL_EXIT=False
@@ -23,6 +24,7 @@ DICT_SUPPLE = {}
 font1 = pygame.font.Font('Font/digital-7.ttf',42)
 font2 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',30)
 font3 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',12)
+font4 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',50)
 
 VAL_AMMO = 200
 VAL_FUEL = 300
@@ -45,6 +47,11 @@ VAL_CONVERT_AMMO = 2000
 VAL_CONVERT_SUPPLE = 1000
 VAL_TRUCK_CAPACITY = 6000
 VAL_FUELTRUCK_CAPACITY = 10000
+VAL_TICKET_PLAYER = 2000
+VAL_TICKET_ENEMY = 2000
+VAL_POINT_MANPOWER = 2
+VAL_POINT_APC = 10
+VAL_POINT_Cars = 7
 
 
 
@@ -56,6 +63,14 @@ def DEF_FUELUSE(APC,CARS,TRUCK, TRUCK_FUEL):
     Fuel_number += TRUCK_FUEL * VAL_FUEL_TRUCK_USAGE
 
     return  Fuel_number
+
+def DEF_POINTSCALCULATOR(APC,CARS,MENPOWER):
+    Points = 0
+    Points += APC * VAL_POINT_APC
+    Points += CARS * VAL_POINT_Cars
+    Points += MENPOWER * VAL_POINT_MANPOWER
+
+    return Points
 
 def DEF_Convert(Number,INFO1,INFO2):
     match(INFO1):
@@ -77,9 +92,73 @@ def DEF_Convert(Number,INFO1,INFO2):
                 case "SUPPLE":
                     return Number / VAL_CONVERT_SUPPLE
 
+def DEF_HUBREMOVE(id_hub):
+    if id_hub == VAL_CENTRALHUBID:
+        return
+    if id_hub in DICT_HUB:
+        DICT_HUB.pop(id_hub)
+        DICT_FUEL.pop(id_hub)
+        DICT_AMMO.pop(id_hub)
+        DICT_SUPPLE.pop(id_hub)
+
+        conntopop = []
+        for conn in DICT_LINE:
+            a, b = conn.split("->")
+            if a == id_hub or b == id_hub:
+                print(conntopop)
+                conntopop.append(conn)
+
+        for i in conntopop:
+            DICT_LINE.pop(i)
+
+def SHOW_TICKET():
+
+    TicketPLAYER = font2.render("PLAYER:" + str(VAL_TICKET_PLAYER), True, "White")
+    TicketPLAYERShowRect = TicketPLAYER.get_rect()
+    TicketPLAYERShowRect.x = 10
+    TicketPLAYERShowRect.y = 200
+    screen.blit(TicketPLAYER, TicketPLAYERShowRect)
+
+    TicketEnemy = font2.render("ENEMY:" + str(VAL_TICKET_ENEMY), True, "White")
+    TicketEnemyRShowRect = TicketEnemy.get_rect()
+    TicketEnemyRShowRect.x = 270
+    TicketEnemyRShowRect.y = 200
+    screen.blit(TicketEnemy, TicketEnemyRShowRect)
+
 def DEF_EXIT():
     global BOOL_EXIT
     BOOL_EXIT=True
 
+def DEF_ENDGAME(ticket):
+    global BOOL_EXIT, Star_Tiecket
 
+    if VAL_TICKET_ENEMY < 0 and  VAL_TICKET_PLAYER < 0:
+        VICTORY = font4.render("DRAW", True, "Black")
+        VICTORYShowRect = VICTORY.get_rect()
+        VICTORYShowRect.x = 640
+        VICTORYShowRect.y = 350
+        screen.blit(VICTORY, VICTORYShowRect)
+
+        if ticket - Star_Tiecket >= 10000:
+            BOOL_EXIT = True
+
+    elif VAL_TICKET_ENEMY < 0:
+        VICTORY = font4.render("VICTORY", True, "Black")
+        VICTORYShowRect = VICTORY.get_rect()
+        VICTORYShowRect.x = 640
+        VICTORYShowRect.y = 350
+        screen.blit(VICTORY, VICTORYShowRect)
+
+        if ticket - Star_Tiecket >= 10000:
+            BOOL_EXIT = True
+
+    elif VAL_TICKET_PLAYER < 0:
+        VICTORY = font4.render("LOSE", True, "Black")
+        VICTORYShowRect = VICTORY.get_rect()
+        VICTORYShowRect.x = 640
+        VICTORYShowRect.y = 350
+        screen.blit(VICTORY, VICTORYShowRect)
+
+        if ticket - Star_Tiecket >= 10000:
+            BOOL_EXIT = True
 

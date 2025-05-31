@@ -62,14 +62,20 @@ def DEF_INFOPANEL(id):
     Ammo = random.randint(1, 10)
     Supple = random.randint(1, 10)
 
-    Core.DICT_FUEL[id] = Fuel
-    Core.DICT_AMMO[id] = Ammo
-    Core.DICT_SUPPLE[id] = Supple
+
+    if id == Core.VAL_CENTRALHUBID:
+        Core.DICT_FUEL[id] = Core.VAL_FUEL
+        Core.DICT_AMMO[id] = Core.VAL_AMMO
+        Core.DICT_SUPPLE[id] = Core.VAL_SUPPLE
+    else:
+        Core.DICT_FUEL[id] = Fuel
+        Core.DICT_AMMO[id] = Ammo
+        Core.DICT_SUPPLE[id] = Supple
 
 def DEF_HUBCENTRAL():
     x = random.randint(410,1200)
     y = random.randint(550,710)
-    new_ret = pygame.Rect(x,y, 30, 30)
+    new_ret = pygame.Rect(x,y, 50, 50)
     Core.DICT_HUB[Core.VAL_CENTRALHUBID] = new_ret
     DEF_INFOPANEL(Core.VAL_CENTRALHUBID)
 
