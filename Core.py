@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 pygame.init()
@@ -13,6 +15,10 @@ Star_Tiecket = pygame.time.get_ticks()
 BOOL_RUNNING = True
 BOOL_EXIT=False
 BOOL_SUBMIT = False
+BOOL_GoodW = True
+BOOL_Rain = False
+BOOL_Thunder = False
+BOOL_fog = False
 
 DICT_HUB = {}
 DICT_LINE = {}
@@ -52,6 +58,8 @@ VAL_TICKET_ENEMY = 2000
 VAL_POINT_MANPOWER = 2
 VAL_POINT_APC = 10
 VAL_POINT_Cars = 7
+VAL_BASIC_TEMP = 21
+VAL_LASTHOUERCORE = None
 
 
 
@@ -161,4 +169,38 @@ def DEF_ENDGAME(ticket):
 
         if ticket - Star_Tiecket >= 10000:
             BOOL_EXIT = True
+
+def DEF_Weather():
+    global VAL_LASTHOUERCORE, VAL_MINUTES, VAL_HOURS, BOOL_GoodW,BOOL_Rain,BOOL_fog,BOOL_Thunder
+
+    if VAL_HOURS == 6 and VAL_MINUTES == 0:
+        if VAL_LASTHOUERCORE != VAL_HOURS:
+            pogoda = random.randint(0,3)
+
+            match(pogoda):
+                case 0:
+                    BOOL_GoodW = True
+                    BOOL_Thunder = False
+                    BOOL_Rain = False
+                    BOOL_fog = False
+                case 1:
+                    BOOL_Rain = True
+                    BOOL_GoodW = False
+                    BOOL_Thunder = False
+                    BOOL_fog = False
+                case 2:
+                    BOOL_fog = True
+                    BOOL_GoodW = False
+                    BOOL_Thunder = False
+                    BOOL_Rain = False
+                case 3:
+                    BOOL_Thunder = True
+                    BOOL_GoodW = False
+                    BOOL_Rain = False
+                    BOOL_fog = False
+            VAL_LASTHOUERCORE = VAL_HOURS
+
+
+
+
 

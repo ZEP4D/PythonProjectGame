@@ -71,7 +71,7 @@ while Core.BOOL_RUNNING:
 
     if UIGRY.BOOL_CONS:
         UIGRY.SHOW_CONS()
-
+    Core.DEF_Weather()
     Core.SHOW_TICKET()
     Core.DEF_ENDGAME(get_tieck)
 

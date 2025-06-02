@@ -183,6 +183,9 @@ class MOC:
     def DEF_BATTLE(self,ticket,Enemy):
         if self.BOOL_INBATTLE:
 
+            
+
+
             if Core.VAL_HOURS % 2 == 0 and Core.VAL_MINUTES == 0:
                 if self.VAL_LASTHOUER != Core.VAL_HOURS:
                     howhavemove = random.randint(1,2)
