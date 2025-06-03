@@ -34,6 +34,9 @@ class MOC:
         self.Front = Front
         self.VAL_POSENUMBER = self.Front.getnumberforposition()
         self.VAL_LASTHOUER = None
+        self.VAL_DEBUFF = 0
+        self.VAL_DEFENCE_BASE = 200
+        self.VAL_ENEMY_ID = None
 
     def DEF_UPDATE(self, dt,listen):
 
@@ -100,13 +103,14 @@ class MOC:
                     self.BOOL_HUBCONNECT = False
 
             min_distance = float('inf')
-            for enemy in listen.values():
-                enemy_distance = pygame.Vector2(enemy.VAL_POSE.x, enemy.VAL_POSE.y)
+            for enemy in listen:
+                enemy_distance = pygame.Vector2(listen[enemy].VAL_POSE.x, listen[enemy].VAL_POSE.y)
                 Nearestpose = self.VAL_POSE.distance_to(enemy_distance)
                 if Nearestpose < min_distance:
                     min_distance = Nearestpose
                     if min_distance < 80:
                         self.BOOL_INBATTLE = True
+                        self.VAL_ENEMY_ID = enemy
                     else:
                         self.BOOL_INBATTLE = False
 
@@ -181,26 +185,43 @@ class MOC:
     def GET_ID(self):
         return self.VAL_ID
     def DEF_BATTLE(self,ticket,Enemy):
+
         if self.BOOL_INBATTLE:
 
-            
+
+            # dane w procentach
+            if Core.BOOL_GoodW:
+               self.VAL_DEBUFF = 0
+            elif Core.BOOL_Rain:
+                self.VAL_DEBUFF = 20
+            elif Core.BOOL_fog:
+                self.VAL_DEBUFF = 50
+            elif Core.BOOL_Thunder:
+                self.VAL_DEBUFF = 35
 
 
             if Core.VAL_HOURS % 2 == 0 and Core.VAL_MINUTES == 0:
                 if self.VAL_LASTHOUER != Core.VAL_HOURS:
-                    howhavemove = random.randint(1,2)
-                    match(howhavemove):
-                        case 1:
+                    howhavemove = random.randint(1, 2)
+                    match (howhavemove):
+                        case 1:  # Tura AI Gracz
                             if ticket - Core.Star_Tiecket >= 3000:
-                                punkty = Core.DEF_POINTSCALCULATOR(self.VAL_APC,self.VAL_Cars,self.VAL_MENPOWER)
+                                punkty = Core.DEF_POINTSCALCULATOR(self.VAL_APC, self.VAL_Cars, self.VAL_MENPOWER)
 
                                 if punkty > 200:
-                                    print("hit enemy")
-                                else :
-                                    howmenyapc = random.randint(0,self.VAL_APC)
-                                    howmenycars = random.randint(0,self.VAL_Cars)
-                                    howmenymanpower = random.randint(0,self.VAL_HEALTH)
-                        case 2:
+                                    howmenymanpower = random.randint(0, 20)
+                                    Enemy[self.VAL_ENEMY_ID].VAL_HEALTH = Enemy[self.VAL_ENEMY_ID].VAL_HEALTH - howmenymanpower
+
+                                else:
+                                    howmenyapc = random.randint(0, 20)
+                                    howmenycars = random.randint(0, 20)
+                                    howmenymanpower = random.randint(0, 20)
+
+                                    self.VAL_APC = self.VAL_APC - howmenyapc
+                                    self.VAL_Cars = self.VAL_Cars - howmenycars
+                                    self.VAL_Health = self.VAL_HEALTH - howmenymanpower
+
+                        case 2:  # Tura AI Wroga
                             if ticket - Core.Star_Tiecket >= 3000:
                                 print("Enemy")
                     self.VAL_LASTHOUER = Core.VAL_HOURS
@@ -213,10 +234,6 @@ class Infantry(MOC):
         self.VAL_AMMO = 100
         self.VAL_SUPPLE = 30
         self.COLOR_ID = "Black"
-
-class Mechanized(MOC):
-    def __init__(self,x,y,id):
-        super.__init__(x,y,id)
 
 class FrontLine:
     def __init__(self):
@@ -246,6 +263,7 @@ class FrontLine:
         pygame.draw.rect(Core.screen, "RED", self.pose2)
         pygame.draw.rect(Core.screen, "RED", self.pose3)
         pygame.draw.rect(Core.screen, "RED", self.pose4)
+
     def getpositon(self,number, id):
         match(number):
             case 1:
@@ -299,6 +317,8 @@ class ENEMY:
         self.VAL_TARGETPOSE = pygame.Vector2(0, 0)
         self.VAL_DYSTANS = 0
         self.VAL_POSE = pygame.Vector2(self.rect.center)
+        self.VAL_DEFENCE_BASE = 100
+        self.VAL_ATTACK_POINT = 220
 
     def DEF_UPDATE(self,dt):
 
@@ -325,3 +345,9 @@ class ENEMY:
 
     def DEF_DRAW(self):
         pygame.draw.rect(Core.screen,"BROWN",self.rect)
+
+    def GET_HEALTH(self):
+        return self.VAL_HEALTH
+
+    def SET_HEALTH(self,val):
+        self.VAL_HEALTH = val

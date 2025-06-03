@@ -12,6 +12,9 @@ VAL_CHANGETIME = 0
 VAL_X = 150
 VAL_Y = 300
 VAL_IDSEND = ""
+
+
+
 BOOL_INFO=False
 BOOL_INFO_OBJECT = False
 BOOL_CONS=False
@@ -95,6 +98,8 @@ def DEF_PANEL(buttonnuber):
             BOOL_SEND = False
             BOOL_ORDER = False
             BOOL_MAGAZINE = True
+
+    DEF_CBUTTON()
 
 def SHOW_INFO(id):
 
@@ -287,6 +292,41 @@ def DEF_SEND():
     TEXTBOX_FUELSEND.setText("")
     TEXTBOX_SUPPLIESEND.setText("")
 
+def DEF_CBUTTON():
+    global BOOL_INFO,BOOL_CONS,BOOL_ORDER,BOOL_SEND,BOOL_MAGAZINE
+
+    if BOOL_INFO:
+        BUTTON_INFO.setImage(IMAGE_INFO_ON)
+        BUTTON_CONS.setImage(IMAGE_CONS)
+        BUTTON_SEND.setImage(IMAGE_SEND)
+        BUTTON_ORDER.setImage(IMAGE_ORDER)
+        BUTTON_MAGAZINE.setImage(IMAGE_MAG)
+    elif BOOL_ORDER:
+        BUTTON_INFO.setImage(IMAGE_INFO)
+        BUTTON_CONS.setImage(IMAGE_CONS)
+        BUTTON_SEND.setImage(IMAGE_SEND)
+        BUTTON_ORDER.setImage(IMAGE_ORDER_ON)
+        BUTTON_MAGAZINE.setImage(IMAGE_MAG)
+    elif BOOL_CONS:
+        BUTTON_INFO.setImage(IMAGE_INFO)
+        BUTTON_CONS.setImage(IMAGE_CONS_ON)
+        BUTTON_SEND.setImage(IMAGE_SEND)
+        BUTTON_ORDER.setImage(IMAGE_ORDER)
+        BUTTON_MAGAZINE.setImage(IMAGE_MAG)
+    elif BOOL_SEND:
+        BUTTON_INFO.setImage(IMAGE_INFO)
+        BUTTON_CONS.setImage(IMAGE_CONS)
+        BUTTON_SEND.setImage(IMAGE_SEND_ON)
+        BUTTON_ORDER.setImage(IMAGE_ORDER)
+        BUTTON_MAGAZINE.setImage(IMAGE_MAG)
+    elif BOOL_MAGAZINE:
+        BUTTON_INFO.setImage(IMAGE_INFO)
+        BUTTON_CONS.setImage(IMAGE_CONS)
+        BUTTON_SEND.setImage(IMAGE_SEND)
+        BUTTON_ORDER.setImage(IMAGE_ORDER)
+        BUTTON_MAGAZINE.setImage(IMAGE_MAG_ON)
+
+
 IMAGE_LEFTPANEL = pygame.image.load("Texture/Interface/Grafika01.png").convert_alpha()
 IMAGE_LEFTPANEL = pygame.transform.scale(IMAGE_LEFTPANEL, (400, 720))
 SURFACE_LEFTPANEL = pygame.Surface((400, 720))
@@ -297,11 +337,37 @@ IMAGE_SPEED1 = pygame.image.load("Texture/Interface/1x.png")
 IMAGE_SPEED2 = pygame.image.load("Texture/Interface/2x.png")
 IMAGE_SPEED3 = pygame.image.load("Texture/Interface/3x.png")
 
+IMAGE_INFO = pygame.image.load("Texture/Interface/BUTTONS/INFO_OFF.png")
+IMAGE_CONS = pygame.image.load("Texture/Interface/BUTTONS/CONS_OFF.png")
+IMAGE_SEND = pygame.image.load("Texture/Interface/BUTTONS/SEND_OFF.png")
+IMAGE_ORDER = pygame.image.load("Texture/Interface/BUTTONS/ODER_OFF.png")
+IMAGE_MAG = pygame.image.load("Texture/Interface/BUTTONS/MAGAZINE_OFF.png")
+IMAGE_EXIT = pygame.image.load("Texture/Interface/BUTTONS/EXIT.png")
+
+IMAGE_INFO_ON = pygame.image.load("Texture/Interface/BUTTONS/INFO_ON.png")
+IMAGE_CONS_ON = pygame.image.load("Texture/Interface/BUTTONS/CONS_ON.png")
+IMAGE_SEND_ON = pygame.image.load("Texture/Interface/BUTTONS/SEND_ON.png")
+IMAGE_ORDER_ON = pygame.image.load("Texture/Interface/BUTTONS/ODER_ON.png")
+IMAGE_MAG_ON = pygame.image.load("Texture/Interface/BUTTONS/MAGAZINE_ON.png")
+
 
 IMAGE_STOP = pygame.transform.scale(IMAGE_STOP, (40, 40))
 IMAGE_SPEED1 = pygame.transform.scale(IMAGE_SPEED1, (40, 40))
 IMAGE_SPEED2 = pygame.transform.scale(IMAGE_SPEED2, (40, 40))
 IMAGE_SPEED3 = pygame.transform.scale(IMAGE_SPEED3, (40, 40))
+IMAGE_INFO = pygame.transform.scale(IMAGE_INFO, (80, 40))
+IMAGE_CONS = pygame.transform.scale(IMAGE_CONS, (80, 40))
+IMAGE_SEND = pygame.transform.scale(IMAGE_SEND, (80, 40))
+IMAGE_ORDER = pygame.transform.scale(IMAGE_ORDER, (80, 40))
+IMAGE_MAG = pygame.transform.scale(IMAGE_MAG, (80, 40))
+IMAGE_EXIT = pygame.transform.scale(IMAGE_EXIT, (80, 40))
+IMAGE_INFO_ON = pygame.transform.scale(IMAGE_INFO_ON, (80, 40))
+IMAGE_CONS_ON = pygame.transform.scale(IMAGE_CONS_ON, (80, 40))
+IMAGE_SEND_ON = pygame.transform.scale(IMAGE_SEND_ON, (80, 40))
+IMAGE_ORDER_ON = pygame.transform.scale(IMAGE_ORDER_ON, (80, 40))
+IMAGE_MAG_ON = pygame.transform.scale(IMAGE_MAG_ON, (80, 40))
+
+
 
 BUTTON_STOP = Button(Core.screen, 60, 70, 40, 40, image=IMAGE_STOP, onClick=lambda: DEF_CHANGETIME(0))
 BUTTON_SPEED1 = Button(Core.screen, 100, 70, 40, 40, image=IMAGE_SPEED1, onClick=lambda: DEF_CHANGETIME(1))
@@ -310,12 +376,12 @@ BUTTON_SPEED3 = Button(Core.screen, 300, 70, 40, 40, image=IMAGE_SPEED3, onClick
 BUTTON_ADDHUB = Button(Core.screen, 280, 300, 80, 30, text='DodajHub', onClick=lambda: Hub.DEF_ADDHUB())
 BUTTON_ORDERCREATE = Button(Core.screen, 150, 390, 70, 20, text="Order", onClick=lambda: DEF_ORDER())
 BUTTON_SENDTRANSPORT = Button(Core.screen,150,420,50,40, text="Send", onClick=lambda: DEF_SEND())
-BUTTON_INFO = Button(Core.screen, 20, 300, 80, 40, text="info", colour="green", onClick= lambda: DEF_PANEL(0))
-BUTTON_CONS = Button(Core.screen, 20, 365, 80, 40, text="Cons", colour="green", onClick= lambda: DEF_PANEL(1))
-BUTTON_SEND = Button(Core.screen, 20, 430, 80, 40, text="Send", colour="green", onClick= lambda: DEF_PANEL(2))
-BUTTON_ORDER = Button(Core.screen, 20, 495, 80, 40, text="Order", colour="green", onClick= lambda: DEF_PANEL(3))
-BUTTON_MAGAZINE = Button(Core.screen, 20, 560, 80, 40, text="Magazine", colour="green", onClick= lambda: DEF_PANEL(4))
-BUTTON_EXIT = Button(Core.screen, 350, 670, 50, 30, text='Exit', onClick=lambda: Core.DEF_EXIT())
+BUTTON_INFO = Button(Core.screen, 0, 300, 80, 40, image=IMAGE_INFO, onClick= lambda: DEF_PANEL(0),)
+BUTTON_CONS = Button(Core.screen, 0, 340, 80, 40, image=IMAGE_CONS, onClick= lambda: DEF_PANEL(1))
+BUTTON_SEND = Button(Core.screen, 0, 380, 80, 40, image=IMAGE_SEND, onClick= lambda: DEF_PANEL(2))
+BUTTON_ORDER = Button(Core.screen, 0, 420, 80, 40, image=IMAGE_ORDER, onClick= lambda: DEF_PANEL(3))
+BUTTON_MAGAZINE = Button(Core.screen, 0, 460, 80, 40, image=IMAGE_MAG, onClick= lambda: DEF_PANEL(4))
+BUTTON_EXIT = Button(Core.screen, 0, 680, 80, 40, image=IMAGE_EXIT, onClick=lambda: Core.DEF_EXIT())
 #BUTTON_SETTING = Button(Core.screen, 0, 670, 50, 30, text='Setting', onClick=lambda: print("hello"))
 
 BUTTON_ORDERCREATE.hide()
