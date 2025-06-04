@@ -27,10 +27,21 @@ DICT_AMMO = {}
 DICT_SUPPLE = {}
 
 
-font1 = pygame.font.Font('Font/digital-7.ttf',42)
+font1 = pygame.font.Font('Font/digital-7.ttf',35)
 font2 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',30)
 font3 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',12)
 font4 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',50)
+
+
+IMAGE_GOODW = pygame.image.load("Texture/Interface/GOODW.png")
+IMAGE_FOG = pygame.image.load("Texture/Interface/FOG.png")
+IMAGE_RAIN = pygame.image.load("Texture/Interface/RAIN.png")
+IMAGE_TUNDER = pygame.image.load("Texture/Interface/TUNDER.png")\
+
+IMAGE_GOODW = pygame.transform.scale(IMAGE_GOODW,(80, 40))
+IMAGE_FOG = pygame.transform.scale(IMAGE_FOG,(80, 40))
+IMAGE_RAIN = pygame.transform.scale(IMAGE_RAIN,(80, 40))
+IMAGE_TUNDER = pygame.transform.scale(IMAGE_TUNDER,(80, 40))
 
 VAL_AMMO = 200
 VAL_FUEL = 300
@@ -121,17 +132,27 @@ def DEF_HUBREMOVE(id_hub):
 
 def SHOW_TICKET():
 
-    TicketPLAYER = font2.render("PLAYER:" + str(VAL_TICKET_PLAYER), True, "White")
+    TicketPLAYER = font2.render(str(VAL_TICKET_PLAYER), True, "White")
     TicketPLAYERShowRect = TicketPLAYER.get_rect()
     TicketPLAYERShowRect.x = 10
-    TicketPLAYERShowRect.y = 200
+    TicketPLAYERShowRect.y = 100
     screen.blit(TicketPLAYER, TicketPLAYERShowRect)
 
-    TicketEnemy = font2.render("ENEMY:" + str(VAL_TICKET_ENEMY), True, "White")
+    TicketEnemy = font2.render(str(VAL_TICKET_ENEMY), True, "White")
     TicketEnemyRShowRect = TicketEnemy.get_rect()
-    TicketEnemyRShowRect.x = 270
-    TicketEnemyRShowRect.y = 200
+    TicketEnemyRShowRect.x = 80
+    TicketEnemyRShowRect.y = 100
     screen.blit(TicketEnemy, TicketEnemyRShowRect)
+
+def SHOW_POGODA():
+    if BOOL_GoodW:
+        screen.blit(IMAGE_GOODW,(320,10))
+    elif BOOL_fog:
+        screen.blit(IMAGE_FOG, (320, 10))
+    elif BOOL_Rain:
+        screen.blit(IMAGE_RAIN, (320, 10))
+    elif BOOL_Thunder:
+        screen.blit(IMAGE_TUNDER, (320, 10))
 
 def DEF_EXIT():
     global BOOL_EXIT
@@ -173,7 +194,7 @@ def DEF_ENDGAME(ticket):
 def DEF_Weather():
     global VAL_LASTHOUERCORE, VAL_MINUTES, VAL_HOURS, BOOL_GoodW,BOOL_Rain,BOOL_fog,BOOL_Thunder
 
-    if VAL_HOURS == 6 and VAL_MINUTES == 0:
+    if VAL_HOURS == 9 and VAL_MINUTES == 0:
         if VAL_LASTHOUERCORE != VAL_HOURS:
             pogoda = random.randint(0,3)
 

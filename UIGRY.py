@@ -9,8 +9,8 @@ import Hub
 
 VAL_PASSTIME = 0
 VAL_CHANGETIME = 0
-VAL_X = 150
-VAL_Y = 300
+VAL_X = 180
+VAL_Y = 320
 VAL_IDSEND = ""
 
 
@@ -41,8 +41,8 @@ def DEF_DISPLAY():
     czas = f"{Core.VAL_HOURS:02}:{Core.VAL_MINUTES:02}"
     showTime = Core.font1.render(czas, True, "white")
     showTimeRect = showTime.get_rect()
-    showTimeRect.x = 160
-    showTimeRect.y = 75
+    showTimeRect.x = 15
+    showTimeRect.y = 25
     Core.screen.blit(showTime, showTimeRect)
 
 def DEF_CHANGETIME(t):
@@ -220,18 +220,16 @@ def SHOW_ORDER():
 def SHOW_CURRENCY():
     global LIST_DROPDOWN_OPTION
 
-    Ammo = Core.font2.render("Currency: " + str(Core.VAL_CURRENCY), True, "White")
+    Ammo = Core.font2.render(str(Core.VAL_CURRENCY), True, "White")
     AmmoShowRect = Ammo.get_rect()
-    AmmoShowRect.x = 200
-    AmmoShowRect.y = 260
+    AmmoShowRect.x = 350
+    AmmoShowRect.y = 230
     Core.screen.blit(Ammo, AmmoShowRect)
 
     #jest to do dropdown
 
 def SHOW_WARNING():
-    pygame.draw.rect(Core.screen,"black",RECT_STROMWARNING)
-    pygame.draw.rect(Core.screen, "Red", RECT_MISSILEWARNING)
-    pygame.draw.rect(Core.screen, "orange", RECT_ATTACKWARNING)
+    Core.screen.blit(IMAGE_WARNING,(320,50))
 
 def DEF_ORDER():
 
@@ -350,6 +348,8 @@ IMAGE_SEND_ON = pygame.image.load("Texture/Interface/BUTTONS/SEND_ON.png")
 IMAGE_ORDER_ON = pygame.image.load("Texture/Interface/BUTTONS/ODER_ON.png")
 IMAGE_MAG_ON = pygame.image.load("Texture/Interface/BUTTONS/MAGAZINE_ON.png")
 
+IMAGE_WARNING = pygame.image.load("Texture/Interface/Warning_BLACK.png")
+
 
 IMAGE_STOP = pygame.transform.scale(IMAGE_STOP, (40, 40))
 IMAGE_SPEED1 = pygame.transform.scale(IMAGE_SPEED1, (40, 40))
@@ -366,22 +366,22 @@ IMAGE_CONS_ON = pygame.transform.scale(IMAGE_CONS_ON, (80, 40))
 IMAGE_SEND_ON = pygame.transform.scale(IMAGE_SEND_ON, (80, 40))
 IMAGE_ORDER_ON = pygame.transform.scale(IMAGE_ORDER_ON, (80, 40))
 IMAGE_MAG_ON = pygame.transform.scale(IMAGE_MAG_ON, (80, 40))
-
+IMAGE_WARNING = pygame.transform.scale(IMAGE_WARNING, (80, 40))
 
 
 BUTTON_STOP = Button(Core.screen, 60, 70, 40, 40, image=IMAGE_STOP, onClick=lambda: DEF_CHANGETIME(0))
-BUTTON_SPEED1 = Button(Core.screen, 100, 70, 40, 40, image=IMAGE_SPEED1, onClick=lambda: DEF_CHANGETIME(1))
-BUTTON_SPEED2 = Button(Core.screen, 260, 70, 40, 40, image=IMAGE_SPEED2, onClick=lambda: DEF_CHANGETIME(4.5))
-BUTTON_SPEED3 = Button(Core.screen, 300, 70, 40, 40, image=IMAGE_SPEED3, onClick=lambda: DEF_CHANGETIME(7.5))
-BUTTON_ADDHUB = Button(Core.screen, 280, 300, 80, 30, text='DodajHub', onClick=lambda: Hub.DEF_ADDHUB())
+BUTTON_SPEED1 = Button(Core.screen, 60, 70, 40, 40, image=IMAGE_SPEED1, onClick=lambda: DEF_CHANGETIME(1))
+BUTTON_SPEED2 = Button(Core.screen, 60, 70, 40, 40, image=IMAGE_SPEED2, onClick=lambda: DEF_CHANGETIME(4.5))
+BUTTON_SPEED3 = Button(Core.screen, 60, 70, 40, 40, image=IMAGE_SPEED3, onClick=lambda: DEF_CHANGETIME(7.5))
+BUTTON_ADDHUB = Button(Core.screen, 60, 300, 80, 30, text='DodajHub', onClick=lambda: Hub.DEF_ADDHUB())
 BUTTON_ORDERCREATE = Button(Core.screen, 150, 390, 70, 20, text="Order", onClick=lambda: DEF_ORDER())
 BUTTON_SENDTRANSPORT = Button(Core.screen,150,420,50,40, text="Send", onClick=lambda: DEF_SEND())
-BUTTON_INFO = Button(Core.screen, 0, 300, 80, 40, image=IMAGE_INFO, onClick= lambda: DEF_PANEL(0),)
-BUTTON_CONS = Button(Core.screen, 0, 340, 80, 40, image=IMAGE_CONS, onClick= lambda: DEF_PANEL(1))
-BUTTON_SEND = Button(Core.screen, 0, 380, 80, 40, image=IMAGE_SEND, onClick= lambda: DEF_PANEL(2))
-BUTTON_ORDER = Button(Core.screen, 0, 420, 80, 40, image=IMAGE_ORDER, onClick= lambda: DEF_PANEL(3))
-BUTTON_MAGAZINE = Button(Core.screen, 0, 460, 80, 40, image=IMAGE_MAG, onClick= lambda: DEF_PANEL(4))
-BUTTON_EXIT = Button(Core.screen, 0, 680, 80, 40, image=IMAGE_EXIT, onClick=lambda: Core.DEF_EXIT())
+BUTTON_INFO = Button(Core.screen, 0, 270, 80, 40, image=IMAGE_INFO, onClick= lambda: DEF_PANEL(0),)
+BUTTON_CONS = Button(Core.screen, 0, 310, 80, 40, image=IMAGE_CONS, onClick= lambda: DEF_PANEL(1))
+BUTTON_SEND = Button(Core.screen, 0, 350, 80, 40, image=IMAGE_SEND, onClick= lambda: DEF_PANEL(2))
+BUTTON_ORDER = Button(Core.screen, 0, 390, 80, 40, image=IMAGE_ORDER, onClick= lambda: DEF_PANEL(3))
+BUTTON_MAGAZINE = Button(Core.screen, 0, 430, 80, 40, image=IMAGE_MAG, onClick= lambda: DEF_PANEL(4))
+BUTTON_EXIT = Button(Core.screen, 0, 470, 80, 40, image=IMAGE_EXIT, onClick=lambda: Core.DEF_EXIT())
 #BUTTON_SETTING = Button(Core.screen, 0, 670, 50, 30, text='Setting', onClick=lambda: print("hello"))
 
 BUTTON_ORDERCREATE.hide()

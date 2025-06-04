@@ -50,14 +50,19 @@ while Core.BOOL_RUNNING:
 
     if not VAL_WHATID in Core.DICT_HUB:
         VAL_WHATID = Core.VAL_CENTRALHUBID
+
     get_tieck = pygame.time.get_ticks()
     SimulationCore.DEF_INWHILE(dt,get_tieck)
     UIGRY.SHOW_CURRENCY()
     UIGRY.SHOW_WARNING()
     if UIGRY.BOOL_INFO:
+
         if UIGRY.BOOL_INFO_OBJECT:
             SimulationCore.LIST_INFANTRY[VAL_WHATIDOBJECT].DEF_Show()
+            SimulationCore.LIST_INFANTRY[VAL_WHATIDOBJECT].DEF_SETBOOL(False)
         else:
+            if VAL_WHATIDOBJECT != '':
+                SimulationCore.LIST_INFANTRY[VAL_WHATIDOBJECT].DEF_SETBOOL(True)
             UIGRY.SHOW_INFO(VAL_WHATID)
 
     if UIGRY.BOOL_ORDER:
@@ -71,7 +76,9 @@ while Core.BOOL_RUNNING:
 
     if UIGRY.BOOL_CONS:
         UIGRY.SHOW_CONS()
+
     Core.DEF_Weather()
+    Core.SHOW_POGODA()
     Core.SHOW_TICKET()
     Core.DEF_ENDGAME(get_tieck)
 

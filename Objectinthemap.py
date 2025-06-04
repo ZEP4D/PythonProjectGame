@@ -8,7 +8,9 @@ from Core import BOOL_EXIT
 
 class MOC:
     def __init__(self,x,y,id,Front):
-        self.rect = pygame.Rect(x,y,20,20)
+        self.texture = pygame.image.load("Texture/MAP/placeholder.png").convert_alpha()
+        self.image = self.texture
+        self.rect = self.image.get_rect(center=(x,y))
         self.VAL_SPEED_X = 2
         self.VAL_SPEED_Y = 2
         self.VAL_POSE = pygame.Vector2(self.rect.center)
@@ -37,6 +39,7 @@ class MOC:
         self.VAL_DEBUFF = 0
         self.VAL_DEFENCE_BASE = 200
         self.VAL_ENEMY_ID = None
+        self.BOOL_SELECTED = False
 
     def DEF_UPDATE(self, dt,listen):
 
@@ -102,17 +105,21 @@ class MOC:
                     self.BOOL_HUB = False
                     self.BOOL_HUBCONNECT = False
 
-            min_distance = float('inf')
-            for enemy in listen:
-                enemy_distance = pygame.Vector2(listen[enemy].VAL_POSE.x, listen[enemy].VAL_POSE.y)
-                Nearestpose = self.VAL_POSE.distance_to(enemy_distance)
-                if Nearestpose < min_distance:
-                    min_distance = Nearestpose
-                    if min_distance < 80:
-                        self.BOOL_INBATTLE = True
-                        self.VAL_ENEMY_ID = enemy
-                    else:
-                        self.BOOL_INBATTLE = False
+        min_distance_ene = float('inf')
+        for enemy in listen:
+            min_distance_en = pygame.Vector2(listen[enemy].VAL_POSE.x, listen[enemy].VAL_POSE.y)
+            Nearestpose = self.VAL_POSE.distance_to(min_distance_en)
+            if Nearestpose < min_distance_ene:
+                min_distance_ene = Nearestpose
+                if min_distance_ene < 80:
+                    self.BOOL_INBATTLE = True
+                    self.VAL_ENEMY_ID = enemy
+                else:
+                    self.BOOL_INBATTLE = False
+
+
+        if self.BOOL_SELECTED:
+            self.image = self.texture
 
         if self.rect.left <= 400 or self.rect.right >= Core.SizeScreenWidth:
             self.VAL_SPEED_X =  -self.VAL_SPEED_X
@@ -145,8 +152,12 @@ class MOC:
     def DEF_DRAW(self):
         if self.BOOL_HUB:
             pygame.draw.line(Core.screen, "black", self.rect.center, self.Correcthub)
-        pygame.draw.rect(Core.screen,self.COLOR_ID,self.rect)
+
+        
+        Core.screen.blit(self.image,self.rect)
     def DEF_Show(self):
+
+        self.image = pygame.image.load("Texture/MAP/AI_P_ON.png").convert_alpha()
         ID = Core.font2.render("ID: "+str(self.VAL_ID), True, "White")
         IDShowRect = ID.get_rect()
         IDShowRect.x = 150
@@ -207,8 +218,8 @@ class MOC:
                         case 1:  # Tura AI Gracz
                             if ticket - Core.Star_Tiecket >= 3000:
                                 punkty = Core.DEF_POINTSCALCULATOR(self.VAL_APC, self.VAL_Cars, self.VAL_MENPOWER)
-
-                                if punkty > 200:
+                                VAL_ENEMY_DEFENCE = Enemy[self.VAL_ENEMY_ID].VAL_DEFENCE_BASE
+                                if punkty > VAL_ENEMY_DEFENCE:
                                     howmenymanpower = random.randint(0, 20)
                                     Enemy[self.VAL_ENEMY_ID].VAL_HEALTH = Enemy[self.VAL_ENEMY_ID].VAL_HEALTH - howmenymanpower
 
@@ -223,12 +234,28 @@ class MOC:
 
                         case 2:  # Tura AI Wroga
                             if ticket - Core.Star_Tiecket >= 3000:
-                                print("Enemy")
+                                VAL_ENEMY_POINT = Enemy[self.VAL_ENEMY_ID].VAL_ATTACK_POINT
+
+                                if VAL_ENEMY_POINT > self.VAL_DEFENCE_BASE:
+                                    howmenyapc = random.randint(0, 20)
+                                    howmenycars = random.randint(0, 20)
+                                    howmenymanpower = random.randint(0, 20)
+
+                                    self.VAL_APC = self.VAL_APC - howmenyapc
+                                    self.VAL_Cars = self.VAL_Cars - howmenycars
+                                    self.VAL_Health = self.VAL_HEALTH - howmenymanpower
+                                else:
+                                    howmenymanpower = random.randint(0, 20)
+                                    Enemy[self.VAL_ENEMY_ID].VAL_HEALTH = Enemy[self.VAL_ENEMY_ID].VAL_HEALTH - howmenymanpower
                     self.VAL_LASTHOUER = Core.VAL_HOURS
+    def DEF_SETBOOL(self,flaga):
+
+        self.BOOL_SELECTED = flaga
 
 class Infantry(MOC):
     def __init__(self,x,y,id,num):
         super().__init__(x,y,id,num)
+        self.image = pygame.image.load("Texture/MAP/AI_P_OFF.png").convert_alpha()
         self.VAL_HEALTH = 100
         self.VAL_FUEL = 1
         self.VAL_AMMO = 100
@@ -311,7 +338,8 @@ class ENEMY:
     def __init__(self,x,y,front):
         self.VAL_HEALTH = 100
         self.VAL_ID = "e1"
-        self.rect = pygame.Rect(x, y, 20, 20)
+        self.image = pygame.image.load("Texture/MAP/AI_E.png").convert_alpha()
+        self.rect = self.image.get_rect(center=(x,y))
         self.Front = front
         self.VAL_POSENUMBER = self.Front.getnumberforposition()
         self.VAL_TARGETPOSE = pygame.Vector2(0, 0)
@@ -344,7 +372,7 @@ class ENEMY:
             self.rect.topleft = (round(self.VAL_POSE.x), round(self.VAL_POSE.y))
 
     def DEF_DRAW(self):
-        pygame.draw.rect(Core.screen,"BROWN",self.rect)
+        Core.screen.blit(self.image,self.rect)
 
     def GET_HEALTH(self):
         return self.VAL_HEALTH
