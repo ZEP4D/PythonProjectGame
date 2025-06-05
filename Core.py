@@ -32,7 +32,7 @@ font2 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',30)
 font3 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',12)
 font4 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',50)
 
-
+IMAGE_MAP = pygame.image.load("Texture/MAP/MAPA.png")
 IMAGE_GOODW = pygame.image.load("Texture/Interface/GOODW.png")
 IMAGE_FOG = pygame.image.load("Texture/Interface/FOG.png")
 IMAGE_RAIN = pygame.image.load("Texture/Interface/RAIN.png")

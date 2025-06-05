@@ -45,8 +45,36 @@ def DEF_DISPLAY():
     showTimeRect.y = 25
     Core.screen.blit(showTime, showTimeRect)
 
-def DEF_CHANGETIME(t):
-    Core.VAL_SPPEDTIME = t
+def DEF_CHANGETIME(num,t):
+
+    match(num):
+        case 0:
+            Core.VAL_SPPEDTIME = t
+            BUTTON_STOP.setImage(IMAGE_STOP_ON)
+            BUTTON_SPEED1.setImage(IMAGE_SPEED1_OFF)
+            BUTTON_SPEED2.setImage(IMAGE_SPEED2_OFF)
+            BUTTON_SPEED3.setImage(IMAGE_SPEED3_OFF)
+        case 1:
+            Core.VAL_SPPEDTIME = t
+            BUTTON_STOP.setImage(IMAGE_STOP_OFF)
+            BUTTON_SPEED1.setImage(IMAGE_SPEED1_ON)
+            BUTTON_SPEED2.setImage(IMAGE_SPEED2_OFF)
+            BUTTON_SPEED3.setImage(IMAGE_SPEED3_OFF)
+        case 2:
+            Core.VAL_SPPEDTIME = t
+            BUTTON_STOP.setImage(IMAGE_STOP_OFF)
+            BUTTON_SPEED1.setImage(IMAGE_SPEED1_OFF)
+            BUTTON_SPEED2.setImage(IMAGE_SPEED2_ON)
+            BUTTON_SPEED3.setImage(IMAGE_SPEED3_OFF)
+        case 3:
+            Core.VAL_SPPEDTIME = t
+            BUTTON_STOP.setImage(IMAGE_STOP_OFF)
+            BUTTON_SPEED1.setImage(IMAGE_SPEED1_OFF)
+            BUTTON_SPEED2.setImage(IMAGE_SPEED2_OFF)
+            BUTTON_SPEED3.setImage(IMAGE_SPEED3_ON)
+
+
+
 
 def DEF_HIDE():
     BUTTON_ADDHUB.hide()
@@ -167,7 +195,7 @@ def SHOW_CONS():
     BUTTON_ADDHUB.show()
 
 
-    Text = Core.font2.render("Cost: " + str(Core.VAL_COST_HUB), True, "White")
+    Text = Core.font2.render("Cost:" + str(Core.VAL_COST_HUB), True, "White")
     ShowRect = Text.get_rect()
     ShowRect.x = VAL_X
     ShowRect.y = VAL_Y
@@ -330,10 +358,15 @@ IMAGE_LEFTPANEL = pygame.transform.scale(IMAGE_LEFTPANEL, (400, 720))
 SURFACE_LEFTPANEL = pygame.Surface((400, 720))
 SURFACE_LEFTPANEL.blit(IMAGE_LEFTPANEL, (0, 0))
 #-----------------------------------------------------------------------------------------------------------------------
-IMAGE_STOP = pygame.image.load("Texture/Interface/Pause.png")
-IMAGE_SPEED1 = pygame.image.load("Texture/Interface/1x.png")
-IMAGE_SPEED2 = pygame.image.load("Texture/Interface/2x.png")
-IMAGE_SPEED3 = pygame.image.load("Texture/Interface/3x.png")
+IMAGE_STOP_OFF = pygame.image.load("Texture/Interface/BUTTONS/PAUSE_OFF.png")
+IMAGE_SPEED1_OFF = pygame.image.load("Texture/Interface/BUTTONS/1SPEED_OFF.png")
+IMAGE_SPEED2_OFF = pygame.image.load("Texture/Interface/BUTTONS/2SPEED_OFF.png")
+IMAGE_SPEED3_OFF = pygame.image.load("Texture/Interface/BUTTONS/3SPEED_OFF.png")
+
+IMAGE_STOP_ON = pygame.image.load("Texture/Interface/BUTTONS/PAUSE_ON.png")
+IMAGE_SPEED1_ON = pygame.image.load("Texture/Interface/BUTTONS/1SPEED_ON.png")
+IMAGE_SPEED2_ON = pygame.image.load("Texture/Interface/BUTTONS/2SPEED_ON.png")
+IMAGE_SPEED3_ON = pygame.image.load("Texture/Interface/BUTTONS/3SPEED_ON.png")
 
 IMAGE_INFO = pygame.image.load("Texture/Interface/BUTTONS/INFO_OFF.png")
 IMAGE_CONS = pygame.image.load("Texture/Interface/BUTTONS/CONS_OFF.png")
@@ -349,12 +382,11 @@ IMAGE_ORDER_ON = pygame.image.load("Texture/Interface/BUTTONS/ODER_ON.png")
 IMAGE_MAG_ON = pygame.image.load("Texture/Interface/BUTTONS/MAGAZINE_ON.png")
 
 IMAGE_WARNING = pygame.image.load("Texture/Interface/Warning_BLACK.png")
+IMAGE_S_SEND = pygame.image.load("Texture/Interface/BUTTONS/SEND.png")
+IMAGE_S_ORDER = pygame.image.load("Texture/Interface/BUTTONS/ORDER.png")
+IMAGE_S_HUB = pygame.image.load("Texture/Interface/BUTTONS/HUB.png")
 
 
-IMAGE_STOP = pygame.transform.scale(IMAGE_STOP, (40, 40))
-IMAGE_SPEED1 = pygame.transform.scale(IMAGE_SPEED1, (40, 40))
-IMAGE_SPEED2 = pygame.transform.scale(IMAGE_SPEED2, (40, 40))
-IMAGE_SPEED3 = pygame.transform.scale(IMAGE_SPEED3, (40, 40))
 IMAGE_INFO = pygame.transform.scale(IMAGE_INFO, (80, 40))
 IMAGE_CONS = pygame.transform.scale(IMAGE_CONS, (80, 40))
 IMAGE_SEND = pygame.transform.scale(IMAGE_SEND, (80, 40))
@@ -369,32 +401,32 @@ IMAGE_MAG_ON = pygame.transform.scale(IMAGE_MAG_ON, (80, 40))
 IMAGE_WARNING = pygame.transform.scale(IMAGE_WARNING, (80, 40))
 
 
-BUTTON_STOP = Button(Core.screen, 60, 70, 40, 40, image=IMAGE_STOP, onClick=lambda: DEF_CHANGETIME(0))
-BUTTON_SPEED1 = Button(Core.screen, 60, 70, 40, 40, image=IMAGE_SPEED1, onClick=lambda: DEF_CHANGETIME(1))
-BUTTON_SPEED2 = Button(Core.screen, 60, 70, 40, 40, image=IMAGE_SPEED2, onClick=lambda: DEF_CHANGETIME(4.5))
-BUTTON_SPEED3 = Button(Core.screen, 60, 70, 40, 40, image=IMAGE_SPEED3, onClick=lambda: DEF_CHANGETIME(7.5))
-BUTTON_ADDHUB = Button(Core.screen, 60, 300, 80, 30, text='DodajHub', onClick=lambda: Hub.DEF_ADDHUB())
-BUTTON_ORDERCREATE = Button(Core.screen, 150, 390, 70, 20, text="Order", onClick=lambda: DEF_ORDER())
-BUTTON_SENDTRANSPORT = Button(Core.screen,150,420,50,40, text="Send", onClick=lambda: DEF_SEND())
-BUTTON_INFO = Button(Core.screen, 0, 270, 80, 40, image=IMAGE_INFO, onClick= lambda: DEF_PANEL(0),)
-BUTTON_CONS = Button(Core.screen, 0, 310, 80, 40, image=IMAGE_CONS, onClick= lambda: DEF_PANEL(1))
-BUTTON_SEND = Button(Core.screen, 0, 350, 80, 40, image=IMAGE_SEND, onClick= lambda: DEF_PANEL(2))
-BUTTON_ORDER = Button(Core.screen, 0, 390, 80, 40, image=IMAGE_ORDER, onClick= lambda: DEF_PANEL(3))
-BUTTON_MAGAZINE = Button(Core.screen, 0, 430, 80, 40, image=IMAGE_MAG, onClick= lambda: DEF_PANEL(4))
-BUTTON_EXIT = Button(Core.screen, 0, 470, 80, 40, image=IMAGE_EXIT, onClick=lambda: Core.DEF_EXIT())
+BUTTON_STOP = Button(Core.screen, 180, 0, 40, 40, image=IMAGE_STOP_OFF, onClick=lambda: DEF_CHANGETIME(0,0))
+BUTTON_SPEED1 = Button(Core.screen, 180, 40, 40, 40, image=IMAGE_SPEED1_ON, onClick=lambda: DEF_CHANGETIME(1,1))
+BUTTON_SPEED2 = Button(Core.screen, 220, 0, 40, 40, image=IMAGE_SPEED2_OFF, onClick=lambda: DEF_CHANGETIME(2,4.5))
+BUTTON_SPEED3 = Button(Core.screen, 220, 40, 40, 40, image=IMAGE_SPEED3_OFF, onClick=lambda: DEF_CHANGETIME(3,7.5))
+BUTTON_ADDHUB = Button(Core.screen, 280, 320, 80, 30,image=IMAGE_S_HUB, onClick=lambda: Hub.DEF_ADDHUB())
+BUTTON_ORDERCREATE = Button(Core.screen, 190, 450, 70, 20, image=IMAGE_S_ORDER, onClick=lambda: DEF_ORDER())
+BUTTON_SENDTRANSPORT = Button(Core.screen,190,450,50,30, image=IMAGE_S_SEND, onClick=lambda: DEF_SEND())
+BUTTON_INFO = Button(Core.screen, 5, 270, 80, 40, image=IMAGE_INFO, onClick= lambda: DEF_PANEL(0),)
+BUTTON_CONS = Button(Core.screen, 5, 310, 80, 40, image=IMAGE_CONS, onClick= lambda: DEF_PANEL(1))
+BUTTON_SEND = Button(Core.screen, 5, 350, 80, 40, image=IMAGE_SEND, onClick= lambda: DEF_PANEL(2))
+BUTTON_ORDER = Button(Core.screen, 5, 390, 80, 40, image=IMAGE_ORDER, onClick= lambda: DEF_PANEL(3))
+BUTTON_MAGAZINE = Button(Core.screen, 5, 430, 80, 40, image=IMAGE_MAG, onClick= lambda: DEF_PANEL(4))
+BUTTON_EXIT = Button(Core.screen, 5, 470, 80, 40, image=IMAGE_EXIT, onClick=lambda: Core.DEF_EXIT())
 #BUTTON_SETTING = Button(Core.screen, 0, 670, 50, 30, text='Setting', onClick=lambda: print("hello"))
 
 BUTTON_ORDERCREATE.hide()
 BUTTON_ADDHUB.hide()
 BUTTON_SENDTRANSPORT.hide()
 #-------------------
-TEXTBOX_AMMOSEND = TextBox(Core.screen,220,330,70,35, fontsize=10,borderThickness=1,colour="green")
-TEXTBOX_FUELSEND = TextBox(Core.screen,220,360,70,35, fontsize=10,borderThickness=1,colour="green")
-TEXTBOX_SUPPLIESEND = TextBox(Core.screen,230,395,70,35, fontsize=10,borderThickness=1,colour="green")
+TEXTBOX_AMMOSEND = TextBox(Core.screen,300,350,70,35, fontsize=10,borderThickness=1,colour="#078AE8")
+TEXTBOX_FUELSEND = TextBox(Core.screen,300,380,70,35, fontsize=10,borderThickness=1,colour="#078AE8")
+TEXTBOX_SUPPLIESEND = TextBox(Core.screen,300,410,70,35, fontsize=10,borderThickness=1,colour="#078AE8")
 
-TEXTBOX_AMMORDER = TextBox(Core.screen,220,300,70,35, fontsize=10,borderThickness=1,colour="green")
-TEXTBOX_FUELORDER = TextBox(Core.screen,220,330,70,35, fontsize=10,borderThickness=1,colour="green")
-TEXTBOX_SUPPLORDER = TextBox(Core.screen,230,360,70,35, fontsize=10,borderThickness=1,colour="green")
+TEXTBOX_AMMORDER = TextBox(Core.screen,300,320,70,35, fontsize=10,borderThickness=1,colour="#078AE8")
+TEXTBOX_FUELORDER = TextBox(Core.screen,300,350,70,35, fontsize=10,borderThickness=1,colour="#078AE8")
+TEXTBOX_SUPPLORDER = TextBox(Core.screen,300,380,70,35, fontsize=10,borderThickness=1,colour="#078AE8")
 
 
 TEXTBOX_AMMORDER.hide()
