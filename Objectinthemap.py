@@ -160,20 +160,20 @@ class MOC:
         self.image = pygame.image.load("Texture/MAP/AI_P_ON.png").convert_alpha()
         ID = Core.font2.render("ID: "+str(self.VAL_ID), True, "White")
         IDShowRect = ID.get_rect()
-        IDShowRect.x = 150
-        IDShowRect.y = 300
+        IDShowRect.x = 180
+        IDShowRect.y = 320
         Core.screen.blit(ID, IDShowRect)
 
         Health = Core.font2.render("Health: "+str(self.VAL_HEALTH), True, "White")
         HealthoShowRect = Health.get_rect()
-        HealthoShowRect.x = 150
-        HealthoShowRect.y = 330
+        HealthoShowRect.x = 180
+        HealthoShowRect.y = 350
         Core.screen.blit(Health, HealthoShowRect)
 
         Ammo = Core.font2.render("Ammo: "+str(self.VAL_AMMO), True, "White")
         AmmoShowRect = Ammo.get_rect()
-        AmmoShowRect.x = 150
-        AmmoShowRect.y = 360
+        AmmoShowRect.x = 180
+        AmmoShowRect.y = 380
         Core.screen.blit(Ammo, AmmoShowRect)
 
         Fuel_show =self.VAL_FUEL
@@ -184,14 +184,14 @@ class MOC:
 
         Fuel = Core.font2.render("Fuel: "+str(format_fuel), True, "White")
         FuelShowRect = Fuel.get_rect()
-        FuelShowRect.x = 150
-        FuelShowRect.y = 390
+        FuelShowRect.x = 180
+        FuelShowRect.y = 410
         Core.screen.blit(Fuel, FuelShowRect)
 
         Supple = Core.font2.render("Supple: "+str(self.VAL_SUPPLE), True, "White")
         SuppleShowRect = Supple.get_rect()
-        SuppleShowRect.x = 150
-        SuppleShowRect.y = 420
+        SuppleShowRect.x = 180
+        SuppleShowRect.y = 440
         Core.screen.blit(Supple, SuppleShowRect)
     def GET_ID(self):
         return self.VAL_ID
@@ -257,7 +257,7 @@ class Infantry(MOC):
         super().__init__(x,y,id,num)
         self.image = pygame.image.load("Texture/MAP/AI_P_OFF.png").convert_alpha()
         self.VAL_HEALTH = 100
-        self.VAL_FUEL = 1
+        self.VAL_FUEL = 2
         self.VAL_AMMO = 100
         self.VAL_SUPPLE = 30
         self.COLOR_ID = "Black"

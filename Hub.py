@@ -58,9 +58,9 @@ def DEF_LINE(position,hubkey):
         VAL_STARTDOTKEY = ""
 
 def DEF_INFOPANEL(id):
-    Fuel = random.randint(1, 10)
-    Ammo = random.randint(1, 10)
-    Supple = random.randint(1, 10)
+    Fuel = 0
+    Ammo = 0
+    Supple = 0
 
 
     if id == Core.VAL_CENTRALHUBID:
@@ -74,7 +74,7 @@ def DEF_INFOPANEL(id):
 
 def DEF_HUBCENTRAL():
     x = random.randint(410,1200)
-    y = random.randint(550,710)
+    y = random.randint(600,700)
     new_ret = pygame.Rect(x,y, 50, 50)
     Core.DICT_HUB[Core.VAL_CENTRALHUBID] = new_ret
     DEF_INFOPANEL(Core.VAL_CENTRALHUBID)

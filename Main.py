@@ -8,7 +8,8 @@ import SimulationCore
 from pygame_widgets.button import Button
 
 IMAGE_MAIN = pygame.image.load("Texture/MainMenu.png").convert_alpha()
-pygame.display.set_caption("Shrimp")
+IMAGE_LOGO = pygame.image.load("Texture/logo.png").convert_alpha()
+pygame.display.set_caption("SHRIMP CONQUEST")
 BUTTON_STAR_GAME = Button(Core.screen, 1100, 300, 120, 60, text="START", onClick=lambda: CHANGE_FLAG() )
 BUTTON_EXIT_GAME = Button(Core.screen, 1100, 470, 120, 60, text="EXIT", onClick=lambda: Core.DEF_EXIT())
 
@@ -16,7 +17,6 @@ BOOL_GAMESCENE = False
 
 def CHANGE_FLAG():
     global BOOL_GAMESCENE
-    print(BOOL_GAMESCENE)
     BOOL_GAMESCENE = True
 
 SimulationCore.DEF_PREWHILE()
@@ -140,11 +140,12 @@ def MAIN_SCENE():
     UIGRY.BUTTON_SPEED2.hide()
     UIGRY.BUTTON_SPEED3.hide()
     Core.screen.blit(IMAGE_MAIN,(0,0))
-
+    Core.screen.blit(IMAGE_LOGO,(800,100))
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
             Core.BOOL_RUNNING = False
+
 
     pygame_widgets.update(events)
     pygame.display.update()
