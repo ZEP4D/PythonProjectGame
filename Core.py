@@ -95,6 +95,9 @@ def DEF_FUELUSE(APC,CARS,TRUCK, TRUCK_FUEL):
 
     return  Fuel_number
 
+
+
+
 def DEF_POINTSCALCULATOR(APC,CARS,MENPOWER):
     Points = 0
     Points += APC * VAL_POINT_APC
@@ -206,7 +209,7 @@ def DEF_ENDGAME(ticket):
 def DEF_Weather():
     global VAL_LASTHOUERCORE, VAL_MINUTES, VAL_HOURS, BOOL_GoodW,BOOL_Rain,BOOL_fog,BOOL_Thunder
 
-    if VAL_HOURS == 9 and VAL_MINUTES == 0:
+    if VAL_HOURS == 8 and VAL_MINUTES == 0:
         if VAL_LASTHOUERCORE != VAL_HOURS:
             pogoda = random.randint(0,3)
 
@@ -233,7 +236,6 @@ def DEF_Weather():
                     BOOL_fog = False
             VAL_LASTHOUERCORE = VAL_HOURS
 
-
-
-
-
+def DEF_STARTICKET():
+    global Star_Tiecket
+    Star_Tiecket = pygame.time.get_ticks()

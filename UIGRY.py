@@ -21,6 +21,7 @@ BOOL_CONS=False
 BOOL_SEND=False
 BOOL_ORDER=False
 BOOL_MAGAZINE=False
+BOOL_WARNING = False
 
 
 def DEF_CLOCK(dt):
@@ -72,9 +73,6 @@ def DEF_CHANGETIME(num,t):
             BUTTON_SPEED1.setImage(IMAGE_SPEED1_OFF)
             BUTTON_SPEED2.setImage(IMAGE_SPEED2_OFF)
             BUTTON_SPEED3.setImage(IMAGE_SPEED3_ON)
-
-
-
 
 def DEF_HIDE():
     BUTTON_ADDHUB.hide()
@@ -266,19 +264,36 @@ def DEF_ORDER():
             if Core.VAL_CURRENCY >= (int(TEXTBOX_AMMORDER.getText()) * Core.VAL_COST_AMMO):
                 Core.VAL_CURRENCY = Core.VAL_CURRENCY - (int(TEXTBOX_AMMORDER.getText()) * Core.VAL_COST_AMMO)
                 Core.VAL_AMMO = Core.VAL_AMMO + int(TEXTBOX_AMMORDER.getText())
-
+            else:
+                DEF_WARNING_START()
+        else:
+            DEF_WARNING_START()
+    else:
+        DEF_WARNING_START()
 
     if TEXTBOX_FUELORDER.getText() != 0 and TEXTBOX_FUELORDER.getText() != "":
         if re.match(r'^\d+$', TEXTBOX_FUELORDER.getText()):
             if Core.VAL_CURRENCY >= (int(TEXTBOX_FUELORDER.getText()) * Core.VAL_COST_FUEL):
                 Core.VAL_CURRENCY = Core.VAL_CURRENCY - (int(TEXTBOX_FUELORDER.getText()) * Core.VAL_COST_FUEL)
                 Core.VAL_FUEL = Core.VAL_FUEL + int(TEXTBOX_FUELORDER.getText())
+            else:
+                DEF_WARNING_START()
+        else:
+            DEF_WARNING_START()
+    else:
+        DEF_WARNING_START()
 
     if TEXTBOX_SUPPLORDER.getText() != 0 and TEXTBOX_SUPPLORDER.getText() != "":
         if re.match(r'^\d+$', TEXTBOX_SUPPLORDER.getText()):
             if Core.VAL_CURRENCY >= (int(TEXTBOX_SUPPLORDER.getText()) * Core.VAL_COST_SUPPLE):
                 Core.VAL_CURRENCY = Core.VAL_CURRENCY - (int(TEXTBOX_SUPPLORDER.getText()) * Core.VAL_COST_SUPPLE)
                 Core.VAL_SUPPLE = Core.VAL_SUPPLE + int(TEXTBOX_SUPPLORDER.getText())
+            else:
+                DEF_WARNING_START()
+        else:
+            DEF_WARNING_START()
+    else:
+        DEF_WARNING_START()
 
     TEXTBOX_AMMORDER.setText("")
     TEXTBOX_FUELORDER.setText("")
@@ -287,36 +302,65 @@ def DEF_ORDER():
 def DEF_SEND():
     global VAL_IDSEND
 
-    Trasa = Hub.DEF_ASTAR(VAL_IDSEND)
 
-    if TEXTBOX_AMMOSEND.getText() != 0 and TEXTBOX_AMMOSEND.getText() != "":
-        if re.match(r'^\d+$', TEXTBOX_AMMOSEND.getText()):
-            if VAL_IDSEND != "None":
-                for ID in Trasa:
-                    if ID == Core.VAL_CENTRALHUBID:
-                        Core.DICT_AMMO[VAL_IDSEND] += int(TEXTBOX_AMMOSEND.getText())
-                        Core.VAL_AMMO -= int(TEXTBOX_AMMOSEND.getText())
+    if VAL_IDSEND == "None":
+        DEF_WARNING_START()
+    else:
 
-    if TEXTBOX_FUELSEND.getText() != 0 and TEXTBOX_FUELSEND.getText() != "":
-        if re.match(r'^\d+$', TEXTBOX_FUELSEND.getText()):
-            if VAL_IDSEND != "None":
-                for ID in Trasa:
-                    if ID == Core.VAL_CENTRALHUBID:
-                        Core.DICT_FUEL[VAL_IDSEND] += int(TEXTBOX_FUELSEND.getText())
-                        Core.VAL_FUEL -= int(TEXTBOX_FUELSEND.getText())
+        Trasa = Hub.DEF_ASTAR(VAL_IDSEND)
+
+        if TEXTBOX_AMMOSEND.getText() != 0 and TEXTBOX_AMMOSEND.getText() != "":
+            if re.match(r'^\d+$', TEXTBOX_AMMOSEND.getText()):
+                if VAL_IDSEND != "None":
+                    for ID in Trasa:
+                        if ID == Core.VAL_CENTRALHUBID:
+                            Core.DICT_AMMO[VAL_IDSEND] += int(TEXTBOX_AMMOSEND.getText())
+                            Core.VAL_AMMO -= int(TEXTBOX_AMMOSEND.getText())
+                        else:
+                            DEF_WARNING_START()
+                else:
+                    DEF_WARNING_START()
+            else:
+                DEF_WARNING_START()
+        else:
+            DEF_WARNING_START()
+
+        if TEXTBOX_FUELSEND.getText() != 0 and TEXTBOX_FUELSEND.getText() != "":
+            if re.match(r'^\d+$', TEXTBOX_FUELSEND.getText()):
+                if VAL_IDSEND != "None":
+                    for ID in Trasa:
+                        if ID == Core.VAL_CENTRALHUBID:
+                            Core.DICT_FUEL[VAL_IDSEND] += int(TEXTBOX_FUELSEND.getText())
+                            Core.VAL_FUEL -= int(TEXTBOX_FUELSEND.getText())
+                        else:
+                            DEF_WARNING_START()
+                else:
+                    DEF_WARNING_START()
+            else:
+                DEF_WARNING_START()
+        else:
+            DEF_WARNING_START()
 
 
-    if TEXTBOX_SUPPLIESEND.getText() != 0 and TEXTBOX_SUPPLIESEND.getText() != "":
-        if re.match(r'^\d+$', TEXTBOX_SUPPLIESEND.getText()):
-            if VAL_IDSEND != "None":
-                for ID in Trasa:
-                    if ID == Core.VAL_CENTRALHUBID:
-                        Core.DICT_SUPPLE[VAL_IDSEND] += int(TEXTBOX_SUPPLIESEND.getText())
-                        Core.VAL_SUPPLE -= int(TEXTBOX_SUPPLIESEND.getText())
+        if TEXTBOX_SUPPLIESEND.getText() != 0 and TEXTBOX_SUPPLIESEND.getText() != "":
+            if re.match(r'^\d+$', TEXTBOX_SUPPLIESEND.getText()):
+                if VAL_IDSEND != "None":
+                    for ID in Trasa:
+                        if ID == Core.VAL_CENTRALHUBID:
+                            Core.DICT_SUPPLE[VAL_IDSEND] += int(TEXTBOX_SUPPLIESEND.getText())
+                            Core.VAL_SUPPLE -= int(TEXTBOX_SUPPLIESEND.getText())
+                        else:
+                            DEF_WARNING_START()
+                else:
+                    DEF_WARNING_START()
+            else:
+                DEF_WARNING_START()
+        else:
+            DEF_WARNING_START()
 
-    TEXTBOX_AMMOSEND.setText("")
-    TEXTBOX_FUELSEND.setText("")
-    TEXTBOX_SUPPLIESEND.setText("")
+        TEXTBOX_AMMOSEND.setText("")
+        TEXTBOX_FUELSEND.setText("")
+        TEXTBOX_SUPPLIESEND.setText("")
 
 def DEF_CBUTTON():
     global BOOL_INFO,BOOL_CONS,BOOL_ORDER,BOOL_SEND,BOOL_MAGAZINE
@@ -351,7 +395,21 @@ def DEF_CBUTTON():
         BUTTON_SEND.setImage(IMAGE_SEND)
         BUTTON_ORDER.setImage(IMAGE_ORDER)
         BUTTON_MAGAZINE.setImage(IMAGE_MAG_ON)
+def DEF_WARNING_START():
+    global BOOL_WARNING
+    BOOL_WARNING = True
+    Core.DEF_STARTICKET()
+def DEF_WARNING_ACTIVE():
+    global IMAGE_WARNING, BOOL_WARNING
 
+    if BOOL_WARNING:
+
+        IMAGE_WARNING = pygame.image.load("Texture/Interface/Warning_RED.png")
+        IMAGE_WARNING = pygame.transform.scale(IMAGE_WARNING, (80, 40))
+        if pygame.time.get_ticks() - Core.Star_Tiecket >= 2000:
+            IMAGE_WARNING = pygame.image.load("Texture/Interface/Warning_BLACK.png")
+            IMAGE_WARNING = pygame.transform.scale(IMAGE_WARNING, (80, 40))
+            BOOL_WARNING = False
 
 IMAGE_LEFTPANEL = pygame.image.load("Texture/Interface/Grafika01.png").convert_alpha()
 IMAGE_LEFTPANEL = pygame.transform.scale(IMAGE_LEFTPANEL, (400, 720))

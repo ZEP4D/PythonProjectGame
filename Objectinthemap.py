@@ -3,7 +3,7 @@ import Core
 import Hub
 import random
 
-from Core import BOOL_EXIT
+
 
 
 class MOC:
@@ -49,6 +49,7 @@ class MOC:
             self.Front.freeposition(self.VAL_POSENUMBER)
             self.VAL_POSENUMBER = 5
 
+
         else:
             if self.VAL_POSENUMBER == 5:
                 self.VAL_POSENUMBER = self.Front.getnumberforposition()
@@ -83,6 +84,12 @@ class MOC:
                     self.BOOL_HUB = True
                     self.BOOL_HUBCONNECT = True
                     Trasa = Hub.DEF_ASTAR(HUBID)
+
+                    if len(Trasa) == 1:
+                        if Trasa[0] == Core.VAL_CENTRALHUBID:
+                            if self.VAL_HEALTH < 30:
+                                if Core.VAL_HOURS % 2 == 0 and Core.VAL_MINUTES == 0:
+                                        self.VAL_HEALTH += 10
                     for ID in Trasa:
                         if ID == Core.VAL_CENTRALHUBID:
                             if Core.VAL_HOURS % 5 == 0 and Core.VAL_MINUTES == 0:
@@ -92,7 +99,7 @@ class MOC:
                                         if Core.DICT_FUEL[id_hub] > 0:
                                             Core.DICT_FUEL[id_hub] -= 2
                                             self.VAL_FUEL += 2
-                                if self.VAL_AMMO < 2:
+                                if self.VAL_AMMO < 5:
                                     if Core.DICT_AMMO[id_hub] > 0:
                                         Core.DICT_AMMO[id_hub] -= 2
                                         self.VAL_AMMO += 2
@@ -118,8 +125,9 @@ class MOC:
                     self.BOOL_INBATTLE = False
 
 
-        if self.BOOL_SELECTED:
+        if  self.BOOL_SELECTED:
             self.image = self.texture
+
 
         if self.rect.left <= 400 or self.rect.right >= Core.SizeScreenWidth:
             self.VAL_SPEED_X =  -self.VAL_SPEED_X
@@ -170,7 +178,14 @@ class MOC:
         HealthoShowRect.y = 350
         Core.screen.blit(Health, HealthoShowRect)
 
-        Ammo = Core.font2.render("Ammo: "+str(self.VAL_AMMO), True, "White")
+        Ammo_show = self.VAL_AMMO
+        if type(Ammo_show) == int:
+            format_ammo =  Ammo_show
+        else:
+            format_ammo = '{:.4f}'.format( Ammo_show)
+
+
+        Ammo = Core.font2.render("Ammo: "+str(format_ammo), True, "White")
         AmmoShowRect = Ammo.get_rect()
         AmmoShowRect.x = 180
         AmmoShowRect.y = 380
@@ -199,7 +214,6 @@ class MOC:
 
         if self.BOOL_INBATTLE:
 
-
             # dane w procentach
             if Core.BOOL_GoodW:
                self.VAL_DEBUFF = 0
@@ -219,46 +233,67 @@ class MOC:
                             if ticket - Core.Star_Tiecket >= 3000:
                                 punkty = Core.DEF_POINTSCALCULATOR(self.VAL_APC, self.VAL_Cars, self.VAL_MENPOWER)
                                 VAL_ENEMY_DEFENCE = Enemy[self.VAL_ENEMY_ID].VAL_DEFENCE_BASE
-                                if punkty > VAL_ENEMY_DEFENCE:
-                                    howmenymanpower = random.randint(0, 20)
+
+                                fpunkty = punkty - (punkty * (self.VAL_DEBUFF / 100))
+
+                                if fpunkty > VAL_ENEMY_DEFENCE:
+                                    howmenymanpower = random.randint(2, 20)
                                     Enemy[self.VAL_ENEMY_ID].VAL_HEALTH = Enemy[self.VAL_ENEMY_ID].VAL_HEALTH - howmenymanpower
+                                    Core.VAL_TICKET_ENEMY -= 5
+                                    Ammolost = random.randint(4,12)
+                                    Ammolost = Ammolost / 10
+                                    self.VAL_AMMO = self.VAL_AMMO - Ammolost
 
                                 else:
-                                    howmenyapc = random.randint(0, 20)
-                                    howmenycars = random.randint(0, 20)
-                                    howmenymanpower = random.randint(0, 20)
+                                    howmenyapc = random.randint(4, 20)
+                                    howmenycars = random.randint(4, 20)
+                                    howmenymanpower = random.randint(2, 20)
+                                    Ammolost = random.randint(4, 12)
+                                    Ammolost = Ammolost / 10
 
+                                    Core.VAL_TICKET_PLAYER -= 5
+                                    self.VAL_AMMO = self.VAL_AMMO - Ammolost
                                     self.VAL_APC = self.VAL_APC - howmenyapc
                                     self.VAL_Cars = self.VAL_Cars - howmenycars
-                                    self.VAL_Health = self.VAL_HEALTH - howmenymanpower
+                                    self.VAL_HEALTH -= howmenymanpower
 
                         case 2:  # Tura AI Wroga
                             if ticket - Core.Star_Tiecket >= 3000:
                                 VAL_ENEMY_POINT = Enemy[self.VAL_ENEMY_ID].VAL_ATTACK_POINT
-
-                                if VAL_ENEMY_POINT > self.VAL_DEFENCE_BASE:
-                                    howmenyapc = random.randint(0, 20)
-                                    howmenycars = random.randint(0, 20)
-                                    howmenymanpower = random.randint(0, 20)
-
+                                fpunkty = VAL_ENEMY_POINT - (VAL_ENEMY_POINT * (self.VAL_DEBUFF / 100))
+                                if fpunkty > self.VAL_DEFENCE_BASE:
+                                    howmenyapc = random.randint(4, 20)
+                                    howmenycars = random.randint(4, 20)
+                                    howmenymanpower = random.randint(2, 20)
+                                    Ammolost = random.randint(4, 12)
+                                    Ammolost = Ammolost / 10
+                                    Core.VAL_TICKET_PLAYER -= 5
+                                    self.VAL_AMMO = self.VAL_AMMO - Ammolost
                                     self.VAL_APC = self.VAL_APC - howmenyapc
                                     self.VAL_Cars = self.VAL_Cars - howmenycars
-                                    self.VAL_Health = self.VAL_HEALTH - howmenymanpower
+                                    self.VAL_HEALTH = self.VAL_HEALTH - howmenymanpower
                                 else:
+                                    Ammolost = random.randint(4, 12)
+                                    Ammolost = Ammolost / 10
+                                    self.VAL_AMMO = self.VAL_AMMO - Ammolost
                                     howmenymanpower = random.randint(0, 20)
+                                    Core.VAL_TICKET_ENEMY -= 5
                                     Enemy[self.VAL_ENEMY_ID].VAL_HEALTH = Enemy[self.VAL_ENEMY_ID].VAL_HEALTH - howmenymanpower
                     self.VAL_LASTHOUER = Core.VAL_HOURS
-    def DEF_SETBOOL(self,flaga):
-
-        self.BOOL_SELECTED = flaga
+    def DEF_SETBOOL(self,flaga,id):
+        if self.VAL_ID == id:
+            self.BOOL_SELECTED = flaga
+        else:
+            self.BOOL_SELECTED = False
 
 class Infantry(MOC):
     def __init__(self,x,y,id,num):
         super().__init__(x,y,id,num)
-        self.image = pygame.image.load("Texture/MAP/AI_P_OFF.png").convert_alpha()
+        self.texture = pygame.image.load("Texture/MAP/AI_P_OFF.png").convert_alpha()
+        self.image = self.texture
         self.VAL_HEALTH = 100
         self.VAL_FUEL = 2
-        self.VAL_AMMO = 100
+        self.VAL_AMMO = 50
         self.VAL_SUPPLE = 30
         self.COLOR_ID = "Black"
 
@@ -340,20 +375,23 @@ class ENEMY:
         self.VAL_ID = "e1"
         self.image = pygame.image.load("Texture/MAP/AI_E.png").convert_alpha()
         self.rect = self.image.get_rect(center=(x,y))
+        self.VAL_X = x
         self.Front = front
         self.VAL_POSENUMBER = self.Front.getnumberforposition()
         self.VAL_TARGETPOSE = pygame.Vector2(0, 0)
         self.VAL_DYSTANS = 0
         self.VAL_POSE = pygame.Vector2(self.rect.center)
-        self.VAL_DEFENCE_BASE = 100
+        self.VAL_DEFENCE_BASE = 200
         self.VAL_ATTACK_POINT = 220
+        self.BOOL_Move = False
 
     def DEF_UPDATE(self,dt):
 
         if self.VAL_HEALTH < 30:
-            self.VAL_TARGETPOSE = pygame.Vector2(400,-1)
+            self.VAL_TARGETPOSE = pygame.Vector2(self.VAL_X,-1)
             self.Front.freeposition(self.VAL_POSENUMBER)
             self.VAL_POSENUMBER = 5
+
 
         else:
             if self.VAL_POSENUMBER == 5:
@@ -365,11 +403,18 @@ class ENEMY:
         kierunek = self.VAL_TARGETPOSE - self.VAL_POSE
         self.VAL_DYSTANS = kierunek.length()
 
-        if self.VAL_DYSTANS > 50:
+        if self.VAL_DYSTANS > 30:
             kierunek.normalize_ip()
             ruch = kierunek * (5 * Core.VAL_SPPEDTIME ) * dt
             self.VAL_POSE += ruch
             self.rect.topleft = (round(self.VAL_POSE.x), round(self.VAL_POSE.y))
+            self.BOOL_Move = True
+        else:
+            self.BOOL_Move = False
+
+        if not self.BOOL_Move:
+            if self.VAL_HEALTH < 30:
+                self.VAL_HEALTH = 100
 
     def DEF_DRAW(self):
         Core.screen.blit(self.image,self.rect)
