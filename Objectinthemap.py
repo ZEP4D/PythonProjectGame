@@ -87,7 +87,7 @@ class MOC:
 
                     if len(Trasa) == 1:
                         if Trasa[0] == Core.VAL_CENTRALHUBID:
-                            if self.VAL_HEALTH < 30:
+                            if self.VAL_HEALTH < 100:
                                 if Core.VAL_HOURS % 2 == 0 and Core.VAL_MINUTES == 0:
                                         self.VAL_HEALTH += 10
                     for ID in Trasa:
@@ -169,13 +169,13 @@ class MOC:
         ID = Core.font2.render("ID: "+str(self.VAL_ID), True, "White")
         IDShowRect = ID.get_rect()
         IDShowRect.x = 180
-        IDShowRect.y = 320
+        IDShowRect.y = 420
         Core.screen.blit(ID, IDShowRect)
 
         Health = Core.font2.render("Health: "+str(self.VAL_HEALTH), True, "White")
         HealthoShowRect = Health.get_rect()
         HealthoShowRect.x = 180
-        HealthoShowRect.y = 350
+        HealthoShowRect.y = 450
         Core.screen.blit(Health, HealthoShowRect)
 
         Ammo_show = self.VAL_AMMO
@@ -188,7 +188,7 @@ class MOC:
         Ammo = Core.font2.render("Ammo: "+str(format_ammo), True, "White")
         AmmoShowRect = Ammo.get_rect()
         AmmoShowRect.x = 180
-        AmmoShowRect.y = 380
+        AmmoShowRect.y = 480
         Core.screen.blit(Ammo, AmmoShowRect)
 
         Fuel_show =self.VAL_FUEL
@@ -200,13 +200,13 @@ class MOC:
         Fuel = Core.font2.render("Fuel: "+str(format_fuel), True, "White")
         FuelShowRect = Fuel.get_rect()
         FuelShowRect.x = 180
-        FuelShowRect.y = 410
+        FuelShowRect.y = 510
         Core.screen.blit(Fuel, FuelShowRect)
 
         Supple = Core.font2.render("Supple: "+str(self.VAL_SUPPLE), True, "White")
         SuppleShowRect = Supple.get_rect()
         SuppleShowRect.x = 180
-        SuppleShowRect.y = 440
+        SuppleShowRect.y = 540
         Core.screen.blit(Supple, SuppleShowRect)
     def GET_ID(self):
         return self.VAL_ID

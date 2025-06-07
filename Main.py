@@ -9,9 +9,13 @@ from pygame_widgets.button import Button
 
 IMAGE_MAIN = pygame.image.load("Texture/MainMenu.png").convert_alpha()
 IMAGE_LOGO = pygame.image.load("Texture/logo.png").convert_alpha()
+IMAGE_START = pygame.image.load("Texture/START.png").convert_alpha()
+IMAGE_EXIT = pygame.image.load("Texture/EXIT.png").convert_alpha()
 pygame.display.set_caption("SHRIMP CONQUEST")
-BUTTON_STAR_GAME = Button(Core.screen, 1100, 300, 120, 60, text="START", onClick=lambda: CHANGE_FLAG() )
-BUTTON_EXIT_GAME = Button(Core.screen, 1100, 470, 120, 60, text="EXIT", onClick=lambda: Core.DEF_EXIT())
+
+
+BUTTON_STAR_GAME = Button(Core.screen, 950, 300, 200, 80, colour=(255,0,0,0), image=IMAGE_START, onClick=lambda: CHANGE_FLAG() )
+BUTTON_EXIT_GAME = Button(Core.screen, 950, 470, 200, 80, image=IMAGE_EXIT,  onClick=lambda: Core.DEF_EXIT())
 
 BOOL_GAMESCENE = False
 
@@ -96,6 +100,9 @@ def GAME_SCENE():
             else:
                 if VAL_WHATIDOBJECT != '':
                     SimulationCore.LIST_INFANTRY[VAL_WHATIDOBJECT].DEF_SETBOOL(True,VAL_WHATIDOBJECT)
+
+
+                Hub.DEF_SELECTED(VAL_WHATID)
                 UIGRY.SHOW_INFO(VAL_WHATID)
 
         if UIGRY.BOOL_ORDER:
@@ -121,10 +128,7 @@ def GAME_SCENE():
             pygame.draw.line(Core.screen, "black", Pose[0], Pose[1], width=5)
 
         for i in Core.DICT_HUB:
-            if i == Core.VAL_CENTRALHUBID:
-                pygame.draw.rect(Core.screen, "Green", Core.DICT_HUB[i])
-            else:
-                pygame.draw.rect(Core.screen, "red", Core.DICT_HUB[i])
+            Hub.DEF_SHOW(i)
 
         Front.draw()
         UIGRY.DEF_DISPLAY()

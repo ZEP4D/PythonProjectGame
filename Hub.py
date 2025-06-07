@@ -1,13 +1,26 @@
+from pickle import GLOBAL
+
 import Core
 import pygame
 import random
 
 BOOL_ADDHUB = False
+BOOL_SELECTED = False
 VAL_STARTDOT = None
 VAL_HUBSNOW = 0
 VAL_STARTDOTKEY = ""
 VAL_ENDDOTKEY = ""
 VAL_ROADHUB = ""
+VAL_SELECTED_ID = ''
+
+
+VAL_TEXUTRE_ON = pygame.image.load("Texture/MAP/HUB_ON.png").convert_alpha()
+VAL_TEXUTRE_OFF = pygame.image.load("Texture/MAP/HUB_OFF.png").convert_alpha()
+
+IMAGE_HUB_C = VAL_TEXUTRE_OFF
+IMAGE_HUB = VAL_TEXUTRE_OFF
+IMAGE_HUB = pygame.transform.scale(IMAGE_HUB,(40,40))
+
 
 def DEF_HUBNUMBER(x,y):
     global VAL_HUBSNOW,BOOL_ADDHUB
@@ -15,7 +28,7 @@ def DEF_HUBNUMBER(x,y):
 
     if Core.VAL_CURRENCY >= Core.VAL_COST_HUB:
         if VAL_HUBSNOW < Core.VAL_MAXHUBS:
-            new_ret = pygame.Rect(x, y, 30, 30)
+            new_ret = pygame.Rect(x, y, 40, 40)
 
             Core.DICT_HUB[hubid] = new_ret
             DEF_INFOPANEL(hubid)
@@ -123,6 +136,30 @@ def DEF_ASTAR(target):
 
     return []
 
+def DEF_SHOW(id):
+    global BOOL_SELECTED, VAL_SELECTED_ID, IMAGE_HUB,IMAGE_HUB_C
+
+
+
+    if id == Core.VAL_CENTRALHUBID and  id == VAL_SELECTED_ID:
+        IMAGE_HUB_C = VAL_TEXUTRE_ON
+        image = IMAGE_HUB_C
+    elif id == Core.VAL_CENTRALHUBID:
+        IMAGE_HUB_C = VAL_TEXUTRE_OFF
+        image = IMAGE_HUB_C
+    elif id == VAL_SELECTED_ID:
+        IMAGE_HUB = VAL_TEXUTRE_ON
+        image = IMAGE_HUB
+    else:
+        IMAGE_HUB = VAL_TEXUTRE_OFF
+        image = IMAGE_HUB
+
+    Core.screen.blit(image, Core.DICT_HUB[id])
+def DEF_SELECTED(id):
+    global IMAGE_HUB, BOOL_SELECTED, VAL_SELECTED_ID
+
+    BOOL_SELECTED = True
+    VAL_SELECTED_ID = id
 
 
 
