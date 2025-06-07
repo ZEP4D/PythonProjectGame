@@ -479,7 +479,7 @@ def DEF_WARNING_ACTIVE():
 
         IMAGE_WARNING = pygame.image.load("../Texture/Interface/Warning_RED.png")
         IMAGE_WARNING = pygame.transform.scale(IMAGE_WARNING, (80, 40))
-        if pygame.time.get_ticks() - Core.Star_Tiecket >= 2000:
+        if pygame.time.get_ticks() - Core.Star_Ticket >= 2000:
             IMAGE_WARNING = pygame.image.load("../Texture/Interface/Warning_BLACK.png")
             IMAGE_WARNING = pygame.transform.scale(IMAGE_WARNING, (80, 40))
             BOOL_WARNING = False

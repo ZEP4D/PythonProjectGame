@@ -376,7 +376,7 @@ class MOC:
                     howhavemove = random.randint(1, 2)
                     match (howhavemove):
                         case 1:  # Tura AI Gracz
-                            if ticket - Core.Star_Tiecket >= 3000:
+                            if ticket - Core.Star_Ticket >= 3000:
                                 punkty = Core.DEF_POINTSCALCULATOR(self.VAL_APC, self.VAL_Cars, self.VAL_MENPOWER)
                                 VAL_ENEMY_DEFENCE = Enemy[self.VAL_ENEMY_ID].VAL_DEFENCE_BASE
 
@@ -404,7 +404,7 @@ class MOC:
                                     self.VAL_HEALTH -= howmenymanpower
 
                         case 2:  # Tura AI Wroga
-                            if ticket - Core.Star_Tiecket >= 3000:
+                            if ticket - Core.Star_Ticket >= 3000:
                                 VAL_ENEMY_POINT = Enemy[self.VAL_ENEMY_ID].VAL_ATTACK_POINT
                                 fpunkty = VAL_ENEMY_POINT - (VAL_ENEMY_POINT * (self.VAL_DEBUFF / 100))
                                 if fpunkty > self.VAL_DEFENCE_BASE:
