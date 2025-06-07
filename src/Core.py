@@ -12,7 +12,7 @@ leftpanelHeight = 720
 leftpanel = pygame.Rect(401,0,leftpanelwidth,leftpanelHeight)
 screen = pygame.display.set_mode((SizeScreenWidth,SizeScreenHeight))
 clock = pygame.time.Clock()
-Star_Tiecket = pygame.time.get_ticks()
+Star_Ticket = pygame.time.get_ticks()
 
 BOOL_RUNNING = True
 BOOL_EXIT=False
@@ -29,16 +29,16 @@ DICT_AMMO = {}
 DICT_SUPPLE = {}
 
 
-font1 = pygame.font.Font('Font/digital-7.ttf',35)
-font2 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',30)
-font3 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',12)
-font4 = pygame.font.Font('Font/vt323-latin-400-normal.ttf',50)
+font1 = pygame.font.Font('../Font/digital-7.ttf', 35)
+font2 = pygame.font.Font('../Font/vt323-latin-400-normal.ttf', 30)
+font3 = pygame.font.Font('../Font/vt323-latin-400-normal.ttf', 12)
+font4 = pygame.font.Font('../Font/vt323-latin-400-normal.ttf', 50)
 
-IMAGE_MAP = pygame.image.load("Texture/MAP/MAPA.png")
-IMAGE_GOODW = pygame.image.load("Texture/Interface/GOODW.png")
-IMAGE_FOG = pygame.image.load("Texture/Interface/FOG.png")
-IMAGE_RAIN = pygame.image.load("Texture/Interface/RAIN.png")
-IMAGE_TUNDER = pygame.image.load("Texture/Interface/TUNDER.png")\
+IMAGE_MAP = pygame.image.load("../Texture/MAP/MAPA.png")
+IMAGE_GOODW = pygame.image.load("../Texture/Interface/GOODW.png")
+IMAGE_FOG = pygame.image.load("../Texture/Interface/FOG.png")
+IMAGE_RAIN = pygame.image.load("../Texture/Interface/RAIN.png")
+IMAGE_TUNDER = pygame.image.load("../Texture/Interface/TUNDER.png")\
 
 IMAGE_GOODW = pygame.transform.scale(IMAGE_GOODW,(80, 40))
 IMAGE_FOG = pygame.transform.scale(IMAGE_FOG,(80, 40))
@@ -48,10 +48,10 @@ IMAGE_TUNDER = pygame.transform.scale(IMAGE_TUNDER,(80, 40))
 
 VAL_CONFIG = ""
 
-if not os.path.exists("config.json"):
+if not os.path.exists("../config.json"):
     pygame.quit()
 else:
-    with open("config.json", "r", encoding="utf-8") as f:
+    with open("../config.json", "r", encoding="utf-8") as f:
         VAL_CONFIG = json.load(f)
 
 
@@ -87,6 +87,15 @@ VAL_LASTHOUERCORE = None
 
 
 def DEF_FUELUSE(APC,CARS,TRUCK, TRUCK_FUEL):
+    """
+    Oblicza ile paliwa zużywa jednostka
+
+    :param APC: liczba apc które posiada jednostka
+    :param CARS: liczba CARS które posiada jednostka
+    :param TRUCK: liczba TRUCK które posiada jednostka
+    :param TRUCK_FUEL: liczba TRUCK_FUEL które posiada jednostka
+    :return: Zwraca sume ile paliwa zużywa jednostka
+    """
     Fuel_number = 0
     Fuel_number += APC * VAL_FUEL_APC_USAGE
     Fuel_number += CARS * VAL_FUEL_CARS_USAGE
@@ -96,6 +105,15 @@ def DEF_FUELUSE(APC,CARS,TRUCK, TRUCK_FUEL):
     return  Fuel_number
 
 def DEF_POINTSCALCULATOR(APC,CARS,MENPOWER):
+    """
+    Metoda oblicza ilośc punktów które jednostka posiada
+
+    :param APC: liczba apc które posiada jednostka
+    :param CARS: liczba CARS które posiada jednostka
+    :param MENPOWER: liczba MENPOWER które posiada jednostka
+    :return: Zwraca liczbe punktów które posida jednostka
+    """
+
     Points = 0
     Points += APC * VAL_POINT_APC
     Points += CARS * VAL_POINT_Cars
@@ -104,6 +122,15 @@ def DEF_POINTSCALCULATOR(APC,CARS,MENPOWER):
     return Points
 
 def DEF_Convert(Number,INFO1,INFO2):
+    """
+    Metoda służy do konwersji danych
+
+    :param Number: dane do konwersji
+    :param INFO1: Jest to liczba która odpowiada w którym kierunku jest konwersja
+    :param INFO2: Jest to liczba która odpowiada w jaki parametr jest konwertowany
+    :return:
+    """
+
     match(INFO1):
         case 1:
             match(INFO2):
@@ -143,6 +170,9 @@ def DEF_HUBREMOVE(id_hub):
             DICT_LINE.pop(i)
 
 def SHOW_TICKET():
+    """
+        Metoda do wyświetlania Liczby punktów dla gracza i dla AI na ekranie
+    """
 
     TicketPLAYER = font2.render(str(VAL_TICKET_PLAYER), True, "White")
     TicketPLAYERShowRect = TicketPLAYER.get_rect()
@@ -157,6 +187,9 @@ def SHOW_TICKET():
     screen.blit(TicketEnemy, TicketEnemyRShowRect)
 
 def SHOW_POGODA():
+    """
+    Metoda do wyświetlania pogody na ekranie
+    """
     if BOOL_GoodW:
         screen.blit(IMAGE_GOODW,(320,10))
     elif BOOL_fog:
@@ -167,11 +200,19 @@ def SHOW_POGODA():
         screen.blit(IMAGE_TUNDER, (320, 10))
 
 def DEF_EXIT():
+    """
+    Metoda służy do zmiany Flagi BOOL_EXIT na True
+    """
     global BOOL_EXIT
     BOOL_EXIT=True
 
 def DEF_ENDGAME(ticket):
-    global BOOL_EXIT, Star_Tiecket
+    """
+    Metoda odpowiada za zakończenie gry i pokazanie remisu,porażki lub zwycięstwa
+
+    :param ticket: Jest to parametr aktualnego ticket
+    """
+    global BOOL_EXIT, Star_Ticket
 
     if VAL_TICKET_ENEMY < 0 and  VAL_TICKET_PLAYER < 0:
         VICTORY = font4.render("DRAW", True, "Black")
@@ -180,7 +221,7 @@ def DEF_ENDGAME(ticket):
         VICTORYShowRect.y = 350
         screen.blit(VICTORY, VICTORYShowRect)
 
-        if ticket - Star_Tiecket >= 10000:
+        if ticket - Star_Ticket >= 10000:
             BOOL_EXIT = True
 
     elif VAL_TICKET_ENEMY < 0:
@@ -190,7 +231,7 @@ def DEF_ENDGAME(ticket):
         VICTORYShowRect.y = 350
         screen.blit(VICTORY, VICTORYShowRect)
 
-        if ticket - Star_Tiecket >= 10000:
+        if ticket - Star_Ticket >= 10000:
             BOOL_EXIT = True
 
     elif VAL_TICKET_PLAYER < 0:
@@ -200,10 +241,15 @@ def DEF_ENDGAME(ticket):
         VICTORYShowRect.y = 350
         screen.blit(VICTORY, VICTORYShowRect)
 
-        if ticket - Star_Tiecket >= 10000:
+        if ticket - Star_Ticket >= 10000:
             BOOL_EXIT = True
 
 def DEF_Weather():
+    """
+    Metoda odpowiada za zmianę pogody. Jest losowany losowa liczba od 0-3 która odpowiada danej pogodzie i operacja jest
+    wykonywana zawsze kiedy na zegarze jest 8
+
+    """
     global VAL_LASTHOUERCORE, VAL_MINUTES, VAL_HOURS, BOOL_GoodW,BOOL_Rain,BOOL_fog,BOOL_Thunder
 
     if VAL_HOURS == 8 and VAL_MINUTES == 0:
@@ -234,8 +280,12 @@ def DEF_Weather():
             VAL_LASTHOUERCORE = VAL_HOURS
 
 def DEF_STARTICKET():
-    global Star_Tiecket
-    Star_Tiecket = pygame.time.get_ticks()
+    """
+    Metoda pobiera aktualny ticks i przypisuje je do metody Star_Ticket
+
+    """
+    global Star_Ticket
+    Star_Ticket = pygame.time.get_ticks()
 
 VAL_LASTHOUER = None
 
@@ -243,7 +293,7 @@ def DEF_Currency():
     global  VAL_CURRENCY, VAL_LASTHOUER
 
 
-    if VAL_HOURS == 10 and VAL_MINUTES == 0:
+    if VAL_HOURS % 5 == 0 and VAL_MINUTES == 0:
         if VAL_LASTHOUER != VAL_HOURS:
-            VAL_CURRENCY += 500
+            VAL_CURRENCY += 300
             VAL_LASTHOUER = VAL_HOURS

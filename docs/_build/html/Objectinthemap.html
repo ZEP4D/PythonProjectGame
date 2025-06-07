@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Objectinthemap module &#8212; PythonGAME 0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=8dde47fa"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SimulationCore module" href="SimulationCore.html" />
+    <link rel="prev" title="Main module" href="Main.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-Objectinthemap">
+<span id="objectinthemap-module"></span><h1>Objectinthemap module<a class="headerlink" href="#module-Objectinthemap" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="Objectinthemap.ENEMY">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Objectinthemap.</span></span><span class="sig-name descname"><span class="pre">ENEMY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">front</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.ENEMY" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Objectinthemap.ENEMY.DEF_DRAW">
+<span class="sig-name descname"><span class="pre">DEF_DRAW</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.ENEMY.DEF_DRAW" title="Link to this definition">¶</a></dt>
+<dd><p>Wyświetlenie  na ekranie obiektu</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Objectinthemap.ENEMY.DEF_UPDATE">
+<span class="sig-name descname"><span class="pre">DEF_UPDATE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.ENEMY.DEF_UPDATE" title="Link to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>if self.VAL_HEALTH &lt; 30:</dt><dd><p>Posefromdict = Core.DICT_HUB[Core.VAL_CENTRALHUBID]
+self.VAL_TARGETPOSE = pygame.Vector2(Posefromdict.center)
+self.Front.freeposition(self.VAL_POSENUMBER)
+self.VAL_POSENUMBER = 5</p>
+</dd>
+<dt>else:</dt><dd><p>if self.VAL_POSENUMBER == 5:
+self.VAL_POSENUMBER = self.Front.getnumberforposition()</p>
+</dd>
+</dl>
+<p>self.VAL_TARGETPOSE = self.Front.getpositon(self.VAL_POSENUMBER, self.VAL_ID)</p>
+<dl class="simple">
+<dt>Jeżeli zdrowie jednostki spadnie poniżej 30:</dt><dd><ul class="simple">
+<li><p>Pobierana jest pozycja centralnego huba (Core.VAL_CENTRALHUBID).</p></li>
+<li><p>Jednostka ustawia cel VAL_TARGETPOSE</p></li>
+<li><p>Aktualna pozycja zostaje zwolniona, a jednostka przypisywana jest do pozycji nr 5</p></li>
+</ul>
+</dd>
+<dt>W innym przypadku:</dt><dd><ul class="simple">
+<li><p>Jeśli jednostka znajduje się na pozycji awaryjnej, przydzielana jest nowa pozycja.</p></li>
+<li><p>Cel ruchu zostaje zaktualizowany zgodnie z nową pozycją.</p></li>
+</ul>
+</dd>
+</dl>
+<p>kierunek = self.VAL_TARGETPOSE - self.VAL_POSE
+self.VAL_DYSTANS = kierunek.length()
+if self.VAL_DYSTANS &gt; 30:</p>
+<blockquote>
+<div><p>kierunek.normalize_ip()
+ruch = kierunek * (5 * Core.VAL_SPPEDTIME) * dt
+self.VAL_POSE += ruch
+self.VAL_TRASAPRZEBYTA += ruch.length()
+self.rect.topleft = (round(self.VAL_POSE.x), round(self.VAL_POSE.y))
+self.BOOL_INMOVE = True</p>
+</div></blockquote>
+<dl class="simple">
+<dt>else:</dt><dd><p>self.BOOL_INMOVE = False</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>Obliczany jest wektor kierunku i dystans do celu.</p></li>
+<li><p>Jeżeli jednostka znajduje się dalej niż 30 pikseli od celu:</p></li>
+<li><p>Przemieszcza się w jego kierunku z prędkością zależną od Core.VAL_SPPEDTIME i dt.</p></li>
+<li><p>Aktualizowana jest pozycja graficzna</p></li>
+<li><p>Ustawiany jest znacznik ruchu BOOL_INMOVE.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dt</strong> – Delta time</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Objectinthemap.ENEMY.GET_HEALTH">
+<span class="sig-name descname"><span class="pre">GET_HEALTH</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.ENEMY.GET_HEALTH" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Zwrócenie ilości życia</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Objectinthemap.ENEMY.SET_HEALTH">
+<span class="sig-name descname"><span class="pre">SET_HEALTH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.ENEMY.SET_HEALTH" title="Link to this definition">¶</a></dt>
+<dd><p>Ustawienie życia o parametr podany do metody</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>val</strong> – liczba życia podana do metody</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Objectinthemap.FrontLine">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Objectinthemap.</span></span><span class="sig-name descname"><span class="pre">FrontLine</span></span><a class="headerlink" href="#Objectinthemap.FrontLine" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Objectinthemap.FrontLine.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.FrontLine.draw" title="Link to this definition">¶</a></dt>
+<dd><p>Wyświetlenie  na ekranie obiektu</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Objectinthemap.FrontLine.freeposition">
+<span class="sig-name descname"><span class="pre">freeposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.FrontLine.freeposition" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Objectinthemap.FrontLine.getnumberforposition">
+<span class="sig-name descname"><span class="pre">getnumberforposition</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.FrontLine.getnumberforposition" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Objectinthemap.FrontLine.getpositon">
+<span class="sig-name descname"><span class="pre">getpositon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.FrontLine.getpositon" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Objectinthemap.Infantry">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Objectinthemap.</span></span><span class="sig-name descname"><span class="pre">Infantry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.Infantry" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Objectinthemap.MOC" title="Objectinthemap.MOC"><code class="xref py py-class docutils literal notranslate"><span class="pre">MOC</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Objectinthemap.MOC">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Objectinthemap.</span></span><span class="sig-name descname"><span class="pre">MOC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Front</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.MOC" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Objectinthemap.MOC.DEF_BATTLE">
+<span class="sig-name descname"><span class="pre">DEF_BATTLE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ticket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Enemy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.MOC.DEF_BATTLE" title="Link to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Na podstawie warunków pogodowych ustawiany jest debuff:</dt><dd><ul class="simple">
+<li><p>Dobra pogoda: brak debuffa.</p></li>
+<li><p>Deszcz (Rain): -20% skuteczności.</p></li>
+<li><p>Mgła (fog): -50% skuteczności.</p></li>
+<li><p>Burza (Thunder): -35% skuteczności.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Losowanie tury ataku</p>
+<dl class="simple">
+<dt>Gracz:</dt><dd><ul class="simple">
+<li><p>Obliczane są punkty ataku.</p></li>
+<li><p>Porównywane z obroną przeciwnika.</p></li>
+<li><p>Jeżeli przewaga punktów: wróg traci zdrowie, gracz traci amunicję.</p></li>
+<li><p>W przeciwnym przypadku: gracz traci APC, samochody, zdrowie i amunicję.</p></li>
+</ul>
+</dd>
+<dt>Wróg:</dt><dd><ul class="simple">
+<li><p>Analogicznie porównywana jest siła ataku wroga z obroną gracza.</p></li>
+<li><p>Przy przewadze: gracz traci zasoby.</p></li>
+<li><p>W przeciwnym przypadku: wróg traci zdrowie.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ticket</strong> – Aktualny ticekt czasu</p></li>
+<li><p><strong>Enemy</strong> – Lista przeciwnika</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Objectinthemap.MOC.DEF_DRAW">
+<span class="sig-name descname"><span class="pre">DEF_DRAW</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.MOC.DEF_DRAW" title="Link to this definition">¶</a></dt>
+<dd><p>Wyświetlenie  na ekranie obiektu</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Objectinthemap.MOC.DEF_SETBOOL">
+<span class="sig-name descname"><span class="pre">DEF_SETBOOL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flaga</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.MOC.DEF_SETBOOL" title="Link to this definition">¶</a></dt>
+<dd><p>Zmienianie flagi BOOL_SELECTED dla wybranej jednostki przez jej ID
+:param flaga: parametr True/False
+:param id:  id jednostki
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Objectinthemap.MOC.DEF_Show">
+<span class="sig-name descname"><span class="pre">DEF_Show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.MOC.DEF_Show" title="Link to this definition">¶</a></dt>
+<dd><p>Wyświetlenie informacji w panelu o zasobach jednostki</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Objectinthemap.MOC.DEF_UPDATE">
+<span class="sig-name descname"><span class="pre">DEF_UPDATE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">listen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.MOC.DEF_UPDATE" title="Link to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>if self.VAL_HEALTH &lt; 30:</dt><dd><p>Posefromdict = Core.DICT_HUB[Core.VAL_CENTRALHUBID]
+self.VAL_TARGETPOSE = pygame.Vector2(Posefromdict.center)
+self.Front.freeposition(self.VAL_POSENUMBER)
+self.VAL_POSENUMBER = 5</p>
+</dd>
+<dt>else:</dt><dd><p>if self.VAL_POSENUMBER == 5:
+self.VAL_POSENUMBER = self.Front.getnumberforposition()</p>
+</dd>
+</dl>
+<p>self.VAL_TARGETPOSE = self.Front.getpositon(self.VAL_POSENUMBER, self.VAL_ID)</p>
+<dl class="simple">
+<dt>Jeżeli zdrowie jednostki spadnie poniżej 30:</dt><dd><ul class="simple">
+<li><p>Pobierana jest pozycja centralnego huba (Core.VAL_CENTRALHUBID).</p></li>
+<li><p>Jednostka ustawia cel VAL_TARGETPOSE</p></li>
+<li><p>Aktualna pozycja zostaje zwolniona, a jednostka przypisywana jest do pozycji nr 5</p></li>
+</ul>
+</dd>
+<dt>W innym przypadku:</dt><dd><ul class="simple">
+<li><p>Jeśli jednostka znajduje się na pozycji awaryjnej, przydzielana jest nowa pozycja.</p></li>
+<li><p>Cel ruchu zostaje zaktualizowany zgodnie z nową pozycją.</p></li>
+</ul>
+</dd>
+</dl>
+<p>kierunek = self.VAL_TARGETPOSE - self.VAL_POSE
+self.VAL_DYSTANS = kierunek.length()
+if self.VAL_DYSTANS &gt; 30:</p>
+<blockquote>
+<div><p>kierunek.normalize_ip()
+ruch = kierunek * (5 * Core.VAL_SPPEDTIME) * dt
+self.VAL_POSE += ruch
+self.VAL_TRASAPRZEBYTA += ruch.length()
+self.rect.topleft = (round(self.VAL_POSE.x), round(self.VAL_POSE.y))
+self.BOOL_INMOVE = True</p>
+</div></blockquote>
+<dl class="simple">
+<dt>else:</dt><dd><p>self.BOOL_INMOVE = False</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>Obliczany jest wektor kierunku i dystans do celu.</p></li>
+<li><p>Jeżeli jednostka znajduje się dalej niż 30 pikseli od celu:</p></li>
+<li><p>Przemieszcza się w jego kierunku z prędkością zależną od Core.VAL_SPPEDTIME i dt.</p></li>
+<li><p>Aktualizowana jest pozycja graficzna</p></li>
+<li><p>Ustawiany jest znacznik ruchu BOOL_INMOVE.</p></li>
+</ul>
+<dl>
+<dt>for HUBID in Core.DICT_HUB:</dt><dd><p>hubin = Core.DICT_HUB[HUBID].center
+hub = pygame.Vector2(hubin[0],hubin[1])
+Nearestpose = self.VAL_POSE.distance_to(hub)
+if Nearestpose &lt; min_distance:</p>
+<blockquote>
+<div><p>min_distance = Nearestpose
+self.Correcthub = hub
+if min_distance &lt; 200 :</p>
+<blockquote>
+<div><p>self.BOOL_HUB = True
+self.BOOL_HUBCONNECT = True
+Trasa = Hub.DEF_ASTAR(HUBID)</p>
+</div></blockquote>
+</div></blockquote>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>Dla każdego huba w Core.DICT_HUB:</p></li>
+<li><p>Obliczana jest odległość od jednostki.</p></li>
+<li><p>Jeżeli najbliższy hub znajduje się w promieniu 200 pikseli:</p></li>
+<li><p>Jednostka łączy się z hubem (BOOL_HUB, BOOL_HUBCONNECT).</p></li>
+<li><p>Jeżeli do huba prowadzi bezpośrednia trasa:</p></li>
+<li><p>Co dwie godziny , zdrowie jednostki regeneruje się.</p></li>
+<li><p>Co 5 godzin jednostka może zatankować, uzupełnić amunicję i zaopatrzenie</p></li>
+<li><p>Przeglądana jest lista przeciwników (listen).</p></li>
+<li><p>Jeżeli któryś znajduje się bliżej niż 80 pikseli:</p></li>
+<li><p>Jednostka wchodzi w stan walki (BOOL_INBATTLE) i zapamiętuje ID wroga.</p></li>
+</ul>
+<p>min_distance_ene = float(‘inf’)
+for enemy in listen:</p>
+<blockquote>
+<div><p>min_distance_en = pygame.Vector2(listen[enemy].VAL_POSE.x, listen[enemy].VAL_POSE.y)
+Nearestpose = self.VAL_POSE.distance_to(min_distance_en)
+if Nearestpose &lt; min_distance_ene:
+min_distance_ene = Nearestpose
+if min_distance_ene &lt; 80:</p>
+<blockquote>
+<div><p>self.BOOL_INBATTLE = True
+self.VAL_ENEMY_ID = enemy</p>
+</div></blockquote>
+<dl class="simple">
+<dt>else:</dt><dd><p>self.BOOL_INBATTLE = False</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dt</strong> – Delta time</p></li>
+<li><p><strong>listen</strong> – Lista przeciwników</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Objectinthemap.MOC.DEF_UPDATE_RES">
+<span class="sig-name descname"><span class="pre">DEF_UPDATE_RES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.MOC.DEF_UPDATE_RES" title="Link to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Obliczane jest zużycie paliwa na podstawie typu pojazdów (APC, Cars, Truck, Truck_Fuel).</p>
+<p>Fuel_Usage = Core.DEF_FUELUSE(self.VAL_APC, self.VAL_Cars, self.VAL_Truck, self.VAL_Truck_Fuel)</p>
+<p>Gdy jednostka się porusza (BOOL_INMOVE):
+- Po przebyciu co najmniej 200 pikseli:
+- Paliwo jest konwertowane na wartość liczbową, pomniejszane o zużycie, i konwertowane z powrotem.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>if self.BOOL_INMOVE:</dt><dd><dl class="simple">
+<dt>if self.VAL_TRASAPRZEBYTA &gt;= 200:</dt><dd><p>Convert = Core.DEF_Convert(self.VAL_FUEL, 1, “FUEL”)
+Convert -= Fuel_Usage
+self.VAL_FUEL = Core.DEF_Convert(Convert, 2, “FUEL”)
+self.VAL_TRASAPRZEBYTA -= 200</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+<p>Gdy jednostka jest zatrzymana:
+- Zużycie paliwa jest 5 razy mniejsze.
+- Co 1000 jednostek czasu (VAL_Timepass), zużywane jest paliwo według tego samego schematu.</p>
+<blockquote>
+<div><p>Fuel_Usage_STOP = Fuel_Usage / 5</p>
+<blockquote>
+<div><dl class="simple">
+<dt>if self.VAL_Timepass &gt;= 1000:</dt><dd><p>Convert = Core.DEF_Convert(self.VAL_FUEL, 1, “FUEL”)
+Convert -= Fuel_Usage_STOP
+self.VAL_FUEL = Core.DEF_Convert(Convert, 2, “FUEL”)
+self.VAL_Timepass = 0
+self.VAL_Timepass += 1</p>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+<p>O każdej 12:00 zużywane jest 300 jednostek zaopatrzenia.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>if Core.VAL_HOURS == 12 and Core.VAL_MINUTES == 0:</dt><dd><p>Convert = Core.DEF_Convert(self.VAL_SUPPLE, 1, “SUPPLE”)
+Convert -= 300
+self.VAL_SUPPLE = Core.DEF_Convert(Convert, 2, “SUPPLE”)</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dt</strong> – Delta time</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Objectinthemap.MOC.GET_ID">
+<span class="sig-name descname"><span class="pre">GET_ID</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Objectinthemap.MOC.GET_ID" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Zwracanie ID obiektu</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PythonGAME</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Core.html">Core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hub.html">Hub module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Main.html">Main module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Objectinthemap module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SimulationCore.html">SimulationCore module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UIGRY.html">UIGRY module</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">src</a><ul>
+      <li>Previous: <a href="Main.html" title="previous chapter">Main module</a></li>
+      <li>Next: <a href="SimulationCore.html" title="next chapter">SimulationCore module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Bartosz Kropiewnicki.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/Objectinthemap.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Core module &#8212; PythonGAME 0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=8dde47fa"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Hub module" href="Hub.html" />
+    <link rel="prev" title="src" href="modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-Core">
+<span id="core-module"></span><h1>Core module<a class="headerlink" href="#module-Core" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="Core.DEF_Convert">
+<span class="sig-prename descclassname"><span class="pre">Core.</span></span><span class="sig-name descname"><span class="pre">DEF_Convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">INFO1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">INFO2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Core.DEF_Convert" title="Link to this definition">¶</a></dt>
+<dd><p>Metoda służy do konwersji danych</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Number</strong> – dane do konwersji</p></li>
+<li><p><strong>INFO1</strong> – Jest to liczba która odpowiada w którym kierunku jest konwersja</p></li>
+<li><p><strong>INFO2</strong> – Jest to liczba która odpowiada w jaki parametr jest konwertowany</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Core.DEF_Currency">
+<span class="sig-prename descclassname"><span class="pre">Core.</span></span><span class="sig-name descname"><span class="pre">DEF_Currency</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Core.DEF_Currency" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Core.DEF_ENDGAME">
+<span class="sig-prename descclassname"><span class="pre">Core.</span></span><span class="sig-name descname"><span class="pre">DEF_ENDGAME</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ticket</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Core.DEF_ENDGAME" title="Link to this definition">¶</a></dt>
+<dd><p>Metoda odpowiada za zakończenie gry i pokazanie remisu,porażki lub zwycięstwa</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ticket</strong> – Jest to parametr aktualnego ticket</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Core.DEF_EXIT">
+<span class="sig-prename descclassname"><span class="pre">Core.</span></span><span class="sig-name descname"><span class="pre">DEF_EXIT</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Core.DEF_EXIT" title="Link to this definition">¶</a></dt>
+<dd><p>Metoda służy do zmiany Flagi BOOL_EXIT na True</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Core.DEF_FUELUSE">
+<span class="sig-prename descclassname"><span class="pre">Core.</span></span><span class="sig-name descname"><span class="pre">DEF_FUELUSE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">APC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CARS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TRUCK</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TRUCK_FUEL</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Core.DEF_FUELUSE" title="Link to this definition">¶</a></dt>
+<dd><p>Oblicza ile paliwa zużywa jednostka</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>APC</strong> – liczba apc które posiada jednostka</p></li>
+<li><p><strong>CARS</strong> – liczba CARS które posiada jednostka</p></li>
+<li><p><strong>TRUCK</strong> – liczba TRUCK które posiada jednostka</p></li>
+<li><p><strong>TRUCK_FUEL</strong> – liczba TRUCK_FUEL które posiada jednostka</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Zwraca sume ile paliwa zużywa jednostka</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Core.DEF_HUBREMOVE">
+<span class="sig-prename descclassname"><span class="pre">Core.</span></span><span class="sig-name descname"><span class="pre">DEF_HUBREMOVE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_hub</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Core.DEF_HUBREMOVE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Core.DEF_POINTSCALCULATOR">
+<span class="sig-prename descclassname"><span class="pre">Core.</span></span><span class="sig-name descname"><span class="pre">DEF_POINTSCALCULATOR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">APC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CARS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MENPOWER</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Core.DEF_POINTSCALCULATOR" title="Link to this definition">¶</a></dt>
+<dd><p>Metoda oblicza ilośc punktów które jednostka posiada</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>APC</strong> – liczba apc które posiada jednostka</p></li>
+<li><p><strong>CARS</strong> – liczba CARS które posiada jednostka</p></li>
+<li><p><strong>MENPOWER</strong> – liczba MENPOWER które posiada jednostka</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Zwraca liczbe punktów które posida jednostka</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Core.DEF_STARTICKET">
+<span class="sig-prename descclassname"><span class="pre">Core.</span></span><span class="sig-name descname"><span class="pre">DEF_STARTICKET</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Core.DEF_STARTICKET" title="Link to this definition">¶</a></dt>
+<dd><p>Metoda pobiera aktualny ticks i przypisuje je do metody Star_Ticket</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Core.DEF_Weather">
+<span class="sig-prename descclassname"><span class="pre">Core.</span></span><span class="sig-name descname"><span class="pre">DEF_Weather</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Core.DEF_Weather" title="Link to this definition">¶</a></dt>
+<dd><p>Metoda odpowiada za zmianę pogody. Jest losowany losowa liczba od 0-3 która odpowiada danej pogodzie i operacja jest
+wykonywana zawsze kiedy na zegarze jest 8</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Core.SHOW_POGODA">
+<span class="sig-prename descclassname"><span class="pre">Core.</span></span><span class="sig-name descname"><span class="pre">SHOW_POGODA</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Core.SHOW_POGODA" title="Link to this definition">¶</a></dt>
+<dd><p>Metoda do wyświetlania pogody na ekranie</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Core.SHOW_TICKET">
+<span class="sig-prename descclassname"><span class="pre">Core.</span></span><span class="sig-name descname"><span class="pre">SHOW_TICKET</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Core.SHOW_TICKET" title="Link to this definition">¶</a></dt>
+<dd><p>Metoda do wyświetlania Liczby punktów dla gracza i dla AI na ekranie</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PythonGAME</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hub.html">Hub module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Main.html">Main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Objectinthemap.html">Objectinthemap module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SimulationCore.html">SimulationCore module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="UIGRY.html">UIGRY module</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">src</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">src</a></li>
+      <li>Next: <a href="Hub.html" title="next chapter">Hub module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Bartosz Kropiewnicki.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/Core.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

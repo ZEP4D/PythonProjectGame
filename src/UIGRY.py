@@ -25,6 +25,10 @@ BOOL_WARNING = False
 
 
 def DEF_CLOCK(dt):
+    """
+    Metoda do obsługi zegara
+    :param dt: delta time
+    """
     global VAL_PASSTIME
 
     VAL_PASSTIME = VAL_PASSTIME + dt * Core.VAL_SPPEDTIME
@@ -39,6 +43,10 @@ def DEF_CLOCK(dt):
             Core.VAL_HOURS %= 24
 
 def DEF_DISPLAY():
+    """
+    Metoda do wyświetlania zegaru
+
+    """
     czas = f"{Core.VAL_HOURS:02}:{Core.VAL_MINUTES:02}"
     showTime = Core.font1.render(czas, True, "white")
     showTimeRect = showTime.get_rect()
@@ -47,7 +55,12 @@ def DEF_DISPLAY():
     Core.screen.blit(showTime, showTimeRect)
 
 def DEF_CHANGETIME(num,t):
+    """
+     Metoda do zmiany obrazu na przycisku na reakcje wybrania opcji oraz zmiana prędkości gry
 
+    :param num: która opcja została wybrana
+    :param t:  nowy parametr czasu
+    """
     match(num):
         case 0:
             Core.VAL_SPPEDTIME = t
@@ -75,6 +88,11 @@ def DEF_CHANGETIME(num,t):
             BUTTON_SPEED3.setImage(IMAGE_SPEED3_ON)
 
 def DEF_HIDE():
+    """
+    Metoda do chowanie przycisków z wyświetlacza
+
+    """
+
     BUTTON_ADDHUB.hide()
     BUTTON_ORDERCREATE.hide()
     BUTTON_SENDTRANSPORT.hide()
@@ -86,6 +104,11 @@ def DEF_HIDE():
     TEXTBOX_FUELORDER.hide()
 
 def DEF_PANEL(buttonnuber):
+    """
+    Metoda do zmiany flag dla wybranego BOOL dla danego panelu który posiada przypisany numer
+
+    :param buttonnuber: number który panel został wybrany
+    """
     global BOOL_INFO,BOOL_CONS,BOOL_SEND,BOOL_ORDER,BOOL_MAGAZINE
 
     match buttonnuber:
@@ -128,33 +151,44 @@ def DEF_PANEL(buttonnuber):
     DEF_CBUTTON()
 
 def SHOW_INFO(id):
+    """
+    Metoda do wyświetlania informacji o obiekt wskazany przez gracza
 
+    :param id: ID obiektu dla którego trzeba pokazać info
 
-    LineShow = Core.font2.render("ID:"+str(id), True, "White")
+    """
+
+    LineShow = Core.font2.render("ID:" + str(id), True, "White")
     LineShowRect = LineShow.get_rect()
     LineShowRect.x = VAL_X
     LineShowRect.y = VAL_Y
     Core.screen.blit(LineShow, LineShowRect)
 
-    HubAmmo = Core.font2.render("Ammo: "+str(Core.DICT_AMMO[id]), True, "White")
+    HubAmmo = Core.font2.render("Ammo: " + str(Core.DICT_AMMO[id]), True, "White")
     AmmoShowRect = HubAmmo.get_rect()
     AmmoShowRect.x = VAL_X
     AmmoShowRect.y = VAL_Y+30
     Core.screen.blit(HubAmmo, AmmoShowRect)
 
-    HubFuel = Core.font2.render("Fuel: "+str(Core.DICT_FUEL[id]), True, "White")
+    HubFuel = Core.font2.render("Fuel: " + str(Core.DICT_FUEL[id]), True, "White")
     FuelShowRect = HubFuel.get_rect()
     FuelShowRect.x = VAL_X
     FuelShowRect.y = VAL_Y+60
     Core.screen.blit(HubFuel, FuelShowRect)
 
-    HubSupple = Core.font2.render("Supple: "+str(Core.DICT_SUPPLE[id]), True, "White")
+    HubSupple = Core.font2.render("Supple: " + str(Core.DICT_SUPPLE[id]), True, "White")
     SuppleShowRect = HubSupple.get_rect()
     SuppleShowRect.x = VAL_X
     SuppleShowRect.y = VAL_Y+90
     Core.screen.blit(HubSupple, SuppleShowRect)
 
 def SHOW_SEND(id):
+        """
+        Metoda pokazuje możliwość przez użytkownika wysłanie transportu z zaopatrzeniem do wybranego hub ilosc tego zaopatrzenia jest wybierana przez gracza
+
+        :param id: ID obiektu dla którego będzie  wysłanie zaopatrzenie
+        """
+
         global VAL_IDSEND
         BUTTON_SENDTRANSPORT.show()
         TEXTBOX_SUPPLIESEND.show()
@@ -190,8 +224,12 @@ def SHOW_SEND(id):
         Core.screen.blit(Supple, SuppleShowRect)
 
 def SHOW_CONS():
-    BUTTON_ADDHUB.show()
+    """
+    Metoda służy do pokazanie menu do budowy hub i pokazanie przyciska który pozwala na budowę hub
 
+    """
+
+    BUTTON_ADDHUB.show()
 
     Text = Core.font2.render("Cost:" + str(Core.VAL_COST_HUB), True, "White")
     ShowRect = Text.get_rect()
@@ -200,26 +238,33 @@ def SHOW_CONS():
     Core.screen.blit(Text, ShowRect)
 
 def SHOW_MAGAZINE():
+    """
+    Metoda pokazuje ile zasobów jest w magazynie
 
-    Ammo = Core.font2.render("Ammo: "+str(Core.VAL_AMMO), True, "White")
+    """
+    Ammo = Core.font2.render("Ammo: " + str(Core.VAL_AMMO), True, "White")
     AmmoShowRect = Ammo.get_rect()
     AmmoShowRect.x = VAL_X
     AmmoShowRect.y = VAL_Y
     Core.screen.blit(Ammo, AmmoShowRect)
 
-    Fuel = Core.font2.render("Fuel: "+str(Core.VAL_FUEL), True, "White")
+    Fuel = Core.font2.render("Fuel: " + str(Core.VAL_FUEL), True, "White")
     FuelShowRect = Fuel.get_rect()
     FuelShowRect.x = VAL_X
     FuelShowRect.y = VAL_Y + 30
     Core.screen.blit(Fuel, FuelShowRect)
 
-    Supple = Core.font2.render("Supple: "+str(Core.VAL_SUPPLE), True, "White")
+    Supple = Core.font2.render("Supple: " + str(Core.VAL_SUPPLE), True, "White")
     SuppleShowRect = Supple.get_rect()
     SuppleShowRect.x = VAL_X
     SuppleShowRect.y = VAL_Y + 60
     Core.screen.blit(Supple, SuppleShowRect)
 
 def SHOW_ORDER():
+    """
+    Metoda która pokazuje menu do zamówienia zasobów przez gracza
+
+    """
     BUTTON_ORDERCREATE.show()
     TEXTBOX_FUELORDER.show()
     TEXTBOX_AMMORDER.show()
@@ -244,6 +289,10 @@ def SHOW_ORDER():
     Core.screen.blit(Supple, SuppleShowRect)
 
 def SHOW_CURRENCY():
+    """
+    Metoda do pokazania aktualnej waluty posiadanej przez gracza
+
+    """
     global LIST_DROPDOWN_OPTION
 
     Ammo = Core.font2.render(str(Core.VAL_CURRENCY), True, "White")
@@ -255,10 +304,18 @@ def SHOW_CURRENCY():
     #jest to do dropdown
 
 def SHOW_WARNING():
-    Core.screen.blit(IMAGE_WARNING,(320,50))
+    """
+    Metoda do wyświetlenia Error/Warning spowodowana błędem gracza
+
+    """
+    Core.screen.blit(IMAGE_WARNING, (320, 50))
 
 def DEF_ORDER():
+    """
+    Metoda do obsługi logiki składanie  zamówień  wybrany zasób jest dodawany do magazynu i jest też oblicza się koszt tego zamówienia i
+    jest pobierana opłata od gracza
 
+    """
     if TEXTBOX_AMMORDER.getText() != 0 and TEXTBOX_AMMORDER.getText() != "":
         if re.match(r'^\d+$',TEXTBOX_AMMORDER.getText()):
             if Core.VAL_CURRENCY >= (int(TEXTBOX_AMMORDER.getText()) * Core.VAL_COST_AMMO):
@@ -300,6 +357,11 @@ def DEF_ORDER():
     TEXTBOX_SUPPLORDER.setText("")
 
 def DEF_SEND():
+    """
+    Metoda do obsługi logiki wysyłanie zaopatrzenia do wybranego hub wybrany zasób jest usuwany z magazynu i przekazywany do
+    magazyny hub ilość która została podana przez gracza
+
+    """
     global VAL_IDSEND
 
 
@@ -363,6 +425,11 @@ def DEF_SEND():
         TEXTBOX_SUPPLIESEND.setText("")
 
 def DEF_CBUTTON():
+    """
+    Metoda do zmiany obrazu na przycisku na reakcje wybrania opcji
+
+    """
+
     global BOOL_INFO,BOOL_CONS,BOOL_ORDER,BOOL_SEND,BOOL_MAGAZINE
 
     if BOOL_INFO:
@@ -396,53 +463,59 @@ def DEF_CBUTTON():
         BUTTON_ORDER.setImage(IMAGE_ORDER)
         BUTTON_MAGAZINE.setImage(IMAGE_MAG_ON)
 def DEF_WARNING_START():
+    """
+    Metoda od zmiany flagi BOOL_WARNING = True
+    """
     global BOOL_WARNING
     BOOL_WARNING = True
     Core.DEF_STARTICKET()
 def DEF_WARNING_ACTIVE():
+    """
+    Metoda do zmiany obrazu z  Warning_BLACK.png na Warning_RED.png kiedy gracz popełni błąd i po 2 sekundach wraca do poprzedniego stanu
+    """
     global IMAGE_WARNING, BOOL_WARNING
 
     if BOOL_WARNING:
 
-        IMAGE_WARNING = pygame.image.load("Texture/Interface/Warning_RED.png")
+        IMAGE_WARNING = pygame.image.load("../Texture/Interface/Warning_RED.png")
         IMAGE_WARNING = pygame.transform.scale(IMAGE_WARNING, (80, 40))
         if pygame.time.get_ticks() - Core.Star_Tiecket >= 2000:
-            IMAGE_WARNING = pygame.image.load("Texture/Interface/Warning_BLACK.png")
+            IMAGE_WARNING = pygame.image.load("../Texture/Interface/Warning_BLACK.png")
             IMAGE_WARNING = pygame.transform.scale(IMAGE_WARNING, (80, 40))
             BOOL_WARNING = False
 
-IMAGE_LEFTPANEL = pygame.image.load("Texture/Interface/Grafika01.png").convert_alpha()
+IMAGE_LEFTPANEL = pygame.image.load("../Texture/Interface/Grafika01.png").convert_alpha()
 IMAGE_LEFTPANEL = pygame.transform.scale(IMAGE_LEFTPANEL, (400, 720))
 SURFACE_LEFTPANEL = pygame.Surface((400, 720))
 SURFACE_LEFTPANEL.blit(IMAGE_LEFTPANEL, (0, 0))
 #-----------------------------------------------------------------------------------------------------------------------
-IMAGE_STOP_OFF = pygame.image.load("Texture/Interface/BUTTONS/PAUSE_OFF.png")
-IMAGE_SPEED1_OFF = pygame.image.load("Texture/Interface/BUTTONS/1SPEED_OFF.png")
-IMAGE_SPEED2_OFF = pygame.image.load("Texture/Interface/BUTTONS/2SPEED_OFF.png")
-IMAGE_SPEED3_OFF = pygame.image.load("Texture/Interface/BUTTONS/3SPEED_OFF.png")
+IMAGE_STOP_OFF = pygame.image.load("../Texture/Interface/BUTTONS/PAUSE_OFF.png")
+IMAGE_SPEED1_OFF = pygame.image.load("../Texture/Interface/BUTTONS/1SPEED_OFF.png")
+IMAGE_SPEED2_OFF = pygame.image.load("../Texture/Interface/BUTTONS/2SPEED_OFF.png")
+IMAGE_SPEED3_OFF = pygame.image.load("../Texture/Interface/BUTTONS/3SPEED_OFF.png")
 
-IMAGE_STOP_ON = pygame.image.load("Texture/Interface/BUTTONS/PAUSE_ON.png")
-IMAGE_SPEED1_ON = pygame.image.load("Texture/Interface/BUTTONS/1SPEED_ON.png")
-IMAGE_SPEED2_ON = pygame.image.load("Texture/Interface/BUTTONS/2SPEED_ON.png")
-IMAGE_SPEED3_ON = pygame.image.load("Texture/Interface/BUTTONS/3SPEED_ON.png")
+IMAGE_STOP_ON = pygame.image.load("../Texture/Interface/BUTTONS/PAUSE_ON.png")
+IMAGE_SPEED1_ON = pygame.image.load("../Texture/Interface/BUTTONS/1SPEED_ON.png")
+IMAGE_SPEED2_ON = pygame.image.load("../Texture/Interface/BUTTONS/2SPEED_ON.png")
+IMAGE_SPEED3_ON = pygame.image.load("../Texture/Interface/BUTTONS/3SPEED_ON.png")
 
-IMAGE_INFO = pygame.image.load("Texture/Interface/BUTTONS/INFO_OFF.png")
-IMAGE_CONS = pygame.image.load("Texture/Interface/BUTTONS/CONS_OFF.png")
-IMAGE_SEND = pygame.image.load("Texture/Interface/BUTTONS/SEND_OFF.png")
-IMAGE_ORDER = pygame.image.load("Texture/Interface/BUTTONS/ODER_OFF.png")
-IMAGE_MAG = pygame.image.load("Texture/Interface/BUTTONS/MAGAZINE_OFF.png")
-IMAGE_EXIT = pygame.image.load("Texture/Interface/BUTTONS/EXIT.png")
+IMAGE_INFO = pygame.image.load("../Texture/Interface/BUTTONS/INFO_OFF.png")
+IMAGE_CONS = pygame.image.load("../Texture/Interface/BUTTONS/CONS_OFF.png")
+IMAGE_SEND = pygame.image.load("../Texture/Interface/BUTTONS/SEND_OFF.png")
+IMAGE_ORDER = pygame.image.load("../Texture/Interface/BUTTONS/ODER_OFF.png")
+IMAGE_MAG = pygame.image.load("../Texture/Interface/BUTTONS/MAGAZINE_OFF.png")
+IMAGE_EXIT = pygame.image.load("../Texture/Interface/BUTTONS/EXIT.png")
 
-IMAGE_INFO_ON = pygame.image.load("Texture/Interface/BUTTONS/INFO_ON.png")
-IMAGE_CONS_ON = pygame.image.load("Texture/Interface/BUTTONS/CONS_ON.png")
-IMAGE_SEND_ON = pygame.image.load("Texture/Interface/BUTTONS/SEND_ON.png")
-IMAGE_ORDER_ON = pygame.image.load("Texture/Interface/BUTTONS/ODER_ON.png")
-IMAGE_MAG_ON = pygame.image.load("Texture/Interface/BUTTONS/MAGAZINE_ON.png")
+IMAGE_INFO_ON = pygame.image.load("../Texture/Interface/BUTTONS/INFO_ON.png")
+IMAGE_CONS_ON = pygame.image.load("../Texture/Interface/BUTTONS/CONS_ON.png")
+IMAGE_SEND_ON = pygame.image.load("../Texture/Interface/BUTTONS/SEND_ON.png")
+IMAGE_ORDER_ON = pygame.image.load("../Texture/Interface/BUTTONS/ODER_ON.png")
+IMAGE_MAG_ON = pygame.image.load("../Texture/Interface/BUTTONS/MAGAZINE_ON.png")
 
-IMAGE_WARNING = pygame.image.load("Texture/Interface/Warning_BLACK.png")
-IMAGE_S_SEND = pygame.image.load("Texture/Interface/BUTTONS/SEND.png")
-IMAGE_S_ORDER = pygame.image.load("Texture/Interface/BUTTONS/ORDER.png")
-IMAGE_S_HUB = pygame.image.load("Texture/Interface/BUTTONS/HUB.png")
+IMAGE_WARNING = pygame.image.load("../Texture/Interface/Warning_BLACK.png")
+IMAGE_S_SEND = pygame.image.load("../Texture/Interface/BUTTONS/SEND.png")
+IMAGE_S_ORDER = pygame.image.load("../Texture/Interface/BUTTONS/ORDER.png")
+IMAGE_S_HUB = pygame.image.load("../Texture/Interface/BUTTONS/HUB.png")
 
 
 IMAGE_INFO = pygame.transform.scale(IMAGE_INFO, (80, 40))
@@ -459,14 +532,14 @@ IMAGE_MAG_ON = pygame.transform.scale(IMAGE_MAG_ON, (80, 40))
 IMAGE_WARNING = pygame.transform.scale(IMAGE_WARNING, (80, 40))
 
 
-BUTTON_STOP = Button(Core.screen, 180, 0, 40, 40, image=IMAGE_STOP_OFF, onClick=lambda: DEF_CHANGETIME(0,0))
-BUTTON_SPEED1 = Button(Core.screen, 180, 40, 40, 40, image=IMAGE_SPEED1_ON, onClick=lambda: DEF_CHANGETIME(1,1))
-BUTTON_SPEED2 = Button(Core.screen, 220, 0, 40, 40, image=IMAGE_SPEED2_OFF, onClick=lambda: DEF_CHANGETIME(2,4.5))
-BUTTON_SPEED3 = Button(Core.screen, 220, 40, 40, 40, image=IMAGE_SPEED3_OFF, onClick=lambda: DEF_CHANGETIME(3,7.5))
-BUTTON_ADDHUB = Button(Core.screen, 280, 320, 80, 30,image=IMAGE_S_HUB, onClick=lambda: Hub.DEF_ADDHUB())
+BUTTON_STOP = Button(Core.screen, 180, 0, 40, 40, image=IMAGE_STOP_OFF, onClick=lambda: DEF_CHANGETIME(0, 0))
+BUTTON_SPEED1 = Button(Core.screen, 180, 40, 40, 40, image=IMAGE_SPEED1_ON, onClick=lambda: DEF_CHANGETIME(1, 1))
+BUTTON_SPEED2 = Button(Core.screen, 220, 0, 40, 40, image=IMAGE_SPEED2_OFF, onClick=lambda: DEF_CHANGETIME(2, 4.5))
+BUTTON_SPEED3 = Button(Core.screen, 220, 40, 40, 40, image=IMAGE_SPEED3_OFF, onClick=lambda: DEF_CHANGETIME(3, 7.5))
+BUTTON_ADDHUB = Button(Core.screen, 280, 320, 80, 30, image=IMAGE_S_HUB, onClick=lambda: Hub.DEF_ADDHUB())
 BUTTON_ORDERCREATE = Button(Core.screen, 190, 450, 70, 20, image=IMAGE_S_ORDER, onClick=lambda: DEF_ORDER())
-BUTTON_SENDTRANSPORT = Button(Core.screen,190,450,50,30, image=IMAGE_S_SEND, onClick=lambda: DEF_SEND())
-BUTTON_INFO = Button(Core.screen, 5, 270, 80, 40, image=IMAGE_INFO, onClick= lambda: DEF_PANEL(0),)
+BUTTON_SENDTRANSPORT = Button(Core.screen, 190, 450, 50, 30, image=IMAGE_S_SEND, onClick=lambda: DEF_SEND())
+BUTTON_INFO = Button(Core.screen, 5, 270, 80, 40, image=IMAGE_INFO, onClick= lambda: DEF_PANEL(0), )
 BUTTON_CONS = Button(Core.screen, 5, 310, 80, 40, image=IMAGE_CONS, onClick= lambda: DEF_PANEL(1))
 BUTTON_SEND = Button(Core.screen, 5, 350, 80, 40, image=IMAGE_SEND, onClick= lambda: DEF_PANEL(2))
 BUTTON_ORDER = Button(Core.screen, 5, 390, 80, 40, image=IMAGE_ORDER, onClick= lambda: DEF_PANEL(3))
@@ -478,13 +551,13 @@ BUTTON_ORDERCREATE.hide()
 BUTTON_ADDHUB.hide()
 BUTTON_SENDTRANSPORT.hide()
 #-------------------
-TEXTBOX_AMMOSEND = TextBox(Core.screen,300,350,70,35, fontsize=10,borderThickness=1,colour="#078AE8")
-TEXTBOX_FUELSEND = TextBox(Core.screen,300,380,70,35, fontsize=10,borderThickness=1,colour="#078AE8")
-TEXTBOX_SUPPLIESEND = TextBox(Core.screen,300,410,70,35, fontsize=10,borderThickness=1,colour="#078AE8")
+TEXTBOX_AMMOSEND = TextBox(Core.screen, 300, 350, 70, 35, fontsize=10, borderThickness=1, colour="#078AE8")
+TEXTBOX_FUELSEND = TextBox(Core.screen, 300, 380, 70, 35, fontsize=10, borderThickness=1, colour="#078AE8")
+TEXTBOX_SUPPLIESEND = TextBox(Core.screen, 300, 410, 70, 35, fontsize=10, borderThickness=1, colour="#078AE8")
 
-TEXTBOX_AMMORDER = TextBox(Core.screen,300,320,70,35, fontsize=10,borderThickness=1,colour="#078AE8")
-TEXTBOX_FUELORDER = TextBox(Core.screen,300,350,70,35, fontsize=10,borderThickness=1,colour="#078AE8")
-TEXTBOX_SUPPLORDER = TextBox(Core.screen,300,380,70,35, fontsize=10,borderThickness=1,colour="#078AE8")
+TEXTBOX_AMMORDER = TextBox(Core.screen, 300, 320, 70, 35, fontsize=10, borderThickness=1, colour="#078AE8")
+TEXTBOX_FUELORDER = TextBox(Core.screen, 300, 350, 70, 35, fontsize=10, borderThickness=1, colour="#078AE8")
+TEXTBOX_SUPPLORDER = TextBox(Core.screen, 300, 380, 70, 35, fontsize=10, borderThickness=1, colour="#078AE8")
 
 
 TEXTBOX_AMMORDER.hide()

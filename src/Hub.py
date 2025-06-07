@@ -1,5 +1,3 @@
-from pickle import GLOBAL
-
 import Core
 import pygame
 import random
@@ -14,8 +12,8 @@ VAL_ROADHUB = ""
 VAL_SELECTED_ID = ''
 
 
-VAL_TEXUTRE_ON = pygame.image.load("Texture/MAP/HUB_ON.png").convert_alpha()
-VAL_TEXUTRE_OFF = pygame.image.load("Texture/MAP/HUB_OFF.png").convert_alpha()
+VAL_TEXUTRE_ON = pygame.image.load("../Texture/MAP/HUB_ON.png").convert_alpha()
+VAL_TEXUTRE_OFF = pygame.image.load("../Texture/MAP/HUB_OFF.png").convert_alpha()
 
 IMAGE_HUB_C = VAL_TEXUTRE_OFF
 IMAGE_HUB = VAL_TEXUTRE_OFF
@@ -23,6 +21,13 @@ IMAGE_HUB = pygame.transform.scale(IMAGE_HUB,(40,40))
 
 
 def DEF_HUBNUMBER(x,y):
+    """
+    Metoda odpowiada za dodanie/utworzenie nowego hub na pozycji które zostały podana i program sprawdza czy ilosc Waluty jest wystarczająca i też czy liczba hub nie przekracza
+    maksymalnej ilości
+
+    :param x: Pozycja x
+    :param y: Pozycja y
+    """
     global VAL_HUBSNOW,BOOL_ADDHUB
     hubid  = "HUB_"+str(VAL_HUBSNOW)
 
@@ -40,10 +45,21 @@ def DEF_HUBNUMBER(x,y):
         return
 
 def DEF_ADDHUB():
+    """
+    Metoda do zmiany flagi z BOOL_ADDHUB na True
+
+    """
     global BOOL_ADDHUB
     BOOL_ADDHUB = True
 
 def DEF_LINE(position,hubkey):
+    """
+    Metoda odpowiada za utworzenie połączenia dwóch hub wybranych przez gracza
+
+    :param position: koordynaty wybranej pozycji
+    :param hubkey: id hub
+
+    """
     global VAL_STARTDOT, VAL_STARTDOTKEY, VAL_ENDDOTKEY, VAL_ROADHUB
 
     if VAL_STARTDOT is None:
@@ -71,6 +87,11 @@ def DEF_LINE(position,hubkey):
         VAL_STARTDOTKEY = ""
 
 def DEF_INFOPANEL(id):
+    """
+    Metoda która dla każdego nowego hub przypisuje wartości
+
+    :param id: id hub
+    """
     Fuel = 0
     Ammo = 0
     Supple = 0
@@ -86,13 +107,23 @@ def DEF_INFOPANEL(id):
         Core.DICT_SUPPLE[id] = Supple
 
 def DEF_HUBCENTRAL():
+    """
+    Metoda odpowiada za utworzenie hub centralnego
+
+    """
     x = random.randint(410,1200)
-    y = random.randint(600,700)
+    y = random.randint(600,690)
     new_ret = pygame.Rect(x,y, 50, 50)
     Core.DICT_HUB[Core.VAL_CENTRALHUBID] = new_ret
     DEF_INFOPANEL(Core.VAL_CENTRALHUBID)
 
 def DEF_ASTAR(target):
+    """
+    Algorytm A*
+
+    :param target: Cel w który algorytm ma znaleść trasę
+    :return:
+    """
     import heapq, math
 
     def neigbors_bulid():
@@ -108,7 +139,7 @@ def DEF_ASTAR(target):
 
     neig = neigbors_bulid()
     open_set = []
-    heapq.heappush(open_set,(0,Core.VAL_CENTRALHUBID))
+    heapq.heappush(open_set, (0, Core.VAL_CENTRALHUBID))
     came_from = {}
     g_score = {node: float('inf') for node in Core.DICT_HUB}
     g_score[Core.VAL_CENTRALHUBID] = 0
@@ -137,6 +168,11 @@ def DEF_ASTAR(target):
     return []
 
 def DEF_SHOW(id):
+    """
+    Metoda do wyświetlenie na mapie hub i modyfikacja wyglądu kiedy jest wybrany
+
+    :param id: ID Hub
+    """
     global BOOL_SELECTED, VAL_SELECTED_ID, IMAGE_HUB,IMAGE_HUB_C
 
 
@@ -156,6 +192,10 @@ def DEF_SHOW(id):
 
     Core.screen.blit(image, Core.DICT_HUB[id])
 def DEF_SELECTED(id):
+    """
+    Metoda do przypisanie do zmiennej VAL_SELECTED_ID id hub i zmianna flagi BOOL_SELECTED na True
+    :param id: ID Hub
+    """
     global IMAGE_HUB, BOOL_SELECTED, VAL_SELECTED_ID
 
     BOOL_SELECTED = True

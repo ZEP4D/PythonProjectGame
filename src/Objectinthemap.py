@@ -8,7 +8,7 @@ import random
 
 class MOC:
     def __init__(self,x,y,id,Front):
-        self.texture = pygame.image.load("Texture/MAP/placeholder.png").convert_alpha()
+        self.texture = pygame.image.load("../Texture/MAP/placeholder.png").convert_alpha()
         self.image = self.texture
         self.rect = self.image.get_rect(center=(x,y))
         self.VAL_SPEED_X = 2
@@ -42,7 +42,82 @@ class MOC:
         self.BOOL_SELECTED = False
 
     def DEF_UPDATE(self, dt,listen):
+        """
+        if self.VAL_HEALTH < 30:
+            Posefromdict = Core.DICT_HUB[Core.VAL_CENTRALHUBID]
+            self.VAL_TARGETPOSE = pygame.Vector2(Posefromdict.center)
+            self.Front.freeposition(self.VAL_POSENUMBER)
+            self.VAL_POSENUMBER = 5
+        else:
+            if self.VAL_POSENUMBER == 5:
+            self.VAL_POSENUMBER = self.Front.getnumberforposition()
+        self.VAL_TARGETPOSE = self.Front.getpositon(self.VAL_POSENUMBER, self.VAL_ID)
 
+        Jeżeli zdrowie jednostki spadnie poniżej 30:
+            - Pobierana jest pozycja centralnego huba (Core.VAL_CENTRALHUBID).
+            - Jednostka ustawia cel VAL_TARGETPOSE
+            - Aktualna pozycja zostaje zwolniona, a jednostka przypisywana jest do pozycji nr 5
+        W innym przypadku:
+            - Jeśli jednostka znajduje się na pozycji awaryjnej, przydzielana jest nowa pozycja.
+            - Cel ruchu zostaje zaktualizowany zgodnie z nową pozycją.
+
+        kierunek = self.VAL_TARGETPOSE - self.VAL_POSE
+        self.VAL_DYSTANS = kierunek.length()
+        if self.VAL_DYSTANS > 30:
+            kierunek.normalize_ip()
+            ruch = kierunek * (5 * Core.VAL_SPPEDTIME) * dt
+            self.VAL_POSE += ruch
+            self.VAL_TRASAPRZEBYTA += ruch.length()
+            self.rect.topleft = (round(self.VAL_POSE.x), round(self.VAL_POSE.y))
+            self.BOOL_INMOVE = True
+        else:
+            self.BOOL_INMOVE = False
+
+        - Obliczany jest wektor kierunku i dystans do celu.
+        - Jeżeli jednostka znajduje się dalej niż 30 pikseli od celu:
+        - Przemieszcza się w jego kierunku z prędkością zależną od Core.VAL_SPPEDTIME i dt.
+        - Aktualizowana jest pozycja graficzna
+        - Ustawiany jest znacznik ruchu BOOL_INMOVE.
+
+        for HUBID in Core.DICT_HUB:
+            hubin = Core.DICT_HUB[HUBID].center
+            hub = pygame.Vector2(hubin[0],hubin[1])
+            Nearestpose = self.VAL_POSE.distance_to(hub)
+            if Nearestpose < min_distance:
+                min_distance = Nearestpose
+                self.Correcthub = hub
+                if min_distance < 200 :
+                    self.BOOL_HUB = True
+                    self.BOOL_HUBCONNECT = True
+                    Trasa = Hub.DEF_ASTAR(HUBID)
+
+        - Dla każdego huba w Core.DICT_HUB:
+        - Obliczana jest odległość od jednostki.
+        - Jeżeli najbliższy hub znajduje się w promieniu 200 pikseli:
+        - Jednostka łączy się z hubem (BOOL_HUB, BOOL_HUBCONNECT).
+        - Jeżeli do huba prowadzi bezpośrednia trasa:
+        - Co dwie godziny , zdrowie jednostki regeneruje się.
+        - Co 5 godzin jednostka może zatankować, uzupełnić amunicję i zaopatrzenie
+
+        - Przeglądana jest lista przeciwników (listen).
+        - Jeżeli któryś znajduje się bliżej niż 80 pikseli:
+        - Jednostka wchodzi w stan walki (BOOL_INBATTLE) i zapamiętuje ID wroga.
+
+        min_distance_ene = float('inf')
+        for enemy in listen:
+            min_distance_en = pygame.Vector2(listen[enemy].VAL_POSE.x, listen[enemy].VAL_POSE.y)
+            Nearestpose = self.VAL_POSE.distance_to(min_distance_en)
+            if Nearestpose < min_distance_ene:
+            min_distance_ene = Nearestpose
+            if min_distance_ene < 80:
+                self.BOOL_INBATTLE = True
+                self.VAL_ENEMY_ID = enemy
+            else:
+                self.BOOL_INBATTLE = False
+
+        :param dt: Delta time
+        :param listen: Lista przeciwników
+        """
         if self.VAL_HEALTH < 30:
             Posefromdict = Core.DICT_HUB[Core.VAL_CENTRALHUBID]
             self.VAL_TARGETPOSE = pygame.Vector2(Posefromdict.center)
@@ -62,7 +137,7 @@ class MOC:
 
         if self.VAL_DYSTANS > 30:
             kierunek.normalize_ip()
-            ruch = kierunek * (5 * Core.VAL_SPPEDTIME ) * dt
+            ruch = kierunek * (5 * Core.VAL_SPPEDTIME) * dt
             self.VAL_POSE += ruch
             self.VAL_TRASAPRZEBYTA += ruch.length()
             self.rect.topleft = (round(self.VAL_POSE.x), round(self.VAL_POSE.y))
@@ -134,14 +209,52 @@ class MOC:
         if self.rect.top <=0 or self.rect.bottom >= Core.SizeScreenHeight:
             self.VAL_SPEED_Y = -self.VAL_SPEED_Y
     def DEF_UPDATE_RES(self,dt):
+        """
+            Obliczane jest zużycie paliwa na podstawie typu pojazdów (APC, Cars, Truck, Truck_Fuel).
 
-        Fuel_Usage = Core.DEF_FUELUSE(self.VAL_APC,self.VAL_Cars,self.VAL_Truck,self.VAL_Truck_Fuel)
+            Fuel_Usage = Core.DEF_FUELUSE(self.VAL_APC, self.VAL_Cars, self.VAL_Truck, self.VAL_Truck_Fuel)
+
+            Gdy jednostka się porusza (BOOL_INMOVE):
+            - Po przebyciu co najmniej 200 pikseli:
+            - Paliwo jest konwertowane na wartość liczbową, pomniejszane o zużycie, i konwertowane z powrotem.
+
+                if self.BOOL_INMOVE:
+                    if self.VAL_TRASAPRZEBYTA >= 200:
+                        Convert = Core.DEF_Convert(self.VAL_FUEL, 1, "FUEL")
+                        Convert -= Fuel_Usage
+                        self.VAL_FUEL = Core.DEF_Convert(Convert, 2, "FUEL")
+                        self.VAL_TRASAPRZEBYTA -= 200
+
+        Gdy jednostka jest zatrzymana:
+        - Zużycie paliwa jest 5 razy mniejsze.
+        - Co 1000 jednostek czasu (VAL_Timepass), zużywane jest paliwo według tego samego schematu.
+
+         Fuel_Usage_STOP = Fuel_Usage / 5
+
+            if self.VAL_Timepass >= 1000:
+                Convert = Core.DEF_Convert(self.VAL_FUEL, 1, "FUEL")
+                Convert -= Fuel_Usage_STOP
+                self.VAL_FUEL = Core.DEF_Convert(Convert, 2, "FUEL")
+                self.VAL_Timepass = 0
+                self.VAL_Timepass += 1
+
+
+        O każdej 12:00 zużywane jest 300 jednostek zaopatrzenia.
+
+            if Core.VAL_HOURS == 12 and Core.VAL_MINUTES == 0:
+                Convert = Core.DEF_Convert(self.VAL_SUPPLE, 1, "SUPPLE")
+                Convert -= 300
+                self.VAL_SUPPLE = Core.DEF_Convert(Convert, 2, "SUPPLE")
+
+        :param dt: Delta time
+        """
+        Fuel_Usage = Core.DEF_FUELUSE(self.VAL_APC, self.VAL_Cars, self.VAL_Truck, self.VAL_Truck_Fuel)
 
         if self.BOOL_INMOVE:
             if self.VAL_TRASAPRZEBYTA >= 200:
-                Convert = Core.DEF_Convert(self.VAL_FUEL,1,"FUEL")
+                Convert = Core.DEF_Convert(self.VAL_FUEL, 1, "FUEL")
                 Convert -= Fuel_Usage
-                self.VAL_FUEL = Core.DEF_Convert(Convert, 2,"FUEL")
+                self.VAL_FUEL = Core.DEF_Convert(Convert, 2, "FUEL")
                 self.VAL_TRASAPRZEBYTA -= 200
         else:
                 Fuel_Usage_STOP = Fuel_Usage / 5
@@ -149,30 +262,36 @@ class MOC:
                 if self.VAL_Timepass >= 1000:
                     Convert = Core.DEF_Convert(self.VAL_FUEL, 1, "FUEL")
                     Convert -= Fuel_Usage_STOP
-                    self.VAL_FUEL = Core.DEF_Convert(Convert, 2,"FUEL")
+                    self.VAL_FUEL = Core.DEF_Convert(Convert, 2, "FUEL")
                     self.VAL_Timepass = 0
                 self.VAL_Timepass += 1
 
         if Core.VAL_HOURS == 12 and Core.VAL_MINUTES == 0:
-            Convert = Core.DEF_Convert(self.VAL_SUPPLE,1, "SUPPLE")
+            Convert = Core.DEF_Convert(self.VAL_SUPPLE, 1, "SUPPLE")
             Convert -= 300
-            self.VAL_SUPPLE = Core.DEF_Convert(Convert,2,"SUPPLE")
+            self.VAL_SUPPLE = Core.DEF_Convert(Convert, 2, "SUPPLE")
     def DEF_DRAW(self):
+        """
+                Wyświetlenie  na ekranie obiektu
+        """
+
         if self.BOOL_HUB:
             pygame.draw.line(Core.screen, "black", self.rect.center, self.Correcthub)
 
         
-        Core.screen.blit(self.image,self.rect)
+        Core.screen.blit(self.image, self.rect)
     def DEF_Show(self):
-
-        self.image = pygame.image.load("Texture/MAP/AI_P_ON.png").convert_alpha()
-        ID = Core.font2.render("ID: "+str(self.VAL_ID), True, "White")
+        """
+                Wyświetlenie informacji w panelu o zasobach jednostki
+        """
+        self.image = pygame.image.load("../Texture/MAP/AI_P_ON.png").convert_alpha()
+        ID = Core.font2.render("ID: " + str(self.VAL_ID), True, "White")
         IDShowRect = ID.get_rect()
         IDShowRect.x = 180
         IDShowRect.y = 420
         Core.screen.blit(ID, IDShowRect)
 
-        Health = Core.font2.render("Health: "+str(self.VAL_HEALTH), True, "White")
+        Health = Core.font2.render("Health: " + str(self.VAL_HEALTH), True, "White")
         HealthoShowRect = Health.get_rect()
         HealthoShowRect.x = 180
         HealthoShowRect.y = 450
@@ -185,7 +304,7 @@ class MOC:
             format_ammo = '{:.4f}'.format( Ammo_show)
 
 
-        Ammo = Core.font2.render("Ammo: "+str(format_ammo), True, "White")
+        Ammo = Core.font2.render("Ammo: " + str(format_ammo), True, "White")
         AmmoShowRect = Ammo.get_rect()
         AmmoShowRect.x = 180
         AmmoShowRect.y = 480
@@ -197,21 +316,48 @@ class MOC:
         else:
             format_fuel = '{:.4f}'.format(Fuel_show)
 
-        Fuel = Core.font2.render("Fuel: "+str(format_fuel), True, "White")
+        Fuel = Core.font2.render("Fuel: " + str(format_fuel), True, "White")
         FuelShowRect = Fuel.get_rect()
         FuelShowRect.x = 180
         FuelShowRect.y = 510
         Core.screen.blit(Fuel, FuelShowRect)
 
-        Supple = Core.font2.render("Supple: "+str(self.VAL_SUPPLE), True, "White")
+        Supple = Core.font2.render("Supple: " + str(self.VAL_SUPPLE), True, "White")
         SuppleShowRect = Supple.get_rect()
         SuppleShowRect.x = 180
         SuppleShowRect.y = 540
         Core.screen.blit(Supple, SuppleShowRect)
     def GET_ID(self):
+        """
+        :return: Zwracanie ID obiektu
+        """
         return self.VAL_ID
     def DEF_BATTLE(self,ticket,Enemy):
+        """
+        Na podstawie warunków pogodowych ustawiany jest debuff:
+          - Dobra pogoda: brak debuffa.
+          - Deszcz (Rain): -20% skuteczności.
+          - Mgła (fog): -50% skuteczności.
+          - Burza (Thunder): -35% skuteczności.
 
+
+
+        Losowanie tury ataku
+
+        Gracz:
+            - Obliczane są punkty ataku.
+            - Porównywane z obroną przeciwnika.
+            - Jeżeli przewaga punktów: wróg traci zdrowie, gracz traci amunicję.
+            - W przeciwnym przypadku: gracz traci APC, samochody, zdrowie i amunicję.
+        Wróg:
+            - Analogicznie porównywana jest siła ataku wroga z obroną gracza.
+            - Przy przewadze: gracz traci zasoby.
+            - W przeciwnym przypadku: wróg traci zdrowie.
+
+
+        :param ticket: Aktualny ticekt czasu
+        :param Enemy: Lista przeciwnika
+        """
         if self.BOOL_INBATTLE:
 
             # dane w procentach
@@ -281,6 +427,12 @@ class MOC:
                                     Enemy[self.VAL_ENEMY_ID].VAL_HEALTH = Enemy[self.VAL_ENEMY_ID].VAL_HEALTH - howmenymanpower
                     self.VAL_LASTHOUER = Core.VAL_HOURS
     def DEF_SETBOOL(self,flaga,id):
+        """
+        Zmienianie flagi BOOL_SELECTED dla wybranej jednostki przez jej ID
+        :param flaga: parametr True/False
+        :param id:  id jednostki
+        :return:
+        """
         if self.VAL_ID == id:
             self.BOOL_SELECTED = flaga
         else:
@@ -289,7 +441,7 @@ class MOC:
 class Infantry(MOC):
     def __init__(self,x,y,id,num):
         super().__init__(x,y,id,num)
-        self.texture = pygame.image.load("Texture/MAP/AI_P_OFF.png").convert_alpha()
+        self.texture = pygame.image.load("../Texture/MAP/AI_P_OFF.png").convert_alpha()
         self.image = self.texture
         self.VAL_HEALTH = 100
         self.VAL_FUEL = 2
@@ -314,9 +466,11 @@ class FrontLine:
         self.VAL_IDpose3 = "none"
         self.VAL_IDpose4 = "none"
     def draw(self):
-
-        pygame.draw.line(Core.screen,"Grey", self.Start, self.pose1.center, 3)
-        pygame.draw.line(Core.screen,"Grey",self.pose1.center,self.pose2.center,3)
+        """
+                Wyświetlenie  na ekranie obiektu
+        """
+        pygame.draw.line(Core.screen, "Grey", self.Start, self.pose1.center, 3)
+        pygame.draw.line(Core.screen, "Grey", self.pose1.center, self.pose2.center, 3)
         pygame.draw.line(Core.screen, "Grey", self.pose2.center, self.pose3.center, 3)
         pygame.draw.line(Core.screen, "Grey", self.pose3.center, self.pose4.center, 3)
         pygame.draw.line(Core.screen, "Grey", self.pose4.center, self.End, 3)
@@ -373,7 +527,7 @@ class ENEMY:
     def __init__(self,x,y,front):
         self.VAL_HEALTH = 100
         self.VAL_ID = "e1"
-        self.image = pygame.image.load("Texture/MAP/AI_E.png").convert_alpha()
+        self.image = pygame.image.load("../Texture/MAP/AI_E.png").convert_alpha()
         self.rect = self.image.get_rect(center=(x,y))
         self.VAL_X = x
         self.Front = front
@@ -384,9 +538,45 @@ class ENEMY:
         self.VAL_DEFENCE_BASE = 200
         self.VAL_ATTACK_POINT = 220
         self.BOOL_Move = False
-
     def DEF_UPDATE(self,dt):
+        """
+        if self.VAL_HEALTH < 30:
+            Posefromdict = Core.DICT_HUB[Core.VAL_CENTRALHUBID]
+            self.VAL_TARGETPOSE = pygame.Vector2(Posefromdict.center)
+            self.Front.freeposition(self.VAL_POSENUMBER)
+            self.VAL_POSENUMBER = 5
+        else:
+            if self.VAL_POSENUMBER == 5:
+            self.VAL_POSENUMBER = self.Front.getnumberforposition()
+        self.VAL_TARGETPOSE = self.Front.getpositon(self.VAL_POSENUMBER, self.VAL_ID)
 
+        Jeżeli zdrowie jednostki spadnie poniżej 30:
+            - Pobierana jest pozycja centralnego huba (Core.VAL_CENTRALHUBID).
+            - Jednostka ustawia cel VAL_TARGETPOSE
+            - Aktualna pozycja zostaje zwolniona, a jednostka przypisywana jest do pozycji nr 5
+        W innym przypadku:
+            - Jeśli jednostka znajduje się na pozycji awaryjnej, przydzielana jest nowa pozycja.
+            - Cel ruchu zostaje zaktualizowany zgodnie z nową pozycją.
+
+        kierunek = self.VAL_TARGETPOSE - self.VAL_POSE
+        self.VAL_DYSTANS = kierunek.length()
+        if self.VAL_DYSTANS > 30:
+            kierunek.normalize_ip()
+            ruch = kierunek * (5 * Core.VAL_SPPEDTIME) * dt
+            self.VAL_POSE += ruch
+            self.VAL_TRASAPRZEBYTA += ruch.length()
+            self.rect.topleft = (round(self.VAL_POSE.x), round(self.VAL_POSE.y))
+            self.BOOL_INMOVE = True
+        else:
+            self.BOOL_INMOVE = False
+
+        - Obliczany jest wektor kierunku i dystans do celu.
+        - Jeżeli jednostka znajduje się dalej niż 30 pikseli od celu:
+        - Przemieszcza się w jego kierunku z prędkością zależną od Core.VAL_SPPEDTIME i dt.
+        - Aktualizowana jest pozycja graficzna
+        - Ustawiany jest znacznik ruchu BOOL_INMOVE.
+        :param dt: Delta time
+        """
         if self.VAL_HEALTH < 30:
             self.VAL_TARGETPOSE = pygame.Vector2(self.VAL_X,-1)
             self.Front.freeposition(self.VAL_POSENUMBER)
@@ -405,7 +595,7 @@ class ENEMY:
 
         if self.VAL_DYSTANS > 30:
             kierunek.normalize_ip()
-            ruch = kierunek * (5 * Core.VAL_SPPEDTIME ) * dt
+            ruch = kierunek * (5 * Core.VAL_SPPEDTIME) * dt
             self.VAL_POSE += ruch
             self.rect.topleft = (round(self.VAL_POSE.x), round(self.VAL_POSE.y))
             self.BOOL_Move = True
@@ -415,12 +605,20 @@ class ENEMY:
         if not self.BOOL_Move:
             if self.VAL_HEALTH < 30:
                 self.VAL_HEALTH = 100
-
     def DEF_DRAW(self):
-        Core.screen.blit(self.image,self.rect)
-
+        """
+        Wyświetlenie  na ekranie obiektu
+        """
+        Core.screen.blit(self.image, self.rect)
     def GET_HEALTH(self):
+        """
+        :return: Zwrócenie ilości życia
+        """
         return self.VAL_HEALTH
-
     def SET_HEALTH(self,val):
+        """
+        Ustawienie życia o parametr podany do metody
+
+        :param val: liczba życia podana do metody
+        """
         self.VAL_HEALTH = val

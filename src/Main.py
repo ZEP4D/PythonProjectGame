@@ -7,19 +7,22 @@ import Objectinthemap
 import SimulationCore
 from pygame_widgets.button import Button
 
-IMAGE_MAIN = pygame.image.load("Texture/MainMenu.png").convert_alpha()
-IMAGE_LOGO = pygame.image.load("Texture/logo.png").convert_alpha()
-IMAGE_START = pygame.image.load("Texture/START.png").convert_alpha()
-IMAGE_EXIT = pygame.image.load("Texture/EXIT.png").convert_alpha()
+IMAGE_MAIN = pygame.image.load("../Texture/MainMenu.png").convert_alpha()
+IMAGE_LOGO = pygame.image.load("../Texture/logo.png").convert_alpha()
+IMAGE_START = pygame.image.load("../Texture/START.png").convert_alpha()
+IMAGE_EXIT = pygame.image.load("../Texture/EXIT.png").convert_alpha()
 pygame.display.set_caption("SHRIMP CONQUEST")
 
 
-BUTTON_STAR_GAME = Button(Core.screen, 950, 300, 200, 80, colour=(255,0,0,0), image=IMAGE_START, onClick=lambda: CHANGE_FLAG() )
-BUTTON_EXIT_GAME = Button(Core.screen, 950, 470, 200, 80, image=IMAGE_EXIT,  onClick=lambda: Core.DEF_EXIT())
+BUTTON_STAR_GAME = Button(Core.screen, 950, 300, 200, 80, colour=(255, 0, 0, 0), image=IMAGE_START, onClick=lambda: CHANGE_FLAG())
+BUTTON_EXIT_GAME = Button(Core.screen, 950, 470, 200, 80, image=IMAGE_EXIT, onClick=lambda: Core.DEF_EXIT())
 
 BOOL_GAMESCENE = False
 
 def CHANGE_FLAG():
+    """
+        Moduł służy do zmiany flagi w przyciskach w menu Startowym BOOL_GAMESCENE = TRUE
+    """
     global BOOL_GAMESCENE
     BOOL_GAMESCENE = True
 
@@ -31,6 +34,10 @@ VAL_WHATIDOBJECT = ""
 
 
 def GAME_SCENE():
+    """
+    Moduł jest odpowiedziany za wyświetlenie i obsługę eventów i logiki w grze
+    """
+
     global VAL_WHATID,VAL_WHATIDOBJECT
     UIGRY.BUTTON_INFO.show()
     UIGRY.BUTTON_ORDER.show()
@@ -99,7 +106,7 @@ def GAME_SCENE():
 
             else:
                 if VAL_WHATIDOBJECT != '':
-                    SimulationCore.LIST_INFANTRY[VAL_WHATIDOBJECT].DEF_SETBOOL(True,VAL_WHATIDOBJECT)
+                    SimulationCore.LIST_INFANTRY[VAL_WHATIDOBJECT].DEF_SETBOOL(True, VAL_WHATIDOBJECT)
 
 
                 Hub.DEF_SELECTED(VAL_WHATID)
@@ -142,6 +149,9 @@ def GAME_SCENE():
         if Core.BOOL_EXIT:
             Core.BOOL_RUNNING = False
 def MAIN_SCENE():
+    """
+        Moduł odpowiedziany za wyświetlenie menu startowego
+    """
     UIGRY.BUTTON_INFO.hide()
     UIGRY.BUTTON_ORDER.hide()
     UIGRY.BUTTON_SEND.hide()
@@ -152,8 +162,8 @@ def MAIN_SCENE():
     UIGRY.BUTTON_SPEED1.hide()
     UIGRY.BUTTON_SPEED2.hide()
     UIGRY.BUTTON_SPEED3.hide()
-    Core.screen.blit(IMAGE_MAIN,(0,0))
-    Core.screen.blit(IMAGE_LOGO,(800,100))
+    Core.screen.blit(IMAGE_MAIN, (0, 0))
+    Core.screen.blit(IMAGE_LOGO, (800, 100))
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
