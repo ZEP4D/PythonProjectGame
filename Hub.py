@@ -141,13 +141,13 @@ def DEF_SHOW(id):
 
 
 
-    if id == Core.VAL_CENTRALHUBID and  id == VAL_SELECTED_ID:
+    if id == Core.VAL_CENTRALHUBID and  id == VAL_SELECTED_ID and BOOL_SELECTED:
         IMAGE_HUB_C = VAL_TEXUTRE_ON
         image = IMAGE_HUB_C
     elif id == Core.VAL_CENTRALHUBID:
         IMAGE_HUB_C = VAL_TEXUTRE_OFF
         image = IMAGE_HUB_C
-    elif id == VAL_SELECTED_ID:
+    elif id == VAL_SELECTED_ID and BOOL_SELECTED:
         IMAGE_HUB = VAL_TEXUTRE_ON
         image = IMAGE_HUB
     else:

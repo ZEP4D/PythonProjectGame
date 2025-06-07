@@ -90,7 +90,7 @@ def GAME_SCENE():
 
             if UIGRY.BOOL_INFO_OBJECT:
                 SimulationCore.LIST_INFANTRY[VAL_WHATIDOBJECT].DEF_Show()
-
+                Hub.BOOL_SELECTED = False
                 for u in SimulationCore.LIST_INFANTRY.values():
                     if u.VAL_ID == VAL_WHATIDOBJECT:
                         u.BOOL_SELECTED = False
@@ -104,7 +104,8 @@ def GAME_SCENE():
 
                 Hub.DEF_SELECTED(VAL_WHATID)
                 UIGRY.SHOW_INFO(VAL_WHATID)
-
+        else:
+            Hub.BOOL_SELECTED = False
         if UIGRY.BOOL_ORDER:
             UIGRY.SHOW_ORDER()
 
@@ -118,6 +119,7 @@ def GAME_SCENE():
             UIGRY.SHOW_CONS()
 
         UIGRY.DEF_WARNING_ACTIVE()
+        Core.DEF_Currency()
         Core.DEF_Weather()
         Core.SHOW_POGODA()
         Core.SHOW_TICKET()

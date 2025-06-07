@@ -95,9 +95,6 @@ def DEF_FUELUSE(APC,CARS,TRUCK, TRUCK_FUEL):
 
     return  Fuel_number
 
-
-
-
 def DEF_POINTSCALCULATOR(APC,CARS,MENPOWER):
     Points = 0
     Points += APC * VAL_POINT_APC
@@ -239,3 +236,14 @@ def DEF_Weather():
 def DEF_STARTICKET():
     global Star_Tiecket
     Star_Tiecket = pygame.time.get_ticks()
+
+VAL_LASTHOUER = None
+
+def DEF_Currency():
+    global  VAL_CURRENCY, VAL_LASTHOUER
+
+
+    if VAL_HOURS == 10 and VAL_MINUTES == 0:
+        if VAL_LASTHOUER != VAL_HOURS:
+            VAL_CURRENCY += 500
+            VAL_LASTHOUER = VAL_HOURS
